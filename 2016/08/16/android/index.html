@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -108,7 +108,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -358,7 +358,7 @@
 <blockquote>
 <p>这段代码中的变量mOnTouchListener是通过view.setOnTouchListner(OnTouchListener otl)来设置的，该函数具体如下：</p>
 </blockquote>
-<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Button button1 = (Button) findViewById(R.id.button1);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">    * Called when a touch event is dispatched to a view. This allows listeners to</div><div class="line">    * get a chance to respond before the target view.</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> v The view the touch event has been dispatched to.</div><div class="line">    * <span class="doctag">@param</span> event The MotionEvent object containing full information about</div><div class="line">    *        the event.</div><div class="line">    * <span class="doctag">@return</span> True if the listener has consumed the event, false otherwise.</div><div class="line">    */</div><div class="line">button1.setOnTouchListener(<span class="keyword">new</span> OnTouchListener()&#123;</div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onTouch</span><span class="params">(View v, MotionEvent event)</span></span>&#123;</div><div class="line">		<span class="comment">//do something what you want.</span></div><div class="line">		</div><div class="line">		<span class="keyword">return</span> ture; <span class="comment">//or false.</span></div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight zephir"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Button button1 = (Button) findViewById(R.id.button1);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">    * Called when a touch event is dispatched to a view. This allows listeners to</div><div class="line">    * get a chance to respond before the target view.</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> v The view the touch event has been dispatched to.</div><div class="line">    * <span class="doctag">@param</span> event The MotionEvent object containing full information about</div><div class="line">    *        the event.</div><div class="line">    * <span class="doctag">@return</span> True if the listener has consumed the event, false otherwise.</div><div class="line">    */</div><div class="line">button1.setOnTouchListener(<span class="keyword">new</span> OnTouchListener()&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">boolean</span> onTouch(View v, MotionEvent event)&#123;</div><div class="line">		<span class="comment">//do something what you want.</span></div><div class="line">		</div><div class="line">		<span class="keyword">return</span> ture; <span class="comment">//or false.</span></div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <blockquote>
 <p>我们现在再来看一下view.dispatchTouchEvent代码，view.dispatchTouchEvent的逻辑很简单：如果设置了mOnTouchListener，且该控件是enable的，且onTouch返回ture，那么直接返回ture；在这里需要解释一下：<strong>在onTouch方法中如果返回true，则表明该view消费了该触摸事件，所以就不会再去调用onTouchEvent方法了；如果返回false，则表明没有消费该事件，这时就会去调用onTouchEvent方法。</strong></p>
 </blockquote>
@@ -747,7 +747,7 @@
 <div class="theme-info">
   Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Mist
   </a>
 </div>
 
