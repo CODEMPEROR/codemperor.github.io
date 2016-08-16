@@ -1,11 +1,90 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+<!doctype html>
+
+
+
   
-  <title>android | null</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="所有的源码分析都是基于android-23，后期随着SDK的升级可能也会在24，25上进行分析。
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="所有的源码分析都是基于android-23，后期随着SDK的升级可能也会在24，25上进行分析。
 1. Window &amp;amp; WindowManager &amp;amp; WindowManagerService2. Activity &amp;amp; ActivityManager &amp;amp; Fragment2.1 Activity的启动模式2.2 Activity的各个方法及调用时机2.3 Frag">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android">
@@ -17,81 +96,193 @@
 <meta property="og:image" content="http://i.imgur.com/VIyY6mX.png">
 <meta property="og:image" content="http://img.blog.csdn.net/20160724194418541">
 <meta property="og:image" content="http://i.imgur.com/0Snb7zd.png">
-<meta property="og:updated_time" content="2016-08-16T03:10:57.721Z">
+<meta property="og:updated_time" content="2016-08-16T03:19:50.287Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android">
 <meta name="twitter:description" content="所有的源码分析都是基于android-23，后期随着SDK的升级可能也会在24，25上进行分析。
 1. Window &amp;amp; WindowManager &amp;amp; WindowManagerService2. Activity &amp;amp; ActivityManager &amp;amp; Fragment2.1 Activity的启动模式2.2 Activity的各个方法及调用时机2.3 Frag">
 <meta name="twitter:image" content="http://i.imgur.com/wnZau9k.png">
-  
-    <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
 
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/16/android/"/>
+
+  <title> android |  </title>
 </head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">null</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-android" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/08/16/android/" class="article-date">
-  <time datetime="2016-08-16T02:47:40.000Z" itemprop="datePublished">2016-08-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      android
-    </h1>
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
   
 
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title"></span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                android
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-08-16T10:47:40+08:00" content="2016-08-16">
+              2016-08-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
       
         <p>所有的源码分析都是基于android-23，后期随着SDK的升级可能也会在24，25上进行分析。</p>
 <h1 id="1-Window-amp-WindowManager-amp-WindowManagerService"><a href="#1-Window-amp-WindowManager-amp-WindowManagerService" class="headerlink" title="1. Window &amp; WindowManager &amp; WindowManagerService"></a>1. Window &amp; WindowManager &amp; WindowManagerService</h1><h2 id=""><a href="#" class="headerlink" title=""></a><img src="http://i.imgur.com/wnZau9k.png" alt=""></h2><h1 id="2-Activity-amp-ActivityManager-amp-Fragment"><a href="#2-Activity-amp-ActivityManager-amp-Fragment" class="headerlink" title="2. Activity &amp; ActivityManager &amp; Fragment"></a>2. Activity &amp; ActivityManager &amp; Fragment</h1><h2 id="2-1-Activity的启动模式"><a href="#2-1-Activity的启动模式" class="headerlink" title="2.1 Activity的启动模式"></a>2.1 Activity的启动模式</h2><h2 id="2-2-Activity的各个方法及调用时机"><a href="#2-2-Activity的各个方法及调用时机" class="headerlink" title="2.2 Activity的各个方法及调用时机"></a>2.2 Activity的各个方法及调用时机</h2><h2 id="2-3-Fragment的各个方法及调用时机"><a href="#2-3-Fragment的各个方法及调用时机" class="headerlink" title="2.3 Fragment的各个方法及调用时机"></a>2.3 Fragment的各个方法及调用时机</h2><h2 id="2-4-FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><a href="#2-4-FragmentPagerAdapter-vs-FragmentStatePagerAdapter" class="headerlink" title="2.4 FragmentPagerAdapter vs FragmentStatePagerAdapter"></a>2.4 FragmentPagerAdapter vs FragmentStatePagerAdapter</h2><h2 id="2-5-Activity-ViewPager-Fragment实现懒加载"><a href="#2-5-Activity-ViewPager-Fragment实现懒加载" class="headerlink" title="2.5 Activity, ViewPager, Fragment实现懒加载"></a>2.5 Activity, ViewPager, Fragment实现懒加载</h2><h2 id="2-6-Activity启动与加载过程"><a href="#2-6-Activity启动与加载过程" class="headerlink" title="2.6 Activity启动与加载过程"></a>2.6 Activity启动与加载过程</h2><h1 id="3-View-amp-ViewRoot"><a href="#3-View-amp-ViewRoot" class="headerlink" title="3. View &amp; ViewRoot"></a>3. View &amp; ViewRoot</h1><h2 id="3-1-ViewRoot-与-ViewRootImpl"><a href="#3-1-ViewRoot-与-ViewRootImpl" class="headerlink" title="3.1 ViewRoot 与 ViewRootImpl"></a>3.1 ViewRoot 与 ViewRootImpl</h2><h2 id="3-2-view事件分发"><a href="#3-2-view事件分发" class="headerlink" title="3.2 view事件分发"></a>3.2 view事件分发</h2><blockquote>
@@ -103,7 +294,7 @@
 <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span></span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
 <p>返回<strong>false</strong>则表示不拦截屏幕触摸事件，触摸事件可以按照正常流程分发给View，否则该ViewGroup则会拦截该事件。所以如果想让某个ViewGroup拦截所有的触摸事件，则继承该ViewGroup使onInterceptTouchEvent返回true即可，当然可以通过ViewGroup的requestDisallowInterceptTouchEevent(false)方法来拦截事件。</p>
-<p>####总结<br>一</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>一</p>
 </blockquote>
 <ol>
 <li>Activity传递到DecorView的过程</li>
@@ -167,7 +358,7 @@
 <blockquote>
 <p>这段代码中的变量mOnTouchListener是通过view.setOnTouchListner(OnTouchListener otl)来设置的，该函数具体如下：</p>
 </blockquote>
-<figure class="highlight zephir"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Button button1 = (Button) findViewById(R.id.button1);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">    * Called when a touch event is dispatched to a view. This allows listeners to</div><div class="line">    * get a chance to respond before the target view.</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> v The view the touch event has been dispatched to.</div><div class="line">    * <span class="doctag">@param</span> event The MotionEvent object containing full information about</div><div class="line">    *        the event.</div><div class="line">    * <span class="doctag">@return</span> True if the listener has consumed the event, false otherwise.</div><div class="line">    */</div><div class="line">button1.setOnTouchListener(<span class="keyword">new</span> OnTouchListener()&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">boolean</span> onTouch(View v, MotionEvent event)&#123;</div><div class="line">		<span class="comment">//do something what you want.</span></div><div class="line">		</div><div class="line">		<span class="keyword">return</span> ture; <span class="comment">//or false.</span></div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Button button1 = (Button) findViewById(R.id.button1);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">    * Called when a touch event is dispatched to a view. This allows listeners to</div><div class="line">    * get a chance to respond before the target view.</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> v The view the touch event has been dispatched to.</div><div class="line">    * <span class="doctag">@param</span> event The MotionEvent object containing full information about</div><div class="line">    *        the event.</div><div class="line">    * <span class="doctag">@return</span> True if the listener has consumed the event, false otherwise.</div><div class="line">    */</div><div class="line">button1.setOnTouchListener(<span class="keyword">new</span> OnTouchListener()&#123;</div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onTouch</span><span class="params">(View v, MotionEvent event)</span></span>&#123;</div><div class="line">		<span class="comment">//do something what you want.</span></div><div class="line">		</div><div class="line">		<span class="keyword">return</span> ture; <span class="comment">//or false.</span></div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <blockquote>
 <p>我们现在再来看一下view.dispatchTouchEvent代码，view.dispatchTouchEvent的逻辑很简单：如果设置了mOnTouchListener，且该控件是enable的，且onTouch返回ture，那么直接返回ture；在这里需要解释一下：<strong>在onTouch方法中如果返回true，则表明该view消费了该触摸事件，所以就不会再去调用onTouchEvent方法了；如果返回false，则表明没有消费该事件，这时就会去调用onTouchEvent方法。</strong></p>
 </blockquote>
@@ -395,99 +586,263 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/android/" data-id="cirww7ipp0000h88f6szsceqi" class="article-share-link">Share</a>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/16/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
       
       
     </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2016/08/16/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello World</div>
-    </a>
-  
-</nav>
+  </article>
 
-  
-</article>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
 
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    <div class="post-spread">
+      
     </div>
   </div>
 
 
-  
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
+  </div>
+
+
+        </div>
         
-          <li>
-            <a href="/2016/08/16/android/">android</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/16/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
 
-  
-</aside>
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="codempror" />
+          <p class="site-author-name" itemprop="name">codempror</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Window-amp-WindowManager-amp-WindowManagerService"><span class="nav-number">1.</span> <span class="nav-text">1. Window & WindowManager & WindowManagerService</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Activity-amp-ActivityManager-amp-Fragment"><span class="nav-number">2.</span> <span class="nav-text">2. Activity & ActivityManager & Fragment</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Activity的启动模式"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Activity的启动模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Activity的各个方法及调用时机"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Activity的各个方法及调用时机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Fragment的各个方法及调用时机"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 Fragment的各个方法及调用时机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 FragmentPagerAdapter vs FragmentStatePagerAdapter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-Activity-ViewPager-Fragment实现懒加载"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 Activity, ViewPager, Fragment实现懒加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-Activity启动与加载过程"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 Activity启动与加载过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-View-amp-ViewRoot"><span class="nav-number">3.</span> <span class="nav-text">3. View & ViewRoot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-ViewRoot-与-ViewRootImpl"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 ViewRoot 与 ViewRootImpl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-view事件分发"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 view事件分发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">3.2.0.1.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-1-强引用StrongReference"><span class="nav-number">3.3.</span> <span class="nav-text">19.1 强引用StrongReference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-2-软引用SoftReference"><span class="nav-number">3.4.</span> <span class="nav-text">19.2 软引用SoftReference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-3-弱引用WeakReference"><span class="nav-number">3.5.</span> <span class="nav-text">19.3 弱引用WeakReference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-4-虚引用PhantomReference"><span class="nav-number">3.6.</span> <span class="nav-text">19.4 虚引用PhantomReference</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
         
       </div>
-      <footer id="footer">
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2016 codempror<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codempror</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
+
   
-    <a href="/" class="mobile-nav-link">Home</a>
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+
+
+
   
-</nav>
-    
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
 
 
-<script src="/js/script.js"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  </div>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>
