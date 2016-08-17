@@ -344,7 +344,9 @@
 <p>所谓绘制模式，其实是ViewGroup对view（或者子viewGroup）的绘制限制，请记住<strong>不管是哪种绘制模式，parent对child的限制都是基于parent剩余的空间大小的</strong></p>
 <blockquote>
 <p>MeasureSpec的形成。我们知道DecorView是viewTree最外层的view，那么它的MeasureSpec的生成必定是根据屏幕的宽高来生成的。而其他View的MeasureSpec都是在父容器的Spec及自己的LayoutParams的共同作用下生成的。</p>
-<p><strong>ChildMeasureSpec = ChildLayoutParams + ParentMeasureSpec;</strong><br><strong>DecorMeasureSpec = WindowSize + DecorLayoutParams</strong><br>具体生成规则如表3.3.1-1所示：</p>
+<p><strong>ChildMeasureSpec = ChildLayoutParams + ParentMeasureSpec;</strong>
+<strong>DecorMeasureSpec = WindowSize + DecorLayoutParams</strong>
+具体生成规则如表3.3.1-1所示：</p>
 </blockquote>
 <p> 表3.3.1-1</p>
 <p><img src="http://img.blog.csdn.net/20160724194418541" alt="View#MeasureSpec生成规则"></p>
@@ -353,10 +355,14 @@
 <h2 id="2-layout过程"><a href="#2-layout过程" class="headerlink" title="2. layout过程"></a>2. layout过程</h2><p>layout过程的作用是由ViewGroup用来确定child位置。当ViewGroup的位置确定之后，他会在onLayout方法中调用所有child的layout方法来确定child的位置。因为每一种不同的ViewGroup对child都有不同的规则限制，所以在ViewGroup#onLayout是abstract的，在每一具体的ViewGroup中（比如LinearLayout）中实现该方法来确定child的位置，然而view#onLayout是一个空方法。</p>
 <h2 id="3-draw过程"><a href="#3-draw过程" class="headerlink" title="3. draw过程"></a>3. draw过程</h2><p>在确定了view的位置之后，就会开始绘制。当然draw也是从ViewGroup开始执行的。对于每一个view，ViewGroup的绘制过程都是：</p>
 <ol>
-<li>draw the backround<br>（<strong>drawBackground(canvas);</strong>）</li>
-<li>draw the content<br>（<strong>onDraw(canvas);</strong>）</li>
-<li>draw the children<br>（<strong>dispatchDraw(canvas);</strong>）</li>
-<li>draw the decorations：<em>eg:foregroung, scrollbars</em><br>(<strong>onDrawForeground(canvas);</strong>)</li>
+<li>draw the backround
+（<strong>drawBackground(canvas);</strong>）</li>
+<li>draw the content
+（<strong>onDraw(canvas);</strong>）</li>
+<li>draw the children
+（<strong>dispatchDraw(canvas);</strong>）</li>
+<li>draw the decorations：<em>eg:foregroung, scrollbars</em>
+(<strong>onDrawForeground(canvas);</strong>)</li>
 </ol>
 <h2 id="正确获取View高度的几种方案："><a href="#正确获取View高度的几种方案：" class="headerlink" title="正确获取View高度的几种方案："></a>正确获取View高度的几种方案：</h2><ol>
 <li>Activity/View#onWindowFocusChanged</li>
@@ -378,15 +384,21 @@
 <p>接下来我们会逐个解释上面6个<strong>须知</strong>，不过在这之前请先了解一下下面四个问题：坐标与坐标系，构造函数，手势处理、自定义view与自定义ViewGroup的区别。</p>
 <h2 id="1、-坐标与坐标系"><a href="#1、-坐标与坐标系" class="headerlink" title="1、 坐标与坐标系"></a>1、 坐标与坐标系</h2><p>在android系统中，坐标原点是屏幕左上角，x向右为正，y向下为证。</p>
 <p>view在绘制的时候，都是将其当做一个矩形来处理的，所以只需要左上、右下两个顶点即可确定view的位置，对应view的四个属性：mLeft, mTop, mRight, mBottom。除此之外，view还有其他几个参数：x, y, translationX, translationY。<strong><em>请记住：view的这8个参数都是相对于父容器而言的。</em></strong>他们之间的关系可以用下面的图和公式来说明：</p>
-<p>$$mWidth = mRight - mLeft$$<br>$$mHeight = mBottom - mRight$$<br>$$x = mLeft + translationX$$<br>$$y = mTop + translationY$$</p>
+<p>$$mWidth = mRight - mLeft$$
+$$mHeight = mBottom - mRight$$
+$$x = mLeft + translationX$$
+$$y = mTop + translationY$$</p>
 <blockquote>
 <p>需要注意的是:view在平移的过程中，top和left的值并不会发生变化，从上面的公式中也可以看出，变化的仅是translationX, translationY, x, y。</p>
 </blockquote>
 <h2 id="2、-构造函数"><a href="#2、-构造函数" class="headerlink" title="2、 构造函数"></a>2、 构造函数</h2><p>view有三种构造函数，每一种均有不同的用途，接下来我们以自定义CustomView为例逐个说明解析。</p>
 <ol>
-<li>public CustomView(Context context){}<br>一般用于直接new一个CustomView：CustomView pie = new CustomView(context);</li>
-<li>public CustomView(Context context, AttributeSet attrs){}<br>在xml中使用时，会调用该构造函数，attrs中存储了在xml中定义的各种属性，包含系统属性及自定义属性。</li>
-<li>public CustomView(Context context, AttributeSet attrs, int defStyleAttr)<br>该构造函数系统不会主动调用，一般都是在第二个构造函数中调用来为CustomView来指定style。系统默认实现的button中，其第二个构造函数如下：<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Button</span>(<span class="params">Context context, AttributeSet attrs</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>(context, attrs, com.android.<span class="keyword">internal</span>.R.attr.buttonStyle);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li>public CustomView(Context context){}
+一般用于直接new一个CustomView：CustomView pie = new CustomView(context);</li>
+<li>public CustomView(Context context, AttributeSet attrs){}
+在xml中使用时，会调用该构造函数，attrs中存储了在xml中定义的各种属性，包含系统属性及自定义属性。</li>
+<li>public CustomView(Context context, AttributeSet attrs, int defStyleAttr)
+该构造函数系统不会主动调用，一般都是在第二个构造函数中调用来为CustomView来指定style。系统默认实现的button中，其第二个构造函数如下：<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Button</span>(<span class="params">Context context, AttributeSet attrs</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>(context, attrs, com.android.<span class="keyword">internal</span>.R.attr.buttonStyle);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>所以如果我们要给CustomView指定一个默认的style，只需要像系统Button的实现一样。如果不调用第三个构造函数，即不指定defStyleAttr属性，则默认使用当前Activity或Application的style。</p>
@@ -513,7 +525,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
