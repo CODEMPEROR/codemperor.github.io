@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android,序列化与反序列化,单例模式," />
 
 
 
@@ -84,16 +84,25 @@
 
 
 
-<meta name="description" content="Just do it.">
+<meta name="description" content="一、 反序列化对Java单例的影响解决方案：让Singleton继承Serializable, 并实现  private Object readResolve();public class Singleton implement Serializable {
+
+     public static class Builder {
+         public static Singleton i">
 <meta property="og:type" content="article">
 <meta property="og:title" content="androdid-序列化对单例模式的破坏">
 <meta property="og:url" content="http://yoursite.com/2016/08/17/android-序列化对单例模式的破坏/index.html">
 <meta property="og:site_name" content="相信不可能">
-<meta property="og:description" content="Just do it.">
-<meta property="og:updated_time" content="2016-08-17T01:54:02.164Z">
+<meta property="og:description" content="一、 反序列化对Java单例的影响解决方案：让Singleton继承Serializable, 并实现  private Object readResolve();public class Singleton implement Serializable {
+
+     public static class Builder {
+         public static Singleton i">
+<meta property="og:updated_time" content="2016-08-18T01:15:44.276Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="androdid-序列化对单例模式的破坏">
-<meta name="twitter:description" content="Just do it.">
+<meta name="twitter:description" content="一、 反序列化对Java单例的影响解决方案：让Singleton继承Serializable, 并实现  private Object readResolve();public class Singleton implement Serializable {
+
+     public static class Builder {
+         public static Singleton i">
 
 
 
@@ -274,6 +283,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -308,7 +336,78 @@
       
 
       
-        
+        <h1 id="一、-反序列化对Java单例的影响"><a href="#一、-反序列化对Java单例的影响" class="headerlink" title="一、 反序列化对Java单例的影响"></a>一、 反序列化对Java单例的影响</h1><h5 id="解决方案：让Singleton继承Serializable-并实现-private-Object-readResolve"><a href="#解决方案：让Singleton继承Serializable-并实现-private-Object-readResolve" class="headerlink" title="解决方案：让Singleton继承Serializable, 并实现  private Object readResolve();"></a>解决方案：让Singleton继承Serializable, 并实现  private Object readResolve();</h5><pre><code>public class Singleton implement Serializable {
+
+     public static class Builder {
+         public static Singleton instance = new Singleton();
+     }
+
+    public static Singleton getInstance(){
+        return Builder.instance;
+    }
+
+    private Object readResolve(){
+        retutn Builder.instance;
+    }
+}
+</code></pre><h5 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h5><p>在反序列化时，ObjectInputStream 因为利用反射机制调用了 readObject –&gt; readObject0 –&gt; readOrdinary –&gt; CheckResolve。在readOrdinady中调用了invokeReadResolve()，该方法使用反射机制创建新的对象，从而破坏了单例唯一性。</p>
+<p>###<a href="http://www.hollischuang.com/archives/1144" target="_blank" rel="external">尊重版权</a></p>
+<h4 id="二、-java单例模式的实现方式"><a href="#二、-java单例模式的实现方式" class="headerlink" title="二、 java单例模式的实现方式"></a>二、 java单例模式的实现方式</h4><p>#####1. 饿汉式
+    public class Singleton {</p>
+<pre><code>    private static Singleton = new Singleton();
+
+    private Singleton() {}
+
+    public static getSignleton(){
+        return singleton;
+    }
+}
+</code></pre><p>#####2. 懒汉式
+    public class Singleton {
+        //注意volatiile的用法: 1. 保证在当前线程修改临界值之后在随后线程中起作用（可见性），及线程透明
+        volatile的第二层语义是禁止指令重排序优化。
+           private static volatile Singleton singleton = null;</p>
+<pre><code>    private Singleton(){}
+
+    public static Singleton getSingleton(){
+        if(singleton == null){}
+            synchronized (Singleton.class){
+                if(singleton == null){
+                    singleton = new Singleton();
+                }
+               }
+           }
+
+        return singleton;
+        }    
+
+}
+</code></pre><p>#####3. 静态内部类
+    public class Singleton {
+        //因为静态内部类只会加载一次，所以保证了线程安全
+        private static class Holder {
+            private static Singleton singleton = new Singleton();
+        }</p>
+<pre><code>    private Singleton(){}
+
+    public static Singleton getSingleton(){
+        return Holder.singleton;
+    }
+}
+</code></pre><p>#####4. 枚举方式</p>
+<pre><code>public enum Singleton {
+    INSTANCE;
+    private String name;
+    public String getName(){
+        return name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+}
+
+使用枚举除了线程安全和防止反射强行调用构造器之外，还提供了自动序列化机制，防止反序列化的时候创建新的对象。因此，Effective Java推荐尽可能地使用枚举来实现单例。
+</code></pre>
       
     </div>
 
@@ -327,6 +426,16 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/序列化与反序列化/" rel="tag">#序列化与反序列化</a>
+          
+            <a href="/tags/单例模式/" rel="tag">#单例模式</a>
+          
+        </div>
       
 
       
@@ -432,7 +541,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -461,7 +570,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、-反序列化对Java单例的影响"><span class="nav-number">1.</span> <span class="nav-text">一、 反序列化对Java单例的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#解决方案：让Singleton继承Serializable-并实现-private-Object-readResolve"><span class="nav-number">1.0.0.0.1.</span> <span class="nav-text">解决方案：让Singleton继承Serializable, 并实现  private Object readResolve();</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#原理解析"><span class="nav-number">1.0.0.0.2.</span> <span class="nav-text">原理解析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、-java单例模式的实现方式"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">二、 java单例模式的实现方式</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
           </div>
         </section>
