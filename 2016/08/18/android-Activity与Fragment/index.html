@@ -98,7 +98,8 @@ standard 标准模式
 
 系统默认模式，每次启动ACtivity，不管该Activity的实例是否存在，都会创建一个新的实例。该Activity与启动它的Activity属于同一个任务栈。
 注意：applicationContext不可启动standard模式的Activity。因为非Activity的context类型没有任">
-<meta property="og:updated_time" content="2016-08-18T06:51:26.330Z">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/activity_lifecycle.png">
+<meta property="og:updated_time" content="2016-08-19T02:49:02.566Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android-Activity与Fragment">
 <meta name="twitter:description" content="Activity的启动模式（android:launchMode）
@@ -106,6 +107,7 @@ standard 标准模式
 
 系统默认模式，每次启动ACtivity，不管该Activity的实例是否存在，都会创建一个新的实例。该Activity与启动它的Activity属于同一个任务栈。
 注意：applicationContext不可启动standard模式的Activity。因为非Activity的context类型没有任">
+<meta name="twitter:image" content="http://oc1ju78pc.bkt.clouddn.com/activity_lifecycle.png">
 
 
 
@@ -392,26 +394,62 @@ standard 标准模式
 </blockquote>
 </li>
 </ol>
-<h1 id="系统配置变化导致的Activity变化"><a href="#系统配置变化导致的Activity变化" class="headerlink" title="系统配置变化导致的Activity变化"></a>系统配置变化导致的Activity变化</h1><h2 id="1-Device-Configurations"><a href="#1-Device-Configurations" class="headerlink" title="1. Device Configurations"></a>1. Device Configurations</h2><blockquote>
-<p>Orientation, Keyboard, Language.</p>
-<h2 id="2-原理简介及解决方案"><a href="#2-原理简介及解决方案" class="headerlink" title="2. 原理简介及解决方案"></a>2. 原理简介及解决方案</h2><p>一般情况下，当Device Configuration 在Application运行时发生变化，那么系统会自动重启该Activity（此时先onSaveInstance保存数据，然后执行onDestroy,最后执行onCreate）。</p>
-<p>所以我们必须在Activity销毁之前使用onSaveInsance保存数据，在onCreate或者onRestoreInsanceState中回复数据，以此来提供良好的用户体验。但是有时，<strong>我们需要保存大量的数据</strong>，遇到这种情况一般有两种解决方案：<br></p>
-</blockquote>
-<h3 id="a-引用对象"><a href="#a-引用对象" class="headerlink" title="a. 引用对象"></a>a. 引用对象</h3><blockquote>
-<p>由于在回调onSaveInstanceState保存的数据不适合保存大批量的数据对象（例如bitmap），而且保存的数据对象必须是Serialized的。这种情况下，当系统配置发送变化时，我们通过引用Fragment来保存数据，在fragment中保存数据对象。具体实现如下：</p>
-</blockquote>
-<pre><code>//注意：当保存数据时，千万不要保存任何引用Activity实例的对象，否则会造成内存泄漏
-</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RetainedFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// data object we want to retain</span></div><div class="line">    <span class="keyword">private</span> MyDataObject data;</div><div class="line"></div><div class="line">    <span class="comment">// this method is only called once for this fragment</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        <span class="comment">// retain this fragment</span></div><div class="line">        setRetainInstance(<span class="keyword">true</span>);**重点内容**</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(MyDataObject data)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.data = data;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> MyDataObject <span class="title">getData</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> data;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后使用FragmentManager将fragment添加到Activity中。</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="selector-tag">public</span> <span class="selector-tag">class</span> <span class="selector-tag">MyActivity</span> <span class="selector-tag">extends</span> <span class="selector-tag">Activity</span> &#123;</div><div class="line">	</div><div class="line">	    private RetainedFragment dataFragment;</div><div class="line">	</div><div class="line">	    <span class="variable">@Override</span></div><div class="line">	    public void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">	        super<span class="selector-class">.onCreate</span>(savedInstanceState);</div><div class="line">	        setContentView(R<span class="selector-class">.layout</span><span class="selector-class">.main</span>);</div><div class="line">	</div><div class="line">	        <span class="comment">// find the retained fragment on activity restarts</span></div><div class="line">	        FragmentManager fm = getFragmentManager();</div><div class="line">	        dataFragment = (DataFragment) fm<span class="selector-class">.findFragmentByTag</span>(“data”);</div><div class="line">	</div><div class="line">	        <span class="comment">// create the fragment and data the first time</span></div><div class="line">	        <span class="selector-tag">if</span> (dataFragment == null) &#123;</div><div class="line">	            <span class="comment">// add the fragment</span></div><div class="line">	            dataFragment = new DataFragment();</div><div class="line">	            fm<span class="selector-class">.beginTransaction</span>()<span class="selector-class">.add</span>(dataFragment, “data”)<span class="selector-class">.commit</span>();</div><div class="line">	            <span class="comment">// load the data from the web</span></div><div class="line">	            dataFragment<span class="selector-class">.setData</span>(loadMyData());</div><div class="line">	        &#125;</div><div class="line">	</div><div class="line">	        <span class="comment">// the data is available in dataFragment.getData()</span></div><div class="line">	        ...</div><div class="line">	    &#125;</div><div class="line">	</div><div class="line">	    <span class="variable">@Override</span></div><div class="line">	    public void onDestroy() &#123;</div><div class="line">	        super<span class="selector-class">.onDestroy</span>();</div><div class="line">	        <span class="comment">// store the data in the fragment</span></div><div class="line">	        dataFragment<span class="selector-class">.setData</span>(collectMyLoadedData());</div><div class="line">	    &#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<h3 id="b-自己处理系统配置变化引起的改变"><a href="#b-自己处理系统配置变化引起的改变" class="headerlink" title="b. 自己处理系统配置变化引起的改变"></a>b. 自己处理系统配置变化引起的改变</h3><p> 当系统配置发生变化时，如果Activity不需要更新数据或自动应用资源，那么可以声明自己处理该配置变化。</p>
-<p> 首先,在AndroidManifest中作如下声明：</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;activity android:<span class="built_in">name</span>=<span class="string">".MyActivity"</span></div><div class="line">		  &lt;<span class="comment">-- 在此处定义自己要处理的变化--&gt;</span></div><div class="line">          android:configChanges=<span class="string">"orientation|keyboardHidden"</span></div><div class="line">          android:label=<span class="string">"@string/app_name"</span>&gt;</div></pre></td></tr></table></figure>
-<p>当在xml中声明的任意配置发生变化时，<strong>系统不会自动重启该Activity</strong>，此时系统将回调onConfigurationChanged()。</p>
+<h1 id="intent和intent-filter"><a href="#intent和intent-filter" class="headerlink" title="intent和intent-filter"></a>intent和intent-filter</h1><p>intent是一个消息传递对象，用来促进组件之间的通信，基本用例主要有：</p>
+<ol>
+<li>启动Activity：</li>
+<li>启动Service</li>
+<li>传递Broadcast</li>
+</ol>
+<p>intent主要分为两类：</p>
+<ol>
+<li>显式intent：按类名来显示指定要启动的组件。一般情况下，我们仅在自己的应用程序中使用显式intent，因为仅在自己的应用程序中我们才知道要启动组件的完整类名。</li>
+<li>隐式intent：不会指定特定的组件，而是说明要执行的操作，系统查找可以执行此操作的组件并启动它。通常情况下，应用程序中通过隐式intent来提供全局通用服务，比如阅读pdf文件。</li>
+</ol>
 <blockquote>
-<p><strong><em>注意：</em></strong> 当App的targetSdkVersion大于等于13，如果您想处理屏幕方向切换配置变化，那么你必须在android:configuration中包含screenSize属性。</p>
+<p><strong>警告</strong>：为了确保应用的安全性，启动 Service 时，请始终使用显式 Intent，且不要为服务声明 Intent 过滤器。使用隐式 Intent 启动服务存在安全隐患，因为您无法确定哪些服务将响应 Intent，且用户无法看到哪些服务已启动。从 Android 5.0（API 级别 21）开始，如果使用隐式 Intent 调用 bindService()，系统会抛出异常。</p>
 </blockquote>
-<h1 id="Activity的各个方法及调用时机"><a href="#Activity的各个方法及调用时机" class="headerlink" title="Activity的各个方法及调用时机"></a>Activity的各个方法及调用时机</h1><h1 id="Fragment的各个方法及调用时机"><a href="#Fragment的各个方法及调用时机" class="headerlink" title="Fragment的各个方法及调用时机"></a>Fragment的各个方法及调用时机</h1><h1 id="FragmentManager"><a href="#FragmentManager" class="headerlink" title="FragmentManager"></a>FragmentManager</h1><h1 id="FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><a href="#FragmentPagerAdapter-vs-FragmentStatePagerAdapter" class="headerlink" title="FragmentPagerAdapter vs FragmentStatePagerAdapter"></a>FragmentPagerAdapter vs FragmentStatePagerAdapter</h1><p>相信大家都使用过viewPager+PagerAdapter的方法来进行页面切换，其中PageAdapter提供page，viewPager显示page。当page的内容发生变化时，PagerAdapter将此变化通知给ViewPager，也就是说PagerAdapter负责创建Page、管理page，ViewPager负责显示page。但是因为各种各样的需求，要求PagerAdapter提供对page不同的管理方式，比如当page较少时，从page1切换到page2,再切换到page3时，要求不得将page1~page2销毁，这样当用户返回page1时，page1的内容会立马展示给用户；当page较多时，考虑到android系统对单一应用内存的限制，就不可能将所有的page保存起来，接下来我们详细了解一下系统为我们提供的各种PagerAdapter。</p>
+<p>不管是显式intent还是隐式intent，intent中都包含了启动组建的信息，包括以下几种：</p>
+<blockquote>
+<ul>
+<li>组件名称：可选项，在显式intent中必须制定该项。换言之，如果在intent中没有说明目标组件名称，那么该intent就是隐式intent。如果是隐式intent，那么系统将根据intent的其他信息来判断启动哪个组件。</li>
+<li>ACTION：字符串类型，说明目标组件所要执行的操作。系统提供了一些通用的操作：<ul>
+<li>ACTION_VIEW：目标组件会提供一些“查看服务”，例如查看图库、查看位置等。</li>
+<li>ACTION_SEND：也叫作“共享操作”，所以我们清楚地知道：如果目标组件可接收其他应用程序的共享数据，则将目标组件的ACTION设置为ACTION_SEND</li>
+</ul>
+</li>
+<li>Data：引用带操组的数据和/或该数据的MIME类型。提供的数据类型通常由ACTION来确定，例如ACTION为ACTION_EDIT，那么数据应该是待编辑的文档的uri。<ul>
+<li>创建 Intent 时，除了指定 URI 以外，指定数据类型（其 MIME 类型）往往也很重要。例如，能够显示图像的Activity可能无法播放音频文件，即便 URI 格式十分类似时也是如此。因此，指定数据的 MIME 类型有助于 Android 系统找到接收 Intent 的最佳组件。但有时，MIME 类型可以从 URI 中推断得出，特别当数据是 content: URI 时尤其如此。这表明数据位于设备中，且由 ContentProvider 控制，这使得数据 MIME 类型对系统可见。要仅设置数据 URI，请调用 setData()。要仅设置 MIME 类型，请调用 setType()。如有必要，您可以使用 setDataAndType() 同时显式设置二者。</li>
+</ul>
+</li>
+<li><p>警告：若要同时设置 URI 和 MIME 类型，请勿调用 setData() 和 setType()，因为它们会互相抵消彼此的值。请始终使用 setDataAndType() 同时设置 URI 和 MIME 类型。</p>
+</li>
+<li><p>Category：指定intent的类别，一般情况下所有的Activity默认为CATEGORY_DEFAULT，不需要指定。如果某个组件要支持隐式intent，则必须添加一个category（如果不支持其他特殊的category，例如CATEGORY_BROWSABLE，那么必须添加CATEGORY_DEFAULT），否则不起作用。</p>
+</li>
+</ul>
+</blockquote>
+<p>以上四类intent属性表示了intent的既定特征，通过这些特征，系统就可以分标出要启动的目标组件。intent还有一些不影响其如何解析的属性，如下:</p>
+<blockquote>
+<ul>
+<li>Extra：携带完成请求操作所需的附加信息的键值对。正如某些操作使用特定类型的数据 URI 一样，有些操作也使用特定的附加数据。
+您可以使用各种 putExtra() 方法添加附加数据，每种方法均接受两个参数：键名和值。您还可以创建一个包含所有附加数据的 Bundle 对象，然后使用 putExtras() 将 Bundle 插入 Intent 中。
+例如，使用 ACTION_SEND 创建用于发送电子邮件的 Intent 时，可以使用 EXTRA_EMAIL 键指定“目标”收件人，并使用 EXTRA<em>SUBJECT 键指定“主题”。Intent 类将为标准化的数据类型指定多个 EXTRA</em>* 常量。如需声明自己的附加数据 键（对于应用接收的 Intent ），请确保将应用的软件包名称作为前缀。例如：</li>
+</ul>
+</blockquote>
+<pre><code><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="built_in">String</span> EXTRA_GIGAWATTS = <span class="string">"com.example.EXTRA_GIGAWATTS"</span>;</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<ul>
+<li>Flag:标志可以指示 Android 系统如何启动 Activity</li>
+</ul>
+<h2 id="显式intent示例"><a href="#显式intent示例" class="headerlink" title="显式intent示例"></a>显式intent示例</h2><p>例如，如果在应用中构建了一个名为 DownloadService、旨在从 Web 中下载文件的服务，则可使用以下代码启动该服务：</p>
+</blockquote>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// Executed in an Activity, so 'this' is the Context</span></div><div class="line"><span class="comment">// The fileUrl is a string URL, such as "http://www.example.com/image.png"</span></div><div class="line">Intent downloadIntent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, DownloadService.<span class="keyword">class</span>);</div><div class="line">downloadIntent.setData(<span class="built_in">Uri</span>.parse(fileUrl));</div><div class="line">startService(downloadIntent);</div></pre></td></tr></table></figure>
+<h2 id="隐式intent示例"><a href="#隐式intent示例" class="headerlink" title="隐式intent示例"></a>隐式intent示例</h2><blockquote>
+<p><strong>警告</strong>：用户可能没有任何应用处理您发送到 startActivity() 的隐式 Intent。如果出现这种情况，则调用将会失败，且应用会崩溃。要验证 Activity 是否会接收 Intent，请对 Intent 对象调用 resolveActivity()。如果结果为非空，则至少有一个应用能够处理该 Intent，且可以安全调用 startActivity()。如果结果为空，则不应使用该 Intent。如有可能，您应禁用发出该 Intent 的功能。</p>
+</blockquote>
+<h2 id="PendingIntent"><a href="#PendingIntent" class="headerlink" title="PendingIntent"></a>PendingIntent</h2><p>pendingIntent的目的是授权外部应用使用pendingIntent中包含的intent。
+用例场景：通知、桌面小组件、Alarm</p>
+<h1 id="Activity的各个方法及调用时机"><a href="#Activity的各个方法及调用时机" class="headerlink" title="Activity的各个方法及调用时机"></a>Activity的各个方法及调用时机</h1><h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><img src="http://oc1ju78pc.bkt.clouddn.com/activity_lifecycle.png" alt="Activity生命周期"></p>
+<h1 id="Fragment的各个方法及调用时机"><a href="#Fragment的各个方法及调用时机" class="headerlink" title="Fragment的各个方法及调用时机"></a>Fragment的各个方法及调用时机</h1><h1 id="FragmentManager"><a href="#FragmentManager" class="headerlink" title="FragmentManager"></a>FragmentManager</h1><h1 id="FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><a href="#FragmentPagerAdapter-vs-FragmentStatePagerAdapter" class="headerlink" title="FragmentPagerAdapter vs FragmentStatePagerAdapter"></a>FragmentPagerAdapter vs FragmentStatePagerAdapter</h1><p>相信大家都使用过viewPager+PagerAdapter的方法来进行页面切换，其中PageAdapter提供page，viewPager显示page。当page的内容发生变化时，PagerAdapter将此变化通知给ViewPager，也就是说PagerAdapter负责创建Page、管理page，ViewPager负责显示page。但是因为各种各样的需求，要求PagerAdapter提供对page不同的管理方式，比如当page较少时，从page1切换到page2,再切换到page3时，要求不得将page1~page2销毁，这样当用户返回page1时，page1的内容会立马展示给用户；当page较多时，考虑到android系统对单一应用内存的限制，就不可能将所有的page保存起来，接下来我们详细了解一下系统为我们提供的各种PagerAdapter。</p>
 <h2 id="PagerAdapter"><a href="#PagerAdapter" class="headerlink" title="PagerAdapter"></a>PagerAdapter</h2><p>该类是page最简单的管理类，如果继承自该类，至少需要实现 instantiateItem(), destroyItem(), getCount() 以及 isViewFromObject()。</p>
 <blockquote>
 <ul>
@@ -431,43 +469,72 @@ PagerAdapter.notifyDataSetChanged() 后，什么都没有发生。</li>
 </li>
 </ul>
 </blockquote>
-<p>```</p>
-<h2 id="FragmentPagerAdapter"><a href="#FragmentPagerAdapter" class="headerlink" title="FragmentPagerAdapter"></a>FragmentPagerAdapter</h2><p>FragmentPagerAdapter 继承自 PagerAdapter。相比通用的 PagerAdapter，该类更专注于每一页均为 Fragment 的情况。如文档所述，该类内的每一个生成的 Fragment 都将保存在内存之中，因此适用于那些相对静态的页，数量也比较少的那种；如果需要处理有很多页，并且数据动态性较大、占用内存较多的情况，应该使用FragmentStatePagerAdapter。FragmentPagerAdapter 重载实现了几个必须的函数，因此来自 PagerAdapter 的函数，我们只需要实现 getCount()，即可。且，由于 FragmentPagerAdapter.instantiateItem() 的实现中，调用了一个新增的虚函数 getItem()，因此，我们还至少需要实现一个 getItem()。因此，总体上来说，相对于继承自 PagerAdapter，更方便一些。</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">## FragmentPagerAdapter</span></div><div class="line">   FragmentPagerAdapter 继承自 PagerAdapter。相比通用的 PagerAdapter，该类更专注于每一页均为 Fragment 的情况。如文档所述，该类内的每一个生成的 Fragment 都将保存在内存之中，因此适用于那些相对静态的页，数量也比较少的那种；如果需要处理有很多页，并且数据动态性较大、占用内存较多的情况，应该使用FragmentStatePagerAdapter。FragmentPagerAdapter 重载实现了几个必须的函数，因此来自 PagerAdapter 的函数，我们只需要实现 getCount()，即可。且，由于 FragmentPagerAdapter.instantiateItem() 的实现中，调用了一个新增的虚函数 getItem()，因此，我们还至少需要实现一个 getItem()。因此，总体上来说，相对于继承自 PagerAdapter，更方便一些。</div><div class="line"></div><div class="line">&gt;* getItem()</div><div class="line">	* 该类中新增的一个虚函数。函数的目的为生成新的 Fragment 对象。重载该函数时需要注意这一点。在需要时，该函数将被 instantiateItem() 所调用。如果需要向 Fragment 对象传递相对静态的数据时，我们一般通过 Fragment.<span class="built_in">set</span>Arguments() 来进行，这部分代码应当放到 getItem()。它们只会在新生成 Fragment 对象时执行一遍。如果需要在生成 Fragment 对象后，将数据集里面一些动态的数据传递给该 Fragment，那么，这部分代码不适合放到 getItem() 中。因为当数据集发生变化时，往往对应的 Fragment 已经生成，如果传递数据部分代码放到了 getItem() 中，这部分代码将不会被调用。这也是为什么很多人发现调用 PagerAdapter.notifyDataSetChanged() 后，getItem() 没有被调用的一个原因。</div><div class="line">&gt;* instantiateItem()</div><div class="line">	* 函数中判断一下要生成的 Fragment 是否已经生成过了，如果生成过了，就使用旧的，旧的将被 Fragment.attach()；如果没有，就调用 getItem() 生成一个新的，新的对象将被 FragmentTransation.add()。</div><div class="line">	</div><div class="line">FragmentPagerAdapter 会将所有生成的 Fragment 对象通过 FragmentManager 保存起来备用，以后需要该 Fragment 时，都会从 FragmentManager 读取，而不会再次调用 getItem() 方法。</div><div class="line">如果需要在生成 Fragment 对象后，将数据集中的一些数据传递给该 Fragment，这部分代码应该放到这个函数的重载里。在我们继承的子类中，重载该函数，并调用 FragmentPagerAdapter.instantiateItem() 取得该函数返回 Fragment 对象，然后，我们该 Fragment 对象中对应的方法，将数据传递过去，然后返回该对象。</div><div class="line">否则，如果将这部分传递数据的代码放到 getItem()中，在 PagerAdapter.notifyDataSetChanged() 后，这部分数据设置代码将不会被调用。</div><div class="line">&gt;* destroyItem()</div><div class="line">	* 该函数被调用后，会对 Fragment 进行 FragmentTransaction.detach()。这里不是 remove()，只是 detach()，因此 Fragment 还在 FragmentManager 管理中，Fragment 所占用的资源不会被释放。</div><div class="line"></div><div class="line"><span class="comment">## FragmentStatePagerAdapter</span></div><div class="line">FragmentStatePagerAdapter 和前面的 FragmentPagerAdapter 一样，是继承子 PagerAdapter。但是，和 FragmentPagerAdapter 不一样的是，正如其类名中的 'State' 所表明的含义一样，该 PagerAdapter 的实现将只保留当前页面，当页面离开视线后，就会被消除，释放其资源；而在页面需要显示时，生成新的页面(就像 ListView 的实现一样)。这么实现的好处就是当拥有大量的页面时，不必在内存中占用大量的内存。</div><div class="line"></div><div class="line">&gt;* getItem()</div><div class="line">	* 一个该类中新增的虚函数。函数的目的为生成新的 Fragment 对象。Fragment.<span class="built_in">set</span>Arguments() 这种只会在新建 Fragment 时执行一次的参数传递代码，可以放在这里。由于 FragmentStatePagerAdapter.instantiateItem() 在大多数情况下，都将调用 getItem() 来生成新的对象，因此如果在该函数中放置与数据集相关的 setter 代码，基本上都可以在 instantiateItem() 被调用时执行，但这和设计意图不符。毕竟还有部分可能是不会调用 getItem() 的。因此这部分代码应该放到 instantiateItem() 中。</div><div class="line">&gt;* instantiateItem()</div><div class="line">	* 除非碰到 FragmentManager 刚好从 SavedState 中恢复了对应的 Fragment 的情况外，该函数将会调用 getItem() 函数，生成新的 Fragment 对象。新的对象将被 FragmentTransaction.add()。FragmentStatePagerAdapter 就是通过这种方式，每次都创建一个新的 Fragment，而在不用后就立刻释放其资源，来达到节省内存占用的目的的。</div><div class="line">&gt;* destroyItem()</div><div class="line">	* 将 Fragment 移除，即调用 FragmentTransaction.remove()，并释放其资源。</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Activity, ViewPager, Fragment实现懒加载</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 系统配置变化导致的Activity变化</span></div><div class="line"></div><div class="line"><span class="comment">## 1. Device Configurations</span></div><div class="line">&gt;Orientation, Keyboard, Language.</div><div class="line"><span class="comment">## 2. 原理简介及解决方案</span></div><div class="line">&gt;一般情况下，当Device Configuration 在Application运行时发生变化，那么系统会自动重启该Activity（此时先<span class="keyword">on</span>SaveInstance保存数据，然后执行<span class="keyword">on</span>Destroy,最后执行<span class="keyword">on</span>Create）。</div><div class="line"></div><div class="line">&gt;所以我们必须在Activity销毁之前使用<span class="keyword">on</span>SaveInsance保存数据，在<span class="keyword">on</span>Create或者<span class="keyword">on</span>RestoreInsanceState中回复数据，以此来提供良好的用户体验。但是有时，**我们需要保存大量的数据**，遇到这种情况一般有两种解决方案：<span class="variable">&lt;br&gt;</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">### a. 引用对象</span></div><div class="line"></div><div class="line">&gt;由于在回调<span class="keyword">on</span>SaveInstanceState保存的数据不适合保存大批量的数据对象（例如bitmap），而且保存的数据对象必须是Serialized的。这种情况下，当系统配置发送变化时，我们通过引用Fragment来保存数据，在<span class="keyword">fragment</span>中保存数据对象。具体实现如下：</div><div class="line">	</div><div class="line">	//注意：当保存数据时，千万不要保存任何引用Activity实例的对象，否则会造成内存泄漏</div></pre></td></tr></table></figure>
+<pre><code>public class RetainedFragment extends Fragment {
+
+    // data object we want to retain
+    private MyDataObject data;
+
+    // this method is only called once for this fragment
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // retain this fragment
+        setRetainInstance(true);**重点内容**
+    }
+
+    public void setData(MyDataObject data) {
+        this.data = data;
+    }
+
+    public MyDataObject getData() {
+        return data;
+    }
+}
+</code></pre><figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">然后使用FragmentManager将<span class="keyword">fragment</span>添加到Activity中。</div></pre></td></tr></table></figure>
+<p>public class MyActivity extends Activity {</p>
+<pre><code>    private RetainedFragment dataFragment;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+
+        // find the retained fragment on activity restarts
+        FragmentManager fm = getFragmentManager();
+        dataFragment = (DataFragment) fm.findFragmentByTag(“data”);
+
+        // create the fragment and data the first time
+        if (dataFragment == null) {
+            // add the fragment
+            dataFragment = new DataFragment();
+            fm.beginTransaction().add(dataFragment, “data”).commit();
+            // load the data from the web
+            dataFragment.setData(loadMyData());
+        }
+
+        // the data is available in dataFragment.getData()
+        ...
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // store the data in the fragment
+        dataFragment.setData(collectMyLoadedData());
+    }
+}
+</code></pre><figure class="highlight http"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"><span class="vala"><span class="meta">### b. 自己处理系统配置变化引起的改变</span></span></div><div class="line"></div><div class="line"> 当系统配置发生变化时，如果Activity不需要更新数据或自动应用资源，那么可以声明自己处理该配置变化。</div><div class="line"></div><div class="line"> 首先,在AndroidManifest中作如下声明：</div></pre></td></tr></table></figure>
+<pre><code>&lt;activity android:name=&quot;.MyActivity&quot;
+          &lt;-- 在此处定义自己要处理的变化--&gt;
+          android:configChanges=&quot;orientation|keyboardHidden&quot;
+          android:label=&quot;@string/app_name&quot;&gt;
+</code></pre><p>```</p>
+<p>当在xml中声明的任意配置发生变化时，<strong>系统不会自动重启该Activity</strong>，此时系统将回调onConfigurationChanged()。</p>
 <blockquote>
-<ul>
-<li>getItem()<ul>
-<li>该类中新增的一个虚函数。函数的目的为生成新的 Fragment 对象。重载该函数时需要注意这一点。在需要时，该函数将被 instantiateItem() 所调用。如果需要向 Fragment 对象传递相对静态的数据时，我们一般通过 Fragment.setArguments() 来进行，这部分代码应当放到 getItem()。它们只会在新生成 Fragment 对象时执行一遍。如果需要在生成 Fragment 对象后，将数据集里面一些动态的数据传递给该 Fragment，那么，这部分代码不适合放到 getItem() 中。因为当数据集发生变化时，往往对应的 Fragment 已经生成，如果传递数据部分代码放到了 getItem() 中，这部分代码将不会被调用。这也是为什么很多人发现调用 PagerAdapter.notifyDataSetChanged() 后，getItem() 没有被调用的一个原因。</li>
-</ul>
-</li>
-<li>instantiateItem()<ul>
-<li>函数中判断一下要生成的 Fragment 是否已经生成过了，如果生成过了，就使用旧的，旧的将被 Fragment.attach()；如果没有，就调用 getItem() 生成一个新的，新的对象将被 FragmentTransation.add()。
-FragmentPagerAdapter 会将所有生成的 Fragment 对象通过 FragmentManager 保存起来备用，以后需要该 Fragment 时，都会从 FragmentManager 读取，而不会再次调用 getItem() 方法。
-如果需要在生成 Fragment 对象后，将数据集中的一些数据传递给该 Fragment，这部分代码应该放到这个函数的重载里。在我们继承的子类中，重载该函数，并调用 FragmentPagerAdapter.instantiateItem() 取得该函数返回 Fragment 对象，然后，我们该 Fragment 对象中对应的方法，将数据传递过去，然后返回该对象。
-否则，如果将这部分传递数据的代码放到 getItem()中，在 PagerAdapter.notifyDataSetChanged() 后，这部分数据设置代码将不会被调用。
-destroyItem()
-该函数被调用后，会对 Fragment 进行 FragmentTransaction.detach()。这里不是 remove()，只是 detach()，因此 Fragment 还在 FragmentManager 管理中，Fragment 所占用的资源不会被释放。</li>
-</ul>
-</li>
-</ul>
+<p><strong><em>注意：</em></strong> 当App的targetSdkVersion大于等于13，如果您想处理屏幕方向切换配置变化，那么你必须在android:configuration中包含screenSize属性。</p>
 </blockquote>
-<h2 id="FragmentStatePagerAdapter"><a href="#FragmentStatePagerAdapter" class="headerlink" title="FragmentStatePagerAdapter"></a>FragmentStatePagerAdapter</h2><p>FragmentStatePagerAdapter 和前面的 FragmentPagerAdapter 一样，是继承子 PagerAdapter。但是，和 FragmentPagerAdapter 不一样的是，正如其类名中的 ‘State’ 所表明的含义一样，该 PagerAdapter 的实现将只保留当前页面，当页面离开视线后，就会被消除，释放其资源；而在页面需要显示时，生成新的页面(就像 ListView 的实现一样)。这么实现的好处就是当拥有大量的页面时，不必在内存中占用大量的内存。</p>
-<blockquote>
-<ul>
-<li>getItem()<ul>
-<li>一个该类中新增的虚函数。函数的目的为生成新的 Fragment 对象。Fragment.setArguments() 这种只会在新建 Fragment 时执行一次的参数传递代码，可以放在这里。由于 FragmentStatePagerAdapter.instantiateItem() 在大多数情况下，都将调用 getItem() 来生成新的对象，因此如果在该函数中放置与数据集相关的 setter 代码，基本上都可以在 instantiateItem() 被调用时执行，但这和设计意图不符。毕竟还有部分可能是不会调用 getItem() 的。因此这部分代码应该放到 instantiateItem() 中。</li>
-</ul>
-</li>
-<li>instantiateItem()<ul>
-<li>除非碰到 FragmentManager 刚好从 SavedState 中恢复了对应的 Fragment 的情况外，该函数将会调用 getItem() 函数，生成新的 Fragment 对象。新的对象将被 FragmentTransaction.add()。FragmentStatePagerAdapter 就是通过这种方式，每次都创建一个新的 Fragment，而在不用后就立刻释放其资源，来达到节省内存占用的目的的。</li>
-</ul>
-</li>
-<li>destroyItem()<ul>
-<li>将 Fragment 移除，即调用 FragmentTransaction.remove()，并释放其资源。</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<h1 id="Activity-ViewPager-Fragment实现懒加载"><a href="#Activity-ViewPager-Fragment实现懒加载" class="headerlink" title="Activity, ViewPager, Fragment实现懒加载"></a>Activity, ViewPager, Fragment实现懒加载</h1><h1 id="Activity启动与加载过程"><a href="#Activity启动与加载过程" class="headerlink" title="Activity启动与加载过程"></a>Activity启动与加载过程</h1><p>  当用户启动Activity时，Instrumentation会接收该请求，然后instrumentation利用Binder向ActivityManagerService发请求。ActivityManagerService内部维护者Activity的调用堆栈（ActivityStack）及各个Activity的状态同步，ActivityManagerService通过ActivityThread去管理Activity的状态从而完成Activity的生命周期的管理。</p>
+<h1 id="Activity启动与加载过程"><a href="#Activity启动与加载过程" class="headerlink" title="Activity启动与加载过程"></a>Activity启动与加载过程</h1><p>  当用户启动Activity时，Instrumentation会接收该请求，然后instrumentation利用Binder向ActivityManagerService发请求。ActivityManagerService内部维护者Activity的调用堆栈（ActivityStack）及各个Activity的状态同步，ActivityManagerService通过ActivityThread去管理Activity的状态从而完成Activity的生命周期的管理。</p>
 
       
     </div>
@@ -629,7 +696,7 @@ destroyItem()
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity的启动模式（android-launchMode）"><span class="nav-number">1.</span> <span class="nav-text">Activity的启动模式（android:launchMode）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task字段说明"><span class="nav-number">2.</span> <span class="nav-text">Task字段说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统配置变化导致的Activity变化"><span class="nav-number">3.</span> <span class="nav-text">系统配置变化导致的Activity变化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Device-Configurations"><span class="nav-number">3.1.</span> <span class="nav-text">1. Device Configurations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-原理简介及解决方案"><span class="nav-number">3.2.</span> <span class="nav-text">2. 原理简介及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#a-引用对象"><span class="nav-number">3.2.1.</span> <span class="nav-text">a. 引用对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#b-自己处理系统配置变化引起的改变"><span class="nav-number">3.2.2.</span> <span class="nav-text">b. 自己处理系统配置变化引起的改变</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity的各个方法及调用时机"><span class="nav-number">4.</span> <span class="nav-text">Activity的各个方法及调用时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment的各个方法及调用时机"><span class="nav-number">5.</span> <span class="nav-text">Fragment的各个方法及调用时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentManager"><span class="nav-number">6.</span> <span class="nav-text">FragmentManager</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><span class="nav-number">7.</span> <span class="nav-text">FragmentPagerAdapter vs FragmentStatePagerAdapter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PagerAdapter"><span class="nav-number">7.1.</span> <span class="nav-text">PagerAdapter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FragmentPagerAdapter"><span class="nav-number">7.2.</span> <span class="nav-text">FragmentPagerAdapter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FragmentStatePagerAdapter"><span class="nav-number">7.3.</span> <span class="nav-text">FragmentStatePagerAdapter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity-ViewPager-Fragment实现懒加载"><span class="nav-number">8.</span> <span class="nav-text">Activity, ViewPager, Fragment实现懒加载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity启动与加载过程"><span class="nav-number">9.</span> <span class="nav-text">Activity启动与加载过程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity的启动模式（android-launchMode）"><span class="nav-number">1.</span> <span class="nav-text">Activity的启动模式（android:launchMode）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task字段说明"><span class="nav-number">2.</span> <span class="nav-text">Task字段说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#intent和intent-filter"><span class="nav-number">3.</span> <span class="nav-text">intent和intent-filter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#显式intent示例"><span class="nav-number">3.1.</span> <span class="nav-text">显式intent示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐式intent示例"><span class="nav-number">3.2.</span> <span class="nav-text">隐式intent示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PendingIntent"><span class="nav-number">3.3.</span> <span class="nav-text">PendingIntent</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity的各个方法及调用时机"><span class="nav-number">4.</span> <span class="nav-text">Activity的各个方法及调用时机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期"><span class="nav-number">4.1.</span> <span class="nav-text">生命周期</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment的各个方法及调用时机"><span class="nav-number">5.</span> <span class="nav-text">Fragment的各个方法及调用时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentManager"><span class="nav-number">6.</span> <span class="nav-text">FragmentManager</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><span class="nav-number">7.</span> <span class="nav-text">FragmentPagerAdapter vs FragmentStatePagerAdapter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PagerAdapter"><span class="nav-number">7.1.</span> <span class="nav-text">PagerAdapter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity启动与加载过程"><span class="nav-number">8.</span> <span class="nav-text">Activity启动与加载过程</span></a></li></ol></div>
             
           </div>
         </section>
