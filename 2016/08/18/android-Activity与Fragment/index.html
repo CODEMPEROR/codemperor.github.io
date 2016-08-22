@@ -99,7 +99,8 @@ standard 标准模式
 系统默认模式，每次启动ACtivity，不管该Activity的实例是否存在，都会创建一个新的实例。该Activity与启动它的Activity属于同一个任务栈。
 注意：applicationContext不可启动standard模式的Activity。因为非Activity的context类型没有任">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/activity_lifecycle.png">
-<meta property="og:updated_time" content="2016-08-19T02:49:02.566Z">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/basic-lifecycle.png">
+<meta property="og:updated_time" content="2016-08-19T06:08:50.870Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android-Activity与Fragment">
 <meta name="twitter:description" content="Activity的启动模式（android:launchMode）
@@ -435,20 +436,53 @@ standard 标准模式
 例如，使用 ACTION_SEND 创建用于发送电子邮件的 Intent 时，可以使用 EXTRA_EMAIL 键指定“目标”收件人，并使用 EXTRA<em>SUBJECT 键指定“主题”。Intent 类将为标准化的数据类型指定多个 EXTRA</em>* 常量。如需声明自己的附加数据 键（对于应用接收的 Intent ），请确保将应用的软件包名称作为前缀。例如：</li>
 </ul>
 </blockquote>
-<pre><code><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="built_in">String</span> EXTRA_GIGAWATTS = <span class="string">"com.example.EXTRA_GIGAWATTS"</span>;</div></pre></td></tr></table></figure>
+<pre><code><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="built_in">String</span> EXTRA_GIGAWATTS = <span class="string">"com.example.EXTRA_GIGAWATTS"</span>;</div></pre></td></tr></table></figure>
 </code></pre><blockquote>
 <ul>
 <li>Flag:标志可以指示 Android 系统如何启动 Activity</li>
 </ul>
-<h2 id="显式intent示例"><a href="#显式intent示例" class="headerlink" title="显式intent示例"></a>显式intent示例</h2><p>例如，如果在应用中构建了一个名为 DownloadService、旨在从 Web 中下载文件的服务，则可使用以下代码启动该服务：</p>
 </blockquote>
+<h2 id="显式intent示例"><a href="#显式intent示例" class="headerlink" title="显式intent示例"></a>显式intent示例</h2><p>例如，如果在应用中构建了一个名为 DownloadService、旨在从 Web 中下载文件的服务，则可使用以下代码启动该服务：</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// Executed in an Activity, so 'this' is the Context</span></div><div class="line"><span class="comment">// The fileUrl is a string URL, such as "http://www.example.com/image.png"</span></div><div class="line">Intent downloadIntent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, DownloadService.<span class="keyword">class</span>);</div><div class="line">downloadIntent.setData(<span class="built_in">Uri</span>.parse(fileUrl));</div><div class="line">startService(downloadIntent);</div></pre></td></tr></table></figure>
 <h2 id="隐式intent示例"><a href="#隐式intent示例" class="headerlink" title="隐式intent示例"></a>隐式intent示例</h2><blockquote>
 <p><strong>警告</strong>：用户可能没有任何应用处理您发送到 startActivity() 的隐式 Intent。如果出现这种情况，则调用将会失败，且应用会崩溃。要验证 Activity 是否会接收 Intent，请对 Intent 对象调用 resolveActivity()。如果结果为非空，则至少有一个应用能够处理该 Intent，且可以安全调用 startActivity()。如果结果为空，则不应使用该 Intent。如有可能，您应禁用发出该 Intent 的功能。</p>
 </blockquote>
 <h2 id="PendingIntent"><a href="#PendingIntent" class="headerlink" title="PendingIntent"></a>PendingIntent</h2><p>pendingIntent的目的是授权外部应用使用pendingIntent中包含的intent。
 用例场景：通知、桌面小组件、Alarm</p>
-<h1 id="Activity的各个方法及调用时机"><a href="#Activity的各个方法及调用时机" class="headerlink" title="Activity的各个方法及调用时机"></a>Activity的各个方法及调用时机</h1><h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><img src="http://oc1ju78pc.bkt.clouddn.com/activity_lifecycle.png" alt="Activity生命周期"></p>
+<h1 id="Activity的各个方法及调用时机"><a href="#Activity的各个方法及调用时机" class="headerlink" title="Activity的各个方法及调用时机"></a>Activity的各个方法及调用时机</h1><h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><img src="http://oc1ju78pc.bkt.clouddn.com/activity_lifecycle.png" alt="Activity生命周期"> </p>
+<p><img src="http://oc1ju78pc.bkt.clouddn.com/basic-lifecycle.png" alt=""></p>
+<h3 id="onPause-与-onResume"><a href="#onPause-与-onResume" class="headerlink" title="onPause() 与 onResume()"></a>onPause() 与 onResume()</h3><p>在正常使用应用的过程中，前台Activity有时会被因为某些原因导致Activity暂停的可视组件阻挡。 例如，当半透明Activity打开时（比如对话框样式中的Activity），上一个Activity会暂停。 只要Activity仍然部分可见但目前又未处于焦点之中，它会一直暂停。但是，一旦Activity完全被阻挡并且不可见，它便停止，进入onStop()。</p>
+<p>当Activity进入暂停状态时，系统会对Activity调用onPause()方法，通过该方法，您可以停止不应在暂停状态下继续进行的操作（比如视频）或保留任何应该永久保存的信息，以防用户离开应用。如果用户从暂停状态返回到Activity，系统会重新开始该Activity并调用 onResume() 方法。</p>
+<p>当系统为Activity调用 onPause() 时，它从技术角度看意味着Activity仍然处于部分可见状态，但往往说明用户即将离开Activity并且它很快就要进入“停止”状态。 您通常应使用 onPause() 回调：</p>
+<blockquote>
+<ul>
+<li>停止动画或其他可能消耗 CPU 的进行之中的操作。</li>
+<li>提交未保存的更改，但仅当用户离开时希望永久性保存此类更改（比如电子邮件草稿）。</li>
+<li>释放系统资源，比如广播接收器、传感器手柄（比如 GPS） 或当您的Activity暂停且用户不需要它们时仍然可能影响电池寿命的任何其他资源。</li>
+</ul>
+</blockquote>
+<p>例如，如果您的应用使用 Camera， onPause() 方法是释放它的好位置。但您应避免在 onPause() 期间执行 CPU 密集型工作，比如向数据库写入信息，因为这会拖慢向下一Activity过渡的过程（您应改为在 onStop()期间执行高负载关机操作。
+在此说明一下，当从ActivityA切换到ActivityB时，两个Activity各个方法的执行过程为：</p>
+<ol>
+<li>Activity A 的 onPause() 方法执行。</li>
+<li>Activity B 的 onCreate()、onStart() 和 onResume() 方法依次执行。（Activity B 现在具有用户焦点。）</li>
+<li>然后，如果 Activity A 在屏幕上不再可见，则其 onStop() 方法执行。</li>
+</ol>
+<p>当用户从“暂停”状态继续您的Activity时，系统会调用 onResume() 方法。</p>
+<blockquote>
+<p>请注意，每当您的Activity进入前台时系统便会调用此方法，包括它初次创建之时。 同样地，您应实现onResume() 初始化您在 onPause() 期间释放的组件并且执行每当Activity进入“继续”状态时必须进行的任何其他初始化操作（比如开始动画和初始化只在Activity具有用户焦点时使用的组件）。</p>
+</blockquote>
+<p>onResume() 的以下示例对应于以上的 onPause() 示例，因此它初始化Activity暂停时释放的照相机。</p>
+<h3 id="onStop-与-onStart-与-onRestart"><a href="#onStop-与-onStart-与-onRestart" class="headerlink" title="onStop() 与 onStart() 与 onRestart();"></a>onStop() 与 onStart() 与 onRestart();</h3><p>正确停止和重新开始Activity是Activity生命周期中的重要过程，其可确保您的用户知晓应用始终保持Activity状态并且不会丢失进度。有几种Activity停止和重新开始的关键场景：</p>
+<blockquote>
+<ul>
+<li>用户打开“最近应用”窗口并从您的应用切换到另一个应用。当前位于前台的您的应用中的Activity将停止。 如果用户从主屏幕启动器图标或“最近应用”窗口返回到您的应用，Activity会重新开始。</li>
+<li>用户切换到新的Activity。当第二个Activity创建好后，当前Activity便停止。 如果用户之后按了返回按钮，第一个Activity会重新开始。</li>
+<li>用户在其手机上使用您的应用的同时接听来电。</li>
+</ul>
+</blockquote>
+<p>当Activity调用到onStop()时，它不在可见，并且应该释放此时所有不需要的资源。一旦Activity处于停止状态，那么它可能会因为需要恢复系统内存还被销毁。 在极端情况下，系统可能会仅终止应用进程，而不会调用Activity的最终 onDestroy() 回调，因此您使用 onStop() 释放可能泄露内存的资源非常重要。</p>
+<p><strong>尽管 onPause() 方法在 onStop()之前调用，您应使用 onStop() 执行更大、占用更多 CPU 的关闭操作，比如向数据库写入信息。</strong></p>
 <h1 id="Fragment的各个方法及调用时机"><a href="#Fragment的各个方法及调用时机" class="headerlink" title="Fragment的各个方法及调用时机"></a>Fragment的各个方法及调用时机</h1><h1 id="FragmentManager"><a href="#FragmentManager" class="headerlink" title="FragmentManager"></a>FragmentManager</h1><h1 id="FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><a href="#FragmentPagerAdapter-vs-FragmentStatePagerAdapter" class="headerlink" title="FragmentPagerAdapter vs FragmentStatePagerAdapter"></a>FragmentPagerAdapter vs FragmentStatePagerAdapter</h1><p>相信大家都使用过viewPager+PagerAdapter的方法来进行页面切换，其中PageAdapter提供page，viewPager显示page。当page的内容发生变化时，PagerAdapter将此变化通知给ViewPager，也就是说PagerAdapter负责创建Page、管理page，ViewPager负责显示page。但是因为各种各样的需求，要求PagerAdapter提供对page不同的管理方式，比如当page较少时，从page1切换到page2,再切换到page3时，要求不得将page1~page2销毁，这样当用户返回page1时，page1的内容会立马展示给用户；当page较多时，考虑到android系统对单一应用内存的限制，就不可能将所有的page保存起来，接下来我们详细了解一下系统为我们提供的各种PagerAdapter。</p>
 <h2 id="PagerAdapter"><a href="#PagerAdapter" class="headerlink" title="PagerAdapter"></a>PagerAdapter</h2><p>该类是page最简单的管理类，如果继承自该类，至少需要实现 instantiateItem(), destroyItem(), getCount() 以及 isViewFromObject()。</p>
 <blockquote>
@@ -696,7 +730,7 @@ PagerAdapter.notifyDataSetChanged() 后，什么都没有发生。</li>
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity的启动模式（android-launchMode）"><span class="nav-number">1.</span> <span class="nav-text">Activity的启动模式（android:launchMode）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task字段说明"><span class="nav-number">2.</span> <span class="nav-text">Task字段说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#intent和intent-filter"><span class="nav-number">3.</span> <span class="nav-text">intent和intent-filter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#显式intent示例"><span class="nav-number">3.1.</span> <span class="nav-text">显式intent示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐式intent示例"><span class="nav-number">3.2.</span> <span class="nav-text">隐式intent示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PendingIntent"><span class="nav-number">3.3.</span> <span class="nav-text">PendingIntent</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity的各个方法及调用时机"><span class="nav-number">4.</span> <span class="nav-text">Activity的各个方法及调用时机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期"><span class="nav-number">4.1.</span> <span class="nav-text">生命周期</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment的各个方法及调用时机"><span class="nav-number">5.</span> <span class="nav-text">Fragment的各个方法及调用时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentManager"><span class="nav-number">6.</span> <span class="nav-text">FragmentManager</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><span class="nav-number">7.</span> <span class="nav-text">FragmentPagerAdapter vs FragmentStatePagerAdapter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PagerAdapter"><span class="nav-number">7.1.</span> <span class="nav-text">PagerAdapter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity启动与加载过程"><span class="nav-number">8.</span> <span class="nav-text">Activity启动与加载过程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity的启动模式（android-launchMode）"><span class="nav-number">1.</span> <span class="nav-text">Activity的启动模式（android:launchMode）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task字段说明"><span class="nav-number">2.</span> <span class="nav-text">Task字段说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#intent和intent-filter"><span class="nav-number">3.</span> <span class="nav-text">intent和intent-filter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#显式intent示例"><span class="nav-number">3.1.</span> <span class="nav-text">显式intent示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐式intent示例"><span class="nav-number">3.2.</span> <span class="nav-text">隐式intent示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PendingIntent"><span class="nav-number">3.3.</span> <span class="nav-text">PendingIntent</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity的各个方法及调用时机"><span class="nav-number">4.</span> <span class="nav-text">Activity的各个方法及调用时机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期"><span class="nav-number">4.1.</span> <span class="nav-text">生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#onPause-与-onResume"><span class="nav-number">4.1.1.</span> <span class="nav-text">onPause() 与 onResume()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onStop-与-onStart-与-onRestart"><span class="nav-number">4.1.2.</span> <span class="nav-text">onStop() 与 onStart() 与 onRestart();</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment的各个方法及调用时机"><span class="nav-number">5.</span> <span class="nav-text">Fragment的各个方法及调用时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentManager"><span class="nav-number">6.</span> <span class="nav-text">FragmentManager</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentPagerAdapter-vs-FragmentStatePagerAdapter"><span class="nav-number">7.</span> <span class="nav-text">FragmentPagerAdapter vs FragmentStatePagerAdapter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PagerAdapter"><span class="nav-number">7.1.</span> <span class="nav-text">PagerAdapter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity启动与加载过程"><span class="nav-number">8.</span> <span class="nav-text">Activity启动与加载过程</span></a></li></ol></div>
             
           </div>
         </section>
