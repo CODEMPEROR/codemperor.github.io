@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -99,7 +99,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -860,7 +860,10 @@
           
           Java的四种引用：强应用，软引用，弱引用，虚引用四种引用的不同之处仅在于垃圾回收时GC对他们的处理方式不同。在解说四种引用之前，我们先来看一下引用队列。
 
-引用队列：当对象被gc回收之后，就会将该对象的引用加入引用队列。但是既然对象都已经被回收了，那为什么还要把该对象的引用保存起来呢？通常在对象被
+引用队列：当对象被gc回收之后，就会将该对象的引用加入引用队列。但是既然对象都已经被回收了，那为什么还要把该对象的引用保存起来呢？通常在对象被gc回收之后，都需要进行一些清理工作，比如如果你将对象的引用保存在WeakHashMap中，当对象被回收之后，就需要将引用从WeakHashMap中移除，防止map无休止的增长。
+1、 强引用StrongReference通常我们直接new出来的对象都是强引用的，例如StringBuffer buffer = new StringBuffer();我们知道在Jvm中对象都是通过引用来访问的，同一个对象可能有多个引用指向它。对于被强应用的对象，只要目前还有一个强应用指向它，那么该对象就无法被gc回收。
+2、 软引用SoftReference软引用是相对强应用来说相对较“软”的引用，只要内存足够，那么软引用指向的对象就不会被gc回收，但是如果内存不租了，就会被回收。
+3、 弱引用WeakRefe
           ...
 
           <div class="post-more-link text-center">
@@ -986,7 +989,8 @@
         
           
           MultiDex相关问题dex file :dalvik executable file
-为什么需要MultiDex用Dalvik虚拟机的Android手机，在安装app的时候，会有一个优化dex的过程，使用dexopt将dex优化的更加高效于运行存储为odex，但是dexopt把每个类的方法id检
+为什么需要MultiDex用Dalvik虚拟机的Android手机，在安装app的时候，会有一个优化dex的过程，使用dexopt将dex优化的更加高效于运行存储为odex，但是dexopt把每个类的方法id检索的链表长度使用了short，4字节，所以无论如何，就导致了如果一个dex中的方法数（包含Android framework methods, library methods, and methods in your own code）不能超过65535。因此当我们项目中的方法书超过65535时就会报错：
+12345678早期版本报错如下：Conversion to Dalvik format failed:Unable to execute dex: method ID not in [0, 0xffff]: 65536最近的版本报错如下：trouble writing output:Too many field references: 131000; max is 65536.You m
           ...
 
           <div class="post-more-link text-center">
@@ -1113,7 +1117,19 @@
           
           一、 反序列化对Java单例的影响解决方案：让Singleton继承Serializable, 并实现  private Object readResolve();public class Singleton implement Serializable {
 
-     public static 
+     public static class Builder {
+         public static Singleton instance = new Singleton();
+     }
+
+    public static Singleton getInstance(){
+        return Builder.instance;
+    }
+
+    private Object readResolve(){
+        retutn Builder.instance;
+    }
+}
+原理解析在反序列化时，ObjectInputStream 因为利用反射机制调用了 readObject –&gt; readObject0 –&gt; readOrdinary –&gt; CheckResolve
           ...
 
           <div class="post-more-link text-center">
@@ -1243,7 +1259,17 @@
 px
 dp：设备无关的尺寸单位
 dip：同dp
-sp:文字的大小，sp = px * scaledDensity, scaledDensity是用户在系统
+sp:文字的大小，sp = px * scaledDensity, scaledDensity是用户在系统设置里设置的文字缩放比例。
+dpi:dot per inch, 称为屏幕像素密度，指每英寸上的像素点数。
+density:px/dp
+ppi:同dpi, pixel per inch.
+
+2. 属性
+屏幕宽度：屏幕横向的像素点数，单位px
+屏幕高度：屏幕纵向的像素点数，单位px
+屏幕尺寸：屏幕对角线的长度，单位为英寸，1 inch = 2.54cm
+屏幕分辨率：屏幕横纵方向的像素点数，单位为px， 1px = 1像素点。例如1920 * 1080
+屏幕像素密度：指每英寸上的像素点数，即dot per inch $$屏幕像素密度 = 屏幕分辨率 / 屏幕尺寸$$屏幕像素密度一般分为ldpi, mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi这6种类型，他们与屏幕像素密度大小
           ...
 
           <div class="post-more-link text-center">
@@ -1499,7 +1525,7 @@ sp:文字的大小，sp = px * scaledDensity, scaledDensity是用户在系统
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1585,13 +1611,6 @@ sp:文字的大小，sp = px * scaledDensity, scaledDensity是用户在系统
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
-
 
   
 

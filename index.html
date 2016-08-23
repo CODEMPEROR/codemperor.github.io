@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -99,7 +99,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -332,7 +332,17 @@
 standard 标准模式
 
 系统默认模式，每次启动ACtivity，不管该Activity的实例是否存在，都会创建一个新的实例。该Activity与启动它的Activity属于同一个任务栈。
-注意：applicationConte
+注意：applicationContext不可启动standard模式的Activity。因为非Activity的context类型没有任务栈，那么如果要启动该模式的Activity，那该Activity无法进入任务栈，那么该Activity就不属于任何任务栈。
+
+
+singleTop
+
+栈顶复用模式。如果将要启动的Activity处于任务栈的顶部，那么该Activity会直接复用栈顶的实例。因为该Activity的实例已经存在，那么便不会执行onCreate和onStart，但会调用onNewIntent方法。在onNewIntent中可以取出这次请求的信息。但是如果该Activity不在任务栈的顶部，则会新建该Activity的实例。
+
+
+singleTask
+
+栈内复用模式。如果即将启动的Activity在某个任务栈中存在
           ...
 
           <div class="post-more-link text-center">
@@ -546,8 +556,11 @@ standard 标准模式
           
           
 
-可见，DecorView由一个LinearLayout构成，这个LinearLayout又包括两个FramLayout，一个是ActionBar，一个是content。我们经常使用的setContentView(R.layout.activity_main)设置的就是content，它的id是a
-          ...
+可见，DecorView由一个LinearLayout构成，这个LinearLayout又包括两个FramLayout，一个是ActionBar，一个是content。我们经常使用的setContentView(R.layout.activity_main)设置的就是content，它的id是android.R.id.content。
+
+：DecorView与Window是一一对应的。常见的Window有：Activity，Dialog，Toast。
+
+          
 
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/08/17/android-DecorView/#more" rel="contents">
@@ -654,8 +667,17 @@ standard 标准模式
           
           
 View中的mScrollX, mScrollY这两个变量描述的是现在View的内容的位置（x2， y2）相对于View所在位置(x1, y1)的值, 即 mScrollX = x1 - x2, mScrollY = y1 - y2。 
-通过Scroller, 滑动的是View的内容，而不是vie
-          ...
+通过Scroller, 滑动的是View的内容，而不是view本身
+scrollTo(x, y),x 是相对于View左边而言的，y是相对于view上边而言的。
+scrollTo没有累加效果，scrollBy有累加效果
+scroller只是用来做平滑的滑动，也就是说如果你要让某个View随着手机的滑动而滑动则必须使用scrollTo或scrllBy。只要使用了startScroll,就开始自动滑动了。
+#####原理解析
+
+
+
+
+
+          
 
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/08/17/android-Scroller/#more" rel="contents">
@@ -979,8 +1001,12 @@ View中的mScrollX, mScrollY这两个变量描述的是现在View的内容的位
 
 TranslateAnimation
 ScaleAnimation
-Rotat
-          ...
+RotateAnimation
+AlphaAnimation
+
+##8.3 属性动画 /res/animator/
+
+          
 
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/08/17/android-Animation与Animator/#more" rel="contents">
@@ -1219,7 +1245,12 @@ Bound Service
 一些Service保活的方法
 
 [TOC]
-Service是什么？在android中Service是只在后台执行操作且没有页面的
+Service是什么？在android中Service是只在后台执行操作且没有页面的组件。Service可以被Service、Activity、ContentProvider启动/绑定，但是不可以被Broadcast启动/绑定。换句话说，Activity、ContentProvider可以绑定到Service并与之交互，甚至进行IPC通讯。
+
+服务根据用途不同而分为两类：启动的服务和绑定的服务。
+
+Service的基本用法。要实现自己的Service去完成一些后台操作，必须继承自Service，并重写它的onCreate(), onStartCommand(), onDestroy()方法。
+1234567891011121314151617181920212223public class MyService extends Service&#123;    public 
           ...
 
           <div class="post-more-link text-center">
@@ -1472,7 +1503,7 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1558,13 +1589,6 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
-
 
   
 
