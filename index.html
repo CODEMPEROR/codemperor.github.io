@@ -342,7 +342,18 @@ singleTop
 
 singleTask
 
-栈内复用模式。如果即将启动的Activity在某个任务栈中存在
+栈内复用模式。如果即将启动的Activity在某个任务栈中存在，则直接复用该Activity实例。再次过程中，只会执行onNewIntnent。具体而言，当存在该Activity所需要的任务栈，那么在该任务栈中查找该Activity的实例，如果查找到则直接复用，否则新建该Activity的实例并入栈。如果不存在该Activity的任务栈，则新建一个任务栈，然后新建Activity实例，并入栈。
+
+ 注意：当栈内复用时，那么将会把栈内该Activity之上的所有实例出栈。 
+
+singleInstance
+栈内单例模式。如果某个Activity为该模式，那么该Activity只能单独的存在于某一个任务栈中，其他特征与singleTask相同。
+
+
+
+注意： 上述任务栈是由taskAffinity属性来判定的，默认情况下所有的Activity的taskAffinity属性都是应用包名。如果想指定某个Activity所在的任务栈，修改该属性即可。该属性仅仅在于singleTask或allowTaskReparenting配合使用时才有意义。
+附：FLAF vs android:launchMode
+FLAG_ACTIVITY_NEW_TASK:sing
           ...
 
           <div class="post-more-link text-center">
@@ -1250,7 +1261,9 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
 服务根据用途不同而分为两类：启动的服务和绑定的服务。
 
 Service的基本用法。要实现自己的Service去完成一些后台操作，必须继承自Service，并重写它的onCreate(), onStartCommand(), onDestroy()方法。
-1234567891011121314151617181920212223public class MyService extends Service&#123;    public 
+1234567891011121314151617181920212223public class MyService extends Service&#123;    public static final String TAG = "MyService";        @Override    public void onCreate()&#123;        super.onCreate();    &#125;        @Override    public int onStartCommand(Intent intent, int flags, int startId)&#123;        return super.onStartCommand(intent, flags, startId);    &#125;        @Override    public void onDestroy()&#123;        super.onDestroy();    &#125;        @Override    public IBinder onBind(Intent intent)&#123;        return null;    &#125;&#125;
+然后在androidManifest.xml中进行注册
+1&l
           ...
 
           <div class="post-more-link text-center">

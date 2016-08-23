@@ -441,7 +441,16 @@ view的测绘都是从ViewRoot开始的，viewRoot并不是一个view，而是�
 1. onMeasure(MeasureSpec, MeasureSpec)过程分析MeasureSpec是4字节整数，用来计量view的大小，高2位表示该view的绘制模式specMode，低30位来表示view的大小specSize。之所以要把SpecMode和SpecSize打包成一个int值，是为了避免过多的对象内存分配，方便操作。view的绘制模式一共有3种：
 
 
-Exactly : 父容器明确知道v
+Exactly : 父容器明确知道view的大小，即specSize记录了view精确的大小。对应LayoutParams中的match_parent 和 100dp。
+at_most : 父容器制定了一个最大值，view的大小不能大于它。对应LP中的wrap_content。
+unspecified : 父容器对view没有任何限制，要过大给多大，这种情况一般用于系统内部，表示一种测量状态。
+
+
+所谓绘制模式，其实是ViewGroup对view（或者子viewGroup）的绘制限制，请记住不管是哪种绘制模式，parent对child的限制都是基于parent剩余的空间大小的
+
+MeasureSpec的形成。我们知道DecorView是viewTree最外层的view，那么它的MeasureSpec的生成必定是根据屏幕的宽高来生成的。而其他View的MeasureSpec都是在父容器的Spec及自己的LayoutParams的共同作用下生成的。
+ChildMeasureSpec = ChildLayoutParams + ParentMeasureSpec;
+DecorMeasureSpec = WindowSize +
           ...
 
           <div class="post-more-link text-center">
@@ -570,6 +579,15 @@ Exactly : 父容器明确知道v
 最重要的四个事件：DOWN, MOVE, UP, CANCEL;
 事件从上往下依次传递：Activity、ViewGroup、View。但Activity和ViewGroup在没有把事件传递给View之前只决定是否拦截该事件（即是否将事件传递给view，让view去处理该事件）。如果View不处理此事件，则将该事件传递给父级ViewGroup，依次类推。如果View处理了此事件（例如设置了onClickListener、onTouchListener），则该事件则被View处理，且该事件的后续事件也被View来处理（所谓后续事件是指：用户点击屏幕之后会产生Action_DOWN事件，但如果用户在屏幕上滑动则会产生MOVE事件，离开屏幕则会产生UP事件，取消则会产生CANCEL事件）。
 在之前需要明白一个原理：如果某个View不处理DOWN事件，那么系统则不会将该DOWN事件的后续事件分发给该View，这是因为DOWN点击事件是所有屏幕触摸事件的开始，如果该View不处理DOWN事件，那么系统认为该View不想处理该屏幕触摸事件，所以也就不会讲后续事件分发给该View。
+前面提到是否拦截事件是由ViewGroup的onInterceptTouchEvent来决定的，该方法仅存在于ViewGroup中。
+
+123public boolean onInterceptTouchEvent(MotionEvent ev)&#123;	return false;&#125;
+
+返回false则表示不拦截屏幕触摸事件，触摸事件可以按照正常流程分发给View，否则该ViewGroup则会拦截该事件。所以如果想让某个ViewGroup拦截所有的触摸事件，则继承该ViewGroup使onInterceptTouchEvent返回true即可，当然可以通过ViewGroup的requestDisallowInterceptTouchEevent(false)方法来拦截事件。
+
+#总结
+1.   Activity传递到DecorView的过程当屏幕发生触摸事件时，首先系统会将该触摸事件分发给Activity,然后Activity通过调用dispatchTouchEvent来分发该触摸事件：
+1234567891011121314151617181920/**被调用去处理屏
           ...
 
           <div class="post-more-link text-center">

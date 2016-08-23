@@ -863,7 +863,12 @@
 引用队列：当对象被gc回收之后，就会将该对象的引用加入引用队列。但是既然对象都已经被回收了，那为什么还要把该对象的引用保存起来呢？通常在对象被gc回收之后，都需要进行一些清理工作，比如如果你将对象的引用保存在WeakHashMap中，当对象被回收之后，就需要将引用从WeakHashMap中移除，防止map无休止的增长。
 1、 强引用StrongReference通常我们直接new出来的对象都是强引用的，例如StringBuffer buffer = new StringBuffer();我们知道在Jvm中对象都是通过引用来访问的，同一个对象可能有多个引用指向它。对于被强应用的对象，只要目前还有一个强应用指向它，那么该对象就无法被gc回收。
 2、 软引用SoftReference软引用是相对强应用来说相对较“软”的引用，只要内存足够，那么软引用指向的对象就不会被gc回收，但是如果内存不租了，就会被回收。
-3、 弱引用WeakRefe
+3、 弱引用WeakReference弱引用是相对软应用更“弱”的引用，当gc在扫描jvm中的垃圾时，只要发现了某个对象是被软引用的，不管内存是否充足，该对象都会被回收。
+12WeakReference&lt;Activity&gt; activity = new WeakReference&lt;&gt;(widget);activity.get();
+
+通过get()方法就可以获取到所引用的对象，但是因为弱引用的特性，我们经常会遇到activity.get()返回null的情况，所以
+4、 虚引用PhantomReference虚引用没有任何“引用”的意思，换句话说就是持有虚引用的对象不持有任何引用，它可能随时被gc回收。，就目前来看虚引用好像形同虚设，没有任何作用，但凡事存在均有理由，之所以设计虚引用是想通过它来跟踪gc回收对象的过程。虚引用与软引用、弱引用的不同之处就是它必须配合引用队列来使用。当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会在回收对象的内存之前，把这个虚引用加入到与之关联的引用队列中。
+12ReferenceQueue queue = new ReferenceQueue ()
           ...
 
           <div class="post-more-link text-center">
@@ -990,7 +995,15 @@
           
           MultiDex相关问题dex file :dalvik executable file
 为什么需要MultiDex用Dalvik虚拟机的Android手机，在安装app的时候，会有一个优化dex的过程，使用dexopt将dex优化的更加高效于运行存储为odex，但是dexopt把每个类的方法id检索的链表长度使用了short，4字节，所以无论如何，就导致了如果一个dex中的方法数（包含Android framework methods, library methods, and methods in your own code）不能超过65535。因此当我们项目中的方法书超过65535时就会报错：
-12345678早期版本报错如下：Conversion to Dalvik format failed:Unable to execute dex: method ID not in [0, 0xffff]: 65536最近的版本报错如下：trouble writing output:Too many field references: 131000; max is 65536.You m
+12345678早期版本报错如下：Conversion to Dalvik format failed:Unable to execute dex: method ID not in [0, 0xffff]: 65536最近的版本报错如下：trouble writing output:Too many field references: 131000; max is 65536.You may try using --multi-dex option.
+
+这个限制通常被叫做：64k preference limit。在dexopt对dex优化时，会将dex中的方法存储在一个叫做LinearAlloc的缓冲区中，LinearAlloc缓冲区在不同版本的android手机上大小是不一样的，2.2、2.3仅有5M，android4.x提升到了8M或16M，所以当方法数过多时，dexopt就会奔溃导致程序异常终止。
+
+在android5.0之前，dalvik规定每一个apk只能包含一个dex文件，所以为了摆脱这个限制，你必须使用Google官方提供的MutiDex support library。当project编译完毕之后，MultiDex lib就会加载到primary dex中的文件，这样就可以管理其他dex的加载。
+
+注意：如果你的工程要支持api20及以下，那么必须禁用android studio的instant run。
+
+在android50及以后，开始使用了art环境取代Dalvik，而art架构本身支持多dex文件的加载。在安装apk时，art会在扫描clas
           ...
 
           <div class="post-more-link text-center">
@@ -1129,7 +1142,24 @@
         retutn Builder.instance;
     }
 }
-原理解析在反序列化时，ObjectInputStream 因为利用反射机制调用了 readObject –&gt; readObject0 –&gt; readOrdinary –&gt; CheckResolve
+原理解析在反序列化时，ObjectInputStream 因为利用反射机制调用了 readObject –&gt; readObject0 –&gt; readOrdinary –&gt; CheckResolve。在readOrdinady中调用了invokeReadResolve()，该方法使用反射机制创建新的对象，从而破坏了单例唯一性。
+###尊重版权
+二、 java单例模式的实现方式#####1. 饿汉式
+    public class Singleton {
+    private static Singleton = new Singleton();
+
+    private Singleton() {}
+
+    public static getSignleton(){
+        return singleton;
+    }
+}
+#####2. 懒汉式
+    public class Singleton {
+        //注意volatiile的用法: 1. 保证在当前线程修改临界值之后在随后线程中起作用（可见性），及线程透明
+        volatile的第二层语义是禁止指令重排序优化。
+           private static volatile Singleton singleton = null;
+    private Singleton(
           ...
 
           <div class="post-more-link text-center">
@@ -1269,7 +1299,46 @@ ppi:同dpi, pixel per inch.
 屏幕高度：屏幕纵向的像素点数，单位px
 屏幕尺寸：屏幕对角线的长度，单位为英寸，1 inch = 2.54cm
 屏幕分辨率：屏幕横纵方向的像素点数，单位为px， 1px = 1像素点。例如1920 * 1080
-屏幕像素密度：指每英寸上的像素点数，即dot per inch $$屏幕像素密度 = 屏幕分辨率 / 屏幕尺寸$$屏幕像素密度一般分为ldpi, mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi这6种类型，他们与屏幕像素密度大小
+屏幕像素密度：指每英寸上的像素点数，即dot per inch $$屏幕像素密度 = 屏幕分辨率 / 屏幕尺寸$$屏幕像素密度一般分为ldpi, mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi这6种类型，他们与屏幕像素密度大小的对象关系如下表：
+缩放比例：scaledDensity,用户设置的文字缩放比例
+
+
+
+
+名称
+像素密度大小(px/inch)
+
+
+
+
+ldpi (DENSITY_LOW)
+&lt;120
+
+
+mdpi (DENSITY_MEDIUM)
+120-160
+
+
+hdpi (DENSITY_HIGH)
+160-240
+
+
+xhdpi
+240-320
+
+
+xxhdpi
+320-480
+
+
+xxxhdpi
+480-640
+
+
+
+从上表我们可以看出： mdpi:hdpi:xhdpi:xxhdpi:xxxhdpi = 3:4:6:8:12
+以上所有的信息均可在DisplayMetrics类中查询到，具体用法如下:
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991001011
           ...
 
           <div class="post-more-link text-center">
