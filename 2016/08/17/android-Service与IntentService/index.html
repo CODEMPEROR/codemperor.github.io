@@ -84,49 +84,43 @@
 
 
 
-<meta name="description" content="Service与AIDL标签（空格分隔）： Android Serice
-
-
-Service是什么？
+<meta name="description" content="Service是什么？
 Service的基本用法
 Service#onStartCommand()的返回值
 IntentService的用法
 Bound Service
 一些Service保活的方法
 
-Service是什么？在android中Service是只在后台执行操作且没有页面的组件。Service可以被Servi">
+[TOC]
+Service是什么？在android中Service是只在后台执行操作且没有页面的组件。Service可以被Service、Activity、ContentProvider启动/绑定">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android-Service与IntentService">
 <meta property="og:url" content="http://yoursite.com/2016/08/17/android-Service与IntentService/index.html">
 <meta property="og:site_name" content="相信不可能">
-<meta property="og:description" content="Service与AIDL标签（空格分隔）： Android Serice
-
-
-Service是什么？
+<meta property="og:description" content="Service是什么？
 Service的基本用法
 Service#onStartCommand()的返回值
 IntentService的用法
 Bound Service
 一些Service保活的方法
 
-Service是什么？在android中Service是只在后台执行操作且没有页面的组件。Service可以被Servi">
+[TOC]
+Service是什么？在android中Service是只在后台执行操作且没有页面的组件。Service可以被Service、Activity、ContentProvider启动/绑定">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%93%88%E5%93%88%E5%93%88_%E5%A7%9A%E6%98%8E.jpg">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%93%88%E5%93%88%E5%93%88_%E5%A7%9A%E6%98%8E.jpg">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%93%88%E5%93%88%E5%93%88_%E5%A7%9A%E6%98%8E.jpg">
-<meta property="og:updated_time" content="2016-08-23T02:36:10.151Z">
+<meta property="og:updated_time" content="2016-08-23T02:46:56.530Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android-Service与IntentService">
-<meta name="twitter:description" content="Service与AIDL标签（空格分隔）： Android Serice
-
-
-Service是什么？
+<meta name="twitter:description" content="Service是什么？
 Service的基本用法
 Service#onStartCommand()的返回值
 IntentService的用法
 Bound Service
 一些Service保活的方法
 
-Service是什么？在android中Service是只在后台执行操作且没有页面的组件。Service可以被Servi">
+[TOC]
+Service是什么？在android中Service是只在后台执行操作且没有页面的组件。Service可以被Service、Activity、ContentProvider启动/绑定">
 <meta name="twitter:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%93%88%E5%93%88%E5%93%88_%E5%A7%9A%E6%98%8E.jpg">
 
 
@@ -361,9 +355,7 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
       
 
       
-        <h1 id="Service与AIDL"><a href="#Service与AIDL" class="headerlink" title="Service与AIDL"></a>Service与AIDL</h1><p>标签（空格分隔）： Android Serice</p>
-<hr>
-<ol>
+        <ol>
 <li>Service是什么？</li>
 <li>Service的基本用法</li>
 <li>Service#onStartCommand()的返回值</li>
@@ -371,6 +363,7 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
 <li>Bound Service</li>
 <li>一些Service保活的方法</li>
 </ol>
+<p>[TOC]</p>
 <h1 id="Service是什么？"><a href="#Service是什么？" class="headerlink" title="Service是什么？"></a>Service是什么？</h1><p>在android中Service是只在后台执行操作且没有页面的组件。Service可以被Service、Activity、ContentProvider启动/绑定，但是不可以被Broadcast启动/绑定。换句话说，Activity、ContentProvider可以绑定到Service并与之交互，甚至进行IPC通讯。</p>
 <blockquote>
 <p>服务根据用途不同而分为两类：启动的服务和绑定的服务。</p>
@@ -665,7 +658,7 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Service与AIDL"><span class="nav-number">1.</span> <span class="nav-text">Service与AIDL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Service是什么？"><span class="nav-number">2.</span> <span class="nav-text">Service是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Service的基本用法。"><span class="nav-number">3.</span> <span class="nav-text">Service的基本用法。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Service-onStartCommand-的返回值"><span class="nav-number">4.</span> <span class="nav-text">Service#onStartCommand()的返回值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IntentService的基本用法及原理"><span class="nav-number">5.</span> <span class="nav-text">IntentService的基本用法及原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IntentService的基本用法"><span class="nav-number">5.1.</span> <span class="nav-text">IntentService的基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IntentService原理解析"><span class="nav-number">5.2.</span> <span class="nav-text">IntentService原理解析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bound-Service"><span class="nav-number">6.</span> <span class="nav-text">Bound Service</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#本地绑定"><span class="nav-number">6.1.</span> <span class="nav-text">本地绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程绑定"><span class="nav-number">6.2.</span> <span class="nav-text">远程绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AIDL基本概念及用途"><span class="nav-number">6.2.1.</span> <span class="nav-text">AIDL基本概念及用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#远程服务实例–数据访问"><span class="nav-number">6.2.2.</span> <span class="nav-text">远程服务实例–数据访问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在其他应用程序中访问远程服务"><span class="nav-number">6.3.</span> <span class="nav-text">在其他应用程序中访问远程服务</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-新建名为ClientTest项目"><span class="nav-number">6.3.0.0.1.</span> <span class="nav-text">1. 新建名为ClientTest项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-将IDataAccess-aidl同包路径一起拷贝过来（该路径需要和ClientTest路径同级）"><span class="nav-number">6.3.0.0.2.</span> <span class="nav-text">2. 将IDataAccess.aidl同包路径一起拷贝过来（该路径需要和ClientTest路径同级）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-使用隐式Intent来访问远程服务"><span class="nav-number">6.3.0.0.3.</span> <span class="nav-text">3. 使用隐式Intent来访问远程服务</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在远程服务中使用自定义类型"><span class="nav-number">6.4.</span> <span class="nav-text">在远程服务中使用自定义类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他进程间通讯的方式"><span class="nav-number">7.</span> <span class="nav-text">其他进程间通讯的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Messager"><span class="nav-number">7.1.</span> <span class="nav-text">Messager</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些Service保活的方法"><span class="nav-number">8.</span> <span class="nav-text">一些Service保活的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前台Service"><span class="nav-number">8.1.</span> <span class="nav-text">前台Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#onStartCommand的返回值"><span class="nav-number">8.2.</span> <span class="nav-text">onStartCommand的返回值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些小知识点"><span class="nav-number">9.</span> <span class="nav-text">一些小知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#android-process的值"><span class="nav-number">9.1.</span> <span class="nav-text">android:process的值</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Service是什么？"><span class="nav-number">1.</span> <span class="nav-text">Service是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Service的基本用法。"><span class="nav-number">2.</span> <span class="nav-text">Service的基本用法。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Service-onStartCommand-的返回值"><span class="nav-number">3.</span> <span class="nav-text">Service#onStartCommand()的返回值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IntentService的基本用法及原理"><span class="nav-number">4.</span> <span class="nav-text">IntentService的基本用法及原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IntentService的基本用法"><span class="nav-number">4.1.</span> <span class="nav-text">IntentService的基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IntentService原理解析"><span class="nav-number">4.2.</span> <span class="nav-text">IntentService原理解析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bound-Service"><span class="nav-number">5.</span> <span class="nav-text">Bound Service</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#本地绑定"><span class="nav-number">5.1.</span> <span class="nav-text">本地绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程绑定"><span class="nav-number">5.2.</span> <span class="nav-text">远程绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AIDL基本概念及用途"><span class="nav-number">5.2.1.</span> <span class="nav-text">AIDL基本概念及用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#远程服务实例–数据访问"><span class="nav-number">5.2.2.</span> <span class="nav-text">远程服务实例–数据访问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在其他应用程序中访问远程服务"><span class="nav-number">5.3.</span> <span class="nav-text">在其他应用程序中访问远程服务</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-新建名为ClientTest项目"><span class="nav-number">5.3.0.0.1.</span> <span class="nav-text">1. 新建名为ClientTest项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-将IDataAccess-aidl同包路径一起拷贝过来（该路径需要和ClientTest路径同级）"><span class="nav-number">5.3.0.0.2.</span> <span class="nav-text">2. 将IDataAccess.aidl同包路径一起拷贝过来（该路径需要和ClientTest路径同级）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-使用隐式Intent来访问远程服务"><span class="nav-number">5.3.0.0.3.</span> <span class="nav-text">3. 使用隐式Intent来访问远程服务</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在远程服务中使用自定义类型"><span class="nav-number">5.4.</span> <span class="nav-text">在远程服务中使用自定义类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他进程间通讯的方式"><span class="nav-number">6.</span> <span class="nav-text">其他进程间通讯的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Messager"><span class="nav-number">6.1.</span> <span class="nav-text">Messager</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些Service保活的方法"><span class="nav-number">7.</span> <span class="nav-text">一些Service保活的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前台Service"><span class="nav-number">7.1.</span> <span class="nav-text">前台Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#onStartCommand的返回值"><span class="nav-number">7.2.</span> <span class="nav-text">onStartCommand的返回值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些小知识点"><span class="nav-number">8.</span> <span class="nav-text">一些小知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#android-process的值"><span class="nav-number">8.1.</span> <span class="nav-text">android:process的值</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
