@@ -113,7 +113,7 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%93%88%E5%93%88%E5%93%88_%E5%A7%9A%E6%98%8E.jpg">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%93%88%E5%93%88%E5%93%88_%E5%A7%9A%E6%98%8E.jpg">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%93%88%E5%93%88%E5%93%88_%E5%A7%9A%E6%98%8E.jpg">
-<meta property="og:updated_time" content="2016-08-23T01:56:11.880Z">
+<meta property="og:updated_time" content="2016-08-23T02:15:26.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android-Service与IntentService">
 <meta name="twitter:description" content="Service与AIDL标签（空格分隔）： Android Serice
@@ -465,12 +465,12 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
 <p>呵呵呵，那怎么在其他的App中访问远程服务呢？毕竟不同的App有不同的UID呀！</p>
 <h2 id="在其他应用程序中访问远程服务"><a href="#在其他应用程序中访问远程服务" class="headerlink" title="在其他应用程序中访问远程服务"></a>在其他应用程序中访问远程服务</h2><p>最终我们的目的是：所有具有权限的应用程序都可以访问远程服务。那么只需要遵循以下流程即可访问到远程服务：</p>
 <h5 id="1-新建名为ClientTest项目"><a href="#1-新建名为ClientTest项目" class="headerlink" title="1. 新建名为ClientTest项目"></a>1. 新建名为ClientTest项目</h5><h5 id="2-将IDataAccess-aidl同包路径一起拷贝过来（该路径需要和ClientTest路径同级）"><a href="#2-将IDataAccess-aidl同包路径一起拷贝过来（该路径需要和ClientTest路径同级）" class="headerlink" title="2. 将IDataAccess.aidl同包路径一起拷贝过来（该路径需要和ClientTest路径同级）"></a>2. 将IDataAccess.aidl同包路径一起拷贝过来（该路径需要和ClientTest路径同级）</h5><blockquote>
-<p>–src
-  —–main
-  ———java
-  ————-cn.codemperor.clienttest
-  ————-cn.codemepror.summary
-  ——————-IDataAccess.aidl</p>
+<p>|——src
+  |  └── main
+  |  |  |  └── java
+  |  |  |  └── cn.codemperor.clienttest
+  |  |  |  └── cn.codemepror.summary
+  |  |  |  |  └── IDataAccess.aidl</p>
 </blockquote>
 <h5 id="3-使用隐式Intent来访问远程服务"><a href="#3-使用隐式Intent来访问远程服务" class="headerlink" title="3. 使用隐式Intent来访问远程服务"></a>3. 使用隐式Intent来访问远程服务</h5><p>但是，呵呵呵，android5.0及以上可是禁止通过隐式intent的方式来访问Service的呀。所以呢？我们来了解一下shareUserId吧！ <img src="http://oc1ju78pc.bkt.clouddn.com/%E5%93%88%E5%93%88%E5%93%88_%E5%A7%9A%E6%98%8E.jpg" alt="哈哈"> </p>
 <p>在说shareUserId之前，我们先来说一下Android中的UID和PID吧！</p>
