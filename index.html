@@ -1213,7 +1213,7 @@ AlphaAnimation
               
                 
                 <a class="post-title-link" href="/2016/08/17/android-BroadCast与StickBroadCast/" itemprop="url">
-                  android-BroadCast与StickBroadCast
+                  android-BroadCast
                 </a>
               
             
@@ -1231,6 +1231,25 @@ AlphaAnimation
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -1264,7 +1283,18 @@ AlphaAnimation
         
           
           
-          
+广播简述广播作为四大组件之一，它的作用不可或缺。既然称之为广播，那么肯定有发送者sender和接收者receiver。
+广播分类普通广播该广播会不care receiver的优先级，该广播的所有接收者都能接收到该广播。任何接收者都不可终止该广播。
+发送方法
+1context.sendBroadcasr(intent);
+有序广播见名知意，该广播首先会发送给优先级较高的receiver，然后再由优先级较高的receiver发送给优先级较低的receiver，在这个过程中，有序广播可以随时被优先级价高的receiver中断，中断之后该广播就停止向下传递。
+发送方式
+1context.sendOrderedBroadcast(intent， receiverPermission);
+可以看到，发送有序广播时多了一个字段receiverPermission，该字段指出receiver要接受有序广播所需的权限。也就是说如果发送有序广播时指定了该字段，那么receiver必须拥有这个权限才可以接收到该广播。如果该字段为null，则不做权限校验。举例如下：
+12Intent intent  = new Intent("cn.codemperor.sample.ordered");activity.sendOrderedBroadcast(intent, "cn.codemperor.sample.orderedbroadcast_permission");
+然后我们在注册广播时需要指定”cn.codemperor.sample.orderedbroadcast_permission”权限，否则我们将无法收到消息。
+12345678&lt;receiver android:name="cn.codemperor.sample.OrderedBroadcastPermissionTest"    android:enabled="true"    android:exported="false"    android:permission="cn.codemperor.sample.orderedbroadcast_permission"&gt;    &lt;intent-filter android:priority="1000"&gt;            &lt;acti
+          ...
 
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/08/17/android-BroadCast与StickBroadCast/#more" rel="contents">
@@ -1465,7 +1495,7 @@ AlphaAnimation
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

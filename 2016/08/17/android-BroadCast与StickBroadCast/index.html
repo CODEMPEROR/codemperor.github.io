@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Broadcast,本地广播,有序广播,粘性广播," />
 
 
 
@@ -84,16 +84,28 @@
 
 
 
-<meta name="description" content="Just do it.">
+<meta name="description" content="广播简述广播作为四大组件之一，它的作用不可或缺。既然称之为广播，那么肯定有发送者sender和接收者receiver。
+广播分类普通广播该广播会不care receiver的优先级，该广播的所有接收者都能接收到该广播。任何接收者都不可终止该广播。
+发送方法
+1context.sendBroadcasr(intent);
+有序广播见名知意，该广播首先会发送给优先级较高的receiver，然后再由优">
 <meta property="og:type" content="article">
-<meta property="og:title" content="android-BroadCast与StickBroadCast">
+<meta property="og:title" content="android-BroadCast">
 <meta property="og:url" content="http://yoursite.com/2016/08/17/android-BroadCast与StickBroadCast/index.html">
 <meta property="og:site_name" content="相信不可能">
-<meta property="og:description" content="Just do it.">
-<meta property="og:updated_time" content="2016-08-17T02:56:15.603Z">
+<meta property="og:description" content="广播简述广播作为四大组件之一，它的作用不可或缺。既然称之为广播，那么肯定有发送者sender和接收者receiver。
+广播分类普通广播该广播会不care receiver的优先级，该广播的所有接收者都能接收到该广播。任何接收者都不可终止该广播。
+发送方法
+1context.sendBroadcasr(intent);
+有序广播见名知意，该广播首先会发送给优先级较高的receiver，然后再由优">
+<meta property="og:updated_time" content="2016-08-24T02:02:36.133Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="android-BroadCast与StickBroadCast">
-<meta name="twitter:description" content="Just do it.">
+<meta name="twitter:title" content="android-BroadCast">
+<meta name="twitter:description" content="广播简述广播作为四大组件之一，它的作用不可或缺。既然称之为广播，那么肯定有发送者sender和接收者receiver。
+广播分类普通广播该广播会不care receiver的优先级，该广播的所有接收者都能接收到该广播。任何接收者都不可终止该广播。
+发送方法
+1context.sendBroadcasr(intent);
+有序广播见名知意，该广播首先会发送给优先级较高的receiver，然后再由优">
 
 
 
@@ -116,7 +128,7 @@
 
   <link rel="canonical" href="http://yoursite.com/2016/08/17/android-BroadCast与StickBroadCast/"/>
 
-  <title> android-BroadCast与StickBroadCast | 相信不可能 </title>
+  <title> android-BroadCast | 相信不可能 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -256,7 +268,7 @@
             
             
               
-                android-BroadCast与StickBroadCast
+                android-BroadCast
               
             
           </h1>
@@ -273,6 +285,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -308,7 +339,67 @@
       
 
       
-        
+        <hr>
+<h1 id="广播简述"><a href="#广播简述" class="headerlink" title="广播简述"></a>广播简述</h1><p>广播作为四大组件之一，它的作用不可或缺。既然称之为广播，那么肯定有发送者sender和接收者receiver。</p>
+<h1 id="广播分类"><a href="#广播分类" class="headerlink" title="广播分类"></a>广播分类</h1><h2 id="普通广播"><a href="#普通广播" class="headerlink" title="普通广播"></a>普通广播</h2><p>该广播会不care receiver的优先级，该广播的所有接收者都能接收到该广播。任何接收者都不可终止该广播。</p>
+<p>发送方法
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">context<span class="selector-class">.sendBroadcasr</span>(intent);</div></pre></td></tr></table></figure></p>
+<h2 id="有序广播"><a href="#有序广播" class="headerlink" title="有序广播"></a>有序广播</h2><p>见名知意，该广播首先会发送给优先级较高的receiver，然后再由优先级较高的receiver发送给优先级较低的receiver，在这个过程中，有序广播可以随时被优先级价高的receiver中断，中断之后该广播就停止向下传递。</p>
+<p>发送方式</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">context<span class="selector-class">.sendOrderedBroadcast</span>(intent， receiverPermission);</div></pre></td></tr></table></figure>
+<p>可以看到，发送有序广播时多了一个字段receiverPermission，该字段指出receiver要接受有序广播所需的权限。也就是说如果发送有序广播时指定了该字段，那么receiver必须拥有这个权限才可以接收到该广播。如果该字段为null，则不做权限校验。举例如下：
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">Intent</span> <span class="keyword">intent</span>  = new <span class="keyword">Intent</span>(<span class="string">"cn.codemperor.sample.ordered"</span>);</div><div class="line">activity.sendOrderedBroadcast(<span class="keyword">intent</span>, <span class="string">"cn.codemperor.sample.orderedbroadcast_permission"</span>);</div></pre></td></tr></table></figure></p>
+<p>然后我们在注册广播时需要指定”cn.codemperor.sample.orderedbroadcast_permission”权限，否则我们将无法收到消息。
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">"cn.codemperor.sample.OrderedBroadcastPermissionTest"</span></span></div><div class="line">    <span class="attr">android:enabled</span>=<span class="string">"true"</span></div><div class="line">    <span class="attr">android:exported</span>=<span class="string">"false"</span></div><div class="line">    <span class="attr">android:permission</span>=<span class="string">"cn.codemperor.sample.orderedbroadcast_permission"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">intent-filter</span> <span class="attr">android:priority</span>=<span class="string">"1000"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"cn.codemperor.sample.ordered"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>可以看到我们在intent-filter中指定了android:priority为1000，正如我们前面提到的优先级（android中指定priority的范围为-1000~1000,数字越大优先级越高）越高的receiver越先接收到有序广播，而且可以中断该广播向下传递，也可以在向下传递时添加一些额外信息给优先级较低的receiver。</p>
+<h2 id="中断广播"><a href="#中断广播" class="headerlink" title="中断广播"></a>中断广播</h2><p>只需要在优先级较高的BroadcastReceiver中的onReceive(Context context, Intent intent)中调用abortBroadcast()就可以中断广播向下传递。
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> <span class="meta">@Override</span></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    abortBroadcast();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="粘性广播（StickBroadcastReceiver？）"><a href="#粘性广播（StickBroadcastReceiver？）" class="headerlink" title="粘性广播（StickBroadcastReceiver？）"></a>粘性广播（StickBroadcastReceiver？）</h2><p>该广播在发送之后不会消失，换句话说，如果发送该广播时，某个接收者处于dead状态，那么当该接收者起送之后仍然可以接收到该广播。</p>
+<blockquote>
+<p>只要粘性广播的发送者还存在，粘性广播就持续存在，也就是说只要粘性广播发送者还存在，任何该广播的接收者在注册之后都会受到该广播</p>
+</blockquote>
+<p>使用粘性广播需要添加下面的权限： 
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:<span class="built_in">name</span>=<span class="string">"android.permission.BROADCAST_STICKY"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>粘性广播的用法主要有
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 发送粘性广播</div><div class="line"> **/</div><div class="line">Intent intent = new Intent(<span class="string">"cn.codemperor.sample.stickybroadcast"</span>)<span class="comment">;</span></div><div class="line"><span class="built_in">context</span>.sendStickyBroadcast(intent)<span class="comment">;</span></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 发送有序粘性广播</div><div class="line"> **/ </div><div class="line"><span class="built_in">context</span>.sendOrderedStickyBroadcast(intent)<span class="comment">;</span></div></pre></td></tr></table></figure></p>
+<h1 id="广播接收者的注册方式"><a href="#广播接收者的注册方式" class="headerlink" title="广播接收者的注册方式"></a>广播接收者的注册方式</h1><h2 id="静态注册"><a href="#静态注册" class="headerlink" title="静态注册"></a>静态注册</h2><p>静态注册仅需要在androidManifest注册就可以，在此不再展示</p>
+<h2 id="动态注册"><a href="#动态注册" class="headerlink" title="动态注册"></a>动态注册</h2><p>动态注册需要在代码中动态的指定广播的地址并注册，通常我们会在Activity或Service去动态注册广播。
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">MyReceiver receiver = new MyReceiver()<span class="comment">;</span></div><div class="line">receiver.setAction(<span class="string">"cn.codemperor.sample.register_broadcastreceiver"</span>)<span class="comment">;</span></div><div class="line">receiver.putExtra(<span class="string">"msg"</span>, <span class="string">"一些额外信息"</span>)<span class="comment">;</span></div><div class="line"><span class="built_in">context</span>.sendBroadcast(intent)<span class="comment">;</span></div></pre></td></tr></table></figure></p>
+<p>动态注册的广播接收者依赖于启动它的组件，那么当该组件销毁时，需要将动态注册的广播解除注册。解除注册的方式十分简单：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">context<span class="selector-class">.unregisterReceiver</span>(receiver);</div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意</strong> 如果receiver优先级相同，那么动态注册的receiver先收到广播；如果优先级不同，则为随机。</p>
+<p><strong>注意</strong> 在onReceive(…)中执行操作的事件不可超过10秒，否则ANR。</p>
+</blockquote>
+<h1 id="接收系统广播"><a href="#接收系统广播" class="headerlink" title="接收系统广播"></a>接收系统广播</h1><p>1、 开机启动广播
+使用开机启动广播需要添加权限：
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:<span class="built_in">name</span>=<span class="string">"android:permission.RECEIVE_BOOT_COMPLETED"</span> /&gt;</div></pre></td></tr></table></figure></p>
+<p>然后在相应的receiver的intent中添加以下action
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.BOOT_COMPLETED"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>这样你就可以在receiver中接收到开机广播了~_~</p>
+<p>2、  网络状态变化
+监听网络状态变化的广播需要添加权限：
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:<span class="built_in">name</span>=<span class="string">"android:permission.ACCESS_NETWORK_STATE"</span> /&gt;</div></pre></td></tr></table></figure></p>
+<p>然后在相应的receiver的intent中添加以下action
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.net.conn.CONNECTIVITY_CHANGE"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>这样我们就可以在相应的receiver中接收到该广播了，然后就可以在onReceive中查看当前的网络状态并给予用户提示。
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);</div><div class="line">NetworkInfo ni = cm.getActiveNetworkInfo();</div><div class="line"><span class="keyword">if</span> (ni != <span class="built_in">null</span>) &#123;</div><div class="line">    <span class="built_in">String</span> currentNi = ni.getTypeName() + <span class="string">""</span>;</div><div class="line">    <span class="keyword">Log</span>.i(<span class="built_in">TAG</span>, currentNi);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">Log</span>.i(<span class="built_in">TAG</span>, <span class="string">"当前无网络"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>3、 电量变化广播
+电量变化广播一般情况下会一分钟左右发送一次。
+使用开机启动广播在相应的receiver的intent中添加以下action
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.BATTERY_CHANGED"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>这样你就可以在receiver中通知用户电量变化了~_~
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> currentBatteryLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, <span class="number">0</span>);<span class="comment">//当前电量</span></div><div class="line"><span class="keyword">int</span> totalLevel = intent.getIntExtra(BatteryManager.EXTRA_SCALE, <span class="number">1</span>);<span class="comment">//总电量</span></div><div class="line"><span class="keyword">double</span> percent = currentBatteryLevel * <span class="number">100.0</span> / totalLevel;</div></pre></td></tr></table></figure></p>
+<p>当然还有一种立即获取电量的办法哟！！</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">Intent</span> <span class="keyword">intent</span> = getApplicationContext().registerReceiver(null, new IntentFilter(<span class="keyword">Intent</span>.ACTION_BATTERY_CHANGED));</div><div class="line"></div><div class="line"><span class="built_in">int</span> currentBatteryLevel = <span class="keyword">intent</span>.getIntExtra(BatteryManager.EXTRA_LEVEL, <span class="number">0</span>);//当前电量</div><div class="line"><span class="built_in">int</span> totalLevel = <span class="keyword">intent</span>.getIntExtra(BatteryManager.EXTRA_SCALE, <span class="number">1</span>);//总电量</div><div class="line"><span class="keyword">double</span> percent = currentBatteryLevel * <span class="number">100.0</span> / totalLevel;</div></pre></td></tr></table></figure>
+<h1 id="本地广播"><a href="#本地广播" class="headerlink" title="本地广播"></a>本地广播</h1><p>前面我们发送和接收的广播都属于系统全局广播，即发送的广播可以被其他任何应用程序收到，并且我们可以接受来自其他应用程序的广播。这样便很容易引起安全线问题，比如其他应用程序可以不断的向我们发送垃圾广播，导致应用程序效率低下。</p>
+<p>为了解决这个问题，android引入了本地广播的概念。发出的本地广播只可以在本应用程序内部传播，广播接收者也只可以接受本应用程序内部的广播。具体用法如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义本地广播接收者</span></div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">LocalBroadcastReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line"></div><div class="line">    public static <span class="keyword">final</span> <span class="type">String</span> <span class="type">TAG</span> = <span class="string">"MyReceiver"</span>;</div><div class="line"></div><div class="line">    public <span class="type">LocalBroadcastReceiver</span>() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    public void onReceive(<span class="type">Context</span> context, <span class="type">Intent</span> intent) &#123;</div><div class="line">        <span class="type">Log</span>.i(<span class="type">TAG</span>, <span class="string">"onReceive: "</span> + intent.hashCode());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="type">LocalBroadcastManager</span> lbm = <span class="type">LocalBroadcastManager</span>.getInstance(<span class="keyword">this</span>);</div><div class="line">    <span class="keyword">private</span> <span class="type">LocalBroadcastReceiver</span> receiver = <span class="keyword">new</span> <span class="type">LocalBroadcastReceiver</span>();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> void onCreate(<span class="type">Bundle</span> savedInstanceState) &#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(<span class="type">R</span>.layout.activity_sticky);</div><div class="line">        <span class="type">Toolbar</span> toolbar = (<span class="type">Toolbar</span>) findViewById(<span class="type">R</span>.id.toolbar);</div><div class="line">        setSupportActionBar(toolbar);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 注册本地广播</div><div class="line">     */</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> void onResume() &#123;</div><div class="line">        <span class="keyword">super</span>.onResume();</div><div class="line">        <span class="type">IntentFilter</span> filter = <span class="keyword">new</span> <span class="type">IntentFilter</span>(<span class="string">"cn.codemperor.sample.local_broadcast"</span>);</div><div class="line">        lbm.registerReceiver(receiver, filter);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 发送本地广播</div><div class="line">     * @param view</div><div class="line">     */</div><div class="line">    public void sendStickyBroadcast(<span class="type">View</span> view )&#123;</div><div class="line">        <span class="type">Intent</span> intent = <span class="keyword">new</span> <span class="type">Intent</span>(<span class="string">"cn.codemperor.summary.sticky"</span>);</div><div class="line">       <span class="comment">// sendStickyBroadcast(intent);</span></div><div class="line"></div><div class="line">        sendOrderedBroadcast(intent, <span class="literal">null</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 移除本地广播注册</div><div class="line">     */</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> void onPause() &#123;</div><div class="line">        <span class="keyword">super</span>.onPause();</div><div class="line">        lbm.unregisterReceiver(receiver);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注：</strong>本地广播只可以使用代码注册</p>
+</blockquote>
+
       
     </div>
 
@@ -348,6 +439,18 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Broadcast/" rel="tag">#Broadcast</a>
+          
+            <a href="/tags/本地广播/" rel="tag">#本地广播</a>
+          
+            <a href="/tags/有序广播/" rel="tag">#有序广播</a>
+          
+            <a href="/tags/粘性广播/" rel="tag">#粘性广播</a>
+          
+        </div>
       
 
       
@@ -391,7 +494,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/08/17/android-BroadCast与StickBroadCast/"
-           data-title="android-BroadCast与StickBroadCast" data-url="http://yoursite.com/2016/08/17/android-BroadCast与StickBroadCast/">
+           data-title="android-BroadCast" data-url="http://yoursite.com/2016/08/17/android-BroadCast与StickBroadCast/">
       </div>
     
   </div>
@@ -453,7 +556,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -482,7 +585,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#广播简述"><span class="nav-number">1.</span> <span class="nav-text">广播简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#广播分类"><span class="nav-number">2.</span> <span class="nav-text">广播分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#普通广播"><span class="nav-number">2.1.</span> <span class="nav-text">普通广播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有序广播"><span class="nav-number">2.2.</span> <span class="nav-text">有序广播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断广播"><span class="nav-number">2.3.</span> <span class="nav-text">中断广播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#粘性广播（StickBroadcastReceiver？）"><span class="nav-number">2.4.</span> <span class="nav-text">粘性广播（StickBroadcastReceiver？）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#广播接收者的注册方式"><span class="nav-number">3.</span> <span class="nav-text">广播接收者的注册方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#静态注册"><span class="nav-number">3.1.</span> <span class="nav-text">静态注册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态注册"><span class="nav-number">3.2.</span> <span class="nav-text">动态注册</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#接收系统广播"><span class="nav-number">4.</span> <span class="nav-text">接收系统广播</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本地广播"><span class="nav-number">5.</span> <span class="nav-text">本地广播</span></a></li></ol></div>
             
           </div>
         </section>
