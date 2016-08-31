@@ -258,6 +258,115 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/17/android-安全机制/" itemprop="url">
+                  androdid-安全机制
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-17T09:53:38+08:00" content="2016-08-17">
+              2016-08-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/17/android-安全机制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/android-安全机制/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          ##12.1 沙箱
+##12.2 用户权限机制
+##12.3 应用权限机制 
+
+          
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/08/17/android-安全机制/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/17/android-WebView/" itemprop="url">
                   androdid-WebView
                 </a>
@@ -621,123 +730,6 @@ DecorMeasureSpec = WindowSize +
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/17/android-handler/" itemprop="url">
-                  android-handler
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-17T09:51:30+08:00" content="2016-08-17">
-              2016-08-17
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/17/android-handler/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/android-handler/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Handler, MessageQueue, Looper概述众所周知，Handler的运行需要底层MQ和lopper的支撑，它主要用来实现线程切换。比如读取本地文件内容，读取完毕之后将其展示到UI，如果我们直接使用主线程去读物文件，当文件很大时，则会出现ANR错误。那么对于这种耗时操作我们必须在一个新的线程中去执行，执行完毕之后将结果通知给主线程即可。
-MessageQueue简称MQ，直译为消息队列，虽然名为队列，但他使用了单向链表来存储消息。
-由于MQ仅仅用来存储消息，那么我们如何操作消息呢？Looper应用而生。Looper会以死循环的形式去查询MQ中是否包含新的消息，如果有，则将该消息发送给创建Handler的线程。
-
-想一想，Android是如何限制在非UI线程中访问UI的呢？为什么要限制呢？
-    android中使用了ViewRootImpl对UI操作做校验。至于为什么要限制，则是因为UI操作不是线程安全的。如果对UI操作加锁，一则效率低下，二则处理负责。
-
-
-Handler实现原理Handler只能在拥有Looper的线程中创建（因为在UI线程中，系统已经自动为我们创建好Looper了，所以我们可以直接新建Handler来实现线程切换；系统还提供了HandlerThread来创建带有Looper的线程，这样我们也可以在HandlerThread中直接创建Handler）。
-也就是说Handler中有Looper，Looper中又有MQ，那么三者的关系就很明确了。Handler先发送消息给MQ，然后Looper遍历MQ将查找到的Message发送给Handler。
-泛泛而谈太过空洞，我们结合实例来说说吧~之前我们提到过HandlerThread，它自带Looper，那么我们可以通过分析它的原来来弄懂Looper的具体使用过程及原理。HandlerThread的源码不长，我们一段一段来分析。
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586public class Handle
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/17/android-handler/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -800,7 +792,7 @@ Handler实现原理Handler只能在拥有Looper的线程中创建（因为在UI�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
