@@ -1,0 +1,758 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据存储方案," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在日常的开发工作中，经常会保存文件、图片等操作，但是你可曾想过这些文件保存在什么位置才是最合适的？例如保存图片之后，根据是否可一在图库中查看保存在不同的位置。接下来我们就相信解释一下Android各式各样的存储方案。
+SharedPreferencesSharedPreference使用键值对的形式来保存数据，类似于Map，用法较简单，直接上代码：
+12345SharedPreferences s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于android存储方案你所需要知道的一切">
+<meta property="og:url" content="http://yoursite.com/2016/09/12/关于android存储方案你所需要知道的一切/index.html">
+<meta property="og:site_name" content="相信不可能">
+<meta property="og:description" content="在日常的开发工作中，经常会保存文件、图片等操作，但是你可曾想过这些文件保存在什么位置才是最合适的？例如保存图片之后，根据是否可一在图库中查看保存在不同的位置。接下来我们就相信解释一下Android各式各样的存储方案。
+SharedPreferencesSharedPreference使用键值对的形式来保存数据，类似于Map，用法较简单，直接上代码：
+12345SharedPreferences s">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95.png">
+<meta property="og:updated_time" content="2016-09-18T01:48:44.042Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于android存储方案你所需要知道的一切">
+<meta name="twitter:description" content="在日常的开发工作中，经常会保存文件、图片等操作，但是你可曾想过这些文件保存在什么位置才是最合适的？例如保存图片之后，根据是否可一在图库中查看保存在不同的位置。接下来我们就相信解释一下Android各式各样的存储方案。
+SharedPreferencesSharedPreference使用键值对的形式来保存数据，类似于Map，用法较简单，直接上代码：
+12345SharedPreferences s">
+<meta name="twitter:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/12/关于android存储方案你所需要知道的一切/"/>
+
+  <title> 关于android存储方案你所需要知道的一切 | 相信不可能 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">相信不可能</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Just do it.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                关于android存储方案你所需要知道的一切
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-12T15:58:40+08:00" content="2016-09-12">
+              2016-09-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/12/关于android存储方案你所需要知道的一切/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/12/关于android存储方案你所需要知道的一切/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在日常的开发工作中，经常会保存文件、图片等操作，但是你可曾想过这些文件保存在什么位置才是最合适的？例如保存图片之后，根据是否可一在图库中查看保存在不同的位置。接下来我们就相信解释一下Android各式各样的存储方案。</p>
+<h1 id="SharedPreferences"><a href="#SharedPreferences" class="headerlink" title="SharedPreferences"></a>SharedPreferences</h1><p>SharedPreference使用键值对的形式来保存数据，类似于Map，用法较简单，直接上代码：</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SharedPreferences sharedPreferences = getSharedPreferences(<span class="string">"sharedPreferenceName"</span>, MODE_PRIVATE); <span class="comment">//获取SharedPerferences对象</span></div><div class="line">SharedPreferences.Editor <span class="keyword">edit</span> = sharedPreferences.<span class="keyword">edit</span>();<span class="comment">//获取句柄</span></div><div class="line"><span class="keyword">edit</span>.putInt(<span class="string">"key"</span>, <span class="number">2</span>);<span class="comment">//添加数据</span></div><div class="line"><span class="keyword">edit</span>.commit();<span class="comment">//在添加数据之后必须提交</span></div><div class="line">sharedPreferences.getInt(<span class="string">"key"</span>, <span class="number">0</span>);<span class="comment">//从SharedPreferences中获取数据</span></div></pre></td></tr></table></figure>
+<p>SharedPreferences有4种创建模式：</p>
+<ol>
+<li>MODE_PRIVATE:仅在本应用下可以访问，且如果再次写入该文件，则直接覆盖原文件</li>
+<li>MODE_APPEND: 仅在本应用下可以访问，如果再次写入该文件，则追加</li>
+<li>MODE_WORLD_WRITABLE: 全局访问模式，已废弃</li>
+<li>MODE_WORLD_READABLE: 全局访问模式，已废弃</li>
+</ol>
+<p>SharedPreferences通常用来保存一些轻量级的数据，例如通过保存用户名和密码来实现自动登陆。</p>
+<h1 id="内部存储与外部存储"><a href="#内部存储与外部存储" class="headerlink" title="内部存储与外部存储"></a>内部存储与外部存储</h1><p>所有 Android 设备都有两个文件存储区域：“内部”和“外部”存储。这些名称在Android早期产生，当时大多数设备都提供内置的非易失性内存（内部存储），以及移动存储介质，比如微型SD卡（外部存储）。一些设备将永久性存储空间划分为“内部”和“外部”分区，即便没有移动存储介质，也始终有两个存储空间，并且无论外部存储设备是否可移动，API的行为均一致。以下列表汇总了关于各个存储空间的实际信息。
+|内部存储|外部存储|
+| :——–   | :—– |
+|始终可用|不一定可用|
+|默认情况只有本应用可以访问此处保存的文件|全局可读(除外部存储的私有目录)|
+|卸载应用时，位于此处的所有数据都会被删除|需要手动删除(除外部存储的私有目录)|</p>
+<h2 id="内部存储"><a href="#内部存储" class="headerlink" title="内部存储"></a>内部存储</h2><p>在android中内部存储仅有一个位置：</p>
+<blockquote>
+<p>./data/data/packageName/</p>
+</blockquote>
+<p><strong>主要用到两个方法</strong>
+<strong>getFilesDir()</strong>
+返回/data/data/packageName/</p>
+<p><strong>getCacheDir()</strong>
+返回应用临时缓存文件的内部目录的File。务必删除所有不再需要的文件并对在指定时间您使用的内存量实现合理大小限制，比如，1MB。如果在系统即将耗尽存储，它会在不进行警告的情况下删除您的缓存文件。</p>
+<p>或者，您可以调用 openFileOutput() 获取写入到内部目录中的文件的 FileOutputStream 。例如：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">String</span> filename = <span class="string">"myfile"</span>;</div><div class="line"><span class="keyword">String</span> <span class="keyword">string</span> = <span class="string">"Hello world!"</span>;</div><div class="line">FileOutputStream outputStream;</div><div class="line"></div><div class="line"><span class="built_in">try</span> &#123;</div><div class="line">  outputStream = openFileOutput(filename, Context.MODE_PRIVATE);</div><div class="line">  outputStream.<span class="built_in">write</span>(<span class="keyword">string</span>.getBytes());</div><div class="line">  outputStream.<span class="built_in">close</span>();</div><div class="line">&#125; <span class="built_in">catch</span> (Exception e) &#123;</div><div class="line">  e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果需要缓存某些文件，则应使用createTempFile()。例如，以下方法从URL提取文件名并在您的应用的内部缓存目录中以该名称创建文件：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">File</span> getTempFile(Context context, String url) &#123;</div><div class="line">    <span class="keyword">File</span> <span class="keyword">file</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        String fileName = Uri.parse(url).getLastPathSegment();</div><div class="line">        <span class="keyword">file</span> = <span class="keyword">File</span>.createTempFile(fileName, <span class="keyword">null</span>, context.getCacheDir());</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">        <span class="comment">// Error while creating file</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">file</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="外部存储"><a href="#外部存储" class="headerlink" title="外部存储"></a>外部存储</h2><p>正如前面所说，我们无法保证外部存储时时刻刻都是可用的，所以我们在使用它之前必须进行检查，如果挂载了外部存储，且该外部存储是可读写的，才可以进行操作，具体实现如下：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="comment">(Environment.getExternalStorageState()</span>.equals<span class="comment">(Environment.MEDIA_MOUNTED)</span>) &#123;</div><div class="line">    <span class="keyword">if</span> <span class="comment">(Environment.getExternalStorageState()</span>.equals<span class="comment">(Environment.MEDIA_MOUNTED_READ_ONLY)</span>) &#123;</div><div class="line">        <span class="comment">//只能进行读操作</span></div><div class="line">    &#125; else &#123;</div><div class="line">        <span class="comment">//可以进行写操作</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>外部存储分为九大共有目录和私有文件两类，我们分别来讲解一下两种目录</p>
+<h3 id="九大共有目录"><a href="#九大共有目录" class="headerlink" title="九大共有目录"></a>九大共有目录</h3><p>九大共有目录分别为：DIRECTORY_MUSIC，DIRECTORY_PODCASTS，DIRECTORY_RINGTONES，DIRECTORY_ALARMS，DIRECTORY_NOTIFICATIONS，DIRECTORY_PICTURES，DIRECTORY_MOVIES，DIRECTORY_DOWNLOADS，DIRECTORY_DCIM。</p>
+<p>我们最常食用的就是DIRECTORY_DCIM这个类型了。因为用户想要在图库中看到他在应用中保存的图片，一种简单且友好的方式就是使用Environment.getExternalStoragePublicDirectory(type)进行存储，直接上代码了：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * 将文件保存到本地磁盘（一般情况下，应用无关数据必须存储在本地磁盘，在应用卸载之后也不会丢失）</div><div class="line">     *</div><div class="line">     * @param file           源文件</div><div class="line">     * @param type           type The type of storage directory to return.  Should be one of</div><div class="line">     *                       &#123;@link Environment#DIRECTORY_MUSIC&#125;, &#123;@link Environment#DIRECTORY_PODCASTS&#125;,</div><div class="line">     *                       &#123;@link Environment#DIRECTORY_RINGTONES&#125;, &#123;@link Environment#DIRECTORY_ALARMS&#125;,</div><div class="line">     *                       &#123;@link Environment#DIRECTORY_NOTIFICATIONS&#125;, &#123;@link Environment#DIRECTORY_PICTURES&#125;,</div><div class="line">     *                       &#123;@link Environment#DIRECTORY_MOVIES&#125;, &#123;@link Environment#DIRECTORY_DOWNLOADS&#125;, or</div><div class="line">     *                       &#123;@link Environment#DIRECTORY_DCIM&#125;.  May not be null.</div><div class="line">     * @param targetFileName 目标文件名</div><div class="line">     * @return 文件路径</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">String</span> saveFileToDisk(Context ctx, <span class="built_in">File</span> file, <span class="keyword">String</span> type, <span class="keyword">String</span> targetFileName) &#123;</div><div class="line">        <span class="built_in">File</span> directory = Environment.getExternalStoragePublicDirectory(type);</div><div class="line">        <span class="built_in">if</span> (directory.<span class="built_in">exists</span>()) &#123;</div><div class="line">            <span class="built_in">try</span> &#123;</div><div class="line">                <span class="keyword">String</span> targetPath = directory + <span class="built_in">File</span>.separator + ctx.getString(R.<span class="keyword">string</span>.app_name)</div><div class="line">                        + <span class="built_in">File</span>.separator;</div><div class="line">                <span class="built_in">File</span> targetDir = <span class="keyword">new</span> <span class="built_in">File</span>(targetPath);</div><div class="line">                <span class="comment">//判断storage/emulated/0/DCIM/AppName目录是否存在</span></div><div class="line">                <span class="built_in">if</span> (!targetDir.<span class="built_in">exists</span>()) &#123;</div><div class="line">                    targetDir.<span class="built_in">mkdir</span>();</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                FileInputStream is = <span class="keyword">new</span> FileInputStream(file);</div><div class="line">                FileOutputStream os = <span class="keyword">new</span> FileOutputStream(targetPath + targetFileName);</div><div class="line">                <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line">                <span class="keyword">int</span> length = <span class="number">-1</span>;</div><div class="line">                <span class="built_in">while</span> ((length = is.<span class="built_in">read</span>(bytes)) != <span class="number">-1</span>) &#123;</div><div class="line">                    os.<span class="built_in">write</span>(bytes, <span class="number">0</span>, length);</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                os.<span class="built_in">flush</span>();</div><div class="line">                os.<span class="built_in">close</span>();</div><div class="line">                is.<span class="built_in">close</span>();</div><div class="line">                <span class="built_in">return</span> targetPath;</div><div class="line">            &#125; <span class="built_in">catch</span> (IOException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">return</span> null;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>通过这段代码，就可以将九大共有类型的文件保存起来。如果是图片，则保存在storage/emulated/0/DCIM/appName/文件名。
+/storage/emulated/0/Android/data/cn.bupt.sse309.summary/cache</p>
+<h3 id="外部存储的私有文件"><a href="#外部存储的私有文件" class="headerlink" title="外部存储的私有文件"></a>外部存储的私有文件</h3><p>尽管这些文件在技术上可被用户和其他应用访问（因为它们在外部存储上），它们是实际上不向您的应用之外的用户提供值的文件。当用户卸载您的应用时，系统会删除私有文件。</p>
+<p>外部存储的私有存储路径仅有两个：</p>
+<ol>
+<li>getExternalFilesDir(type);
+该方法有一个type参数，如果为null，则默认返回/storage/emulated/0/Android/data/packageName/files/，如果为Enviroment.DIRECTORY_DCIM，则返回//存储在/storage/emulated/0/android/data/packageName/files/DCIM。保存在该文件夹下的文件默认不可见，但是可以在文件浏览器中搜索到（华为 荣耀7亲测）。</li>
+<li>getExternalCacheDir(); 
+该方法返回/storage/emulated/0/Android/data/packageName/cache，通常用来存放图片缓存。</li>
+</ol>
+<blockquote>
+<p>！！！注意：一定要记得添加以下权限：
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:<span class="built_in">name</span>=<span class="string">"android.permission.WRITE_EXTERNAL_STORRAGE"</span>/&gt;</div><div class="line">&lt;uses-permission android:<span class="built_in">name</span>=<span class="string">"android.permission.READ_EXTERNAL_STORAGE"</span>/&gt;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p><img src="http://oc1ju78pc.bkt.clouddn.com/%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95.png" alt="测试图"></p>
+<h1 id="Raw"><a href="#Raw" class="headerlink" title="Raw"></a>Raw</h1><p>位置:res/raw/
+在raw文件夹下不可有文件夹，只能存放单独的文件。程序打包为apk之后，该位置的文件均以原格式存在。</p>
+<p>该目录通常用来放置一些大图片，或者某些数据文件，例如全国省市县.json。</p>
+<p>Raw目录下的文件会映射到resource中，因此我们 访问Raw文件时，可以通过resource来访问</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">InputStream inputStream</span> = getResource().openRawResource(R.raw.test);</div></pre></td></tr></table></figure>
+<h1 id="Assets"><a href="#Assets" class="headerlink" title="Assets"></a>Assets</h1><p>位置：src/main/assets
+在assets我文件夹下的文件可以以任意深度存在。程序打包为apk之后，该位置的文件均以原格式存在。</p>
+<p>Assets下的文件不会映射到resource中，我们必须使用AssetManager来访问。</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">AssetManager am</span> = getResource().getAssets();</div><div class="line"><span class="attribute">InputStream is</span> = am.open(<span class="string">"test.png"</span>);</div></pre></td></tr></table></figure>
+<h1 id="缓存文件"><a href="#缓存文件" class="headerlink" title="缓存文件"></a>缓存文件</h1><p>现在我们已经知道，在内部存储中和外部存储中系统都为我们提供了缓存区，但是这两者有什么区别呢？何时使用内部缓存区，何时使用外部缓存区呢？我们一一来说明。</p>
+<h2 id="内部缓存区"><a href="#内部缓存区" class="headerlink" title="内部缓存区"></a>内部缓存区</h2><p>我们可以通过<strong>getCacheDir()</strong>方法来获取内部缓存区。因为内部存储是应用私有的，所以内部缓存区也是应用私有的。由于内部存储相对较为宝贵，所以我们必须对缓存文件的大小进行限制，比如1MB，当内部缓存大小超过1M时，则删除某些文件。也正因为内部存储更为宝贵，当内部存储紧张时，系统会不进行任何警告的删除内部缓存区文件。所以一般情况下，都会将需要持久性访问的缓存文件放置在外部缓存区。</p>
+<h2 id="外部缓存区"><a href="#外部缓存区" class="headerlink" title="外部缓存区"></a>外部缓存区</h2><p>getExternalCacheDir(); 
+该方法返回/storage/emulated/0/Android/data/packageName/cache，通常用来存放图片缓存。</p>
+<h1 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h1><p>参见<a href="http://blog.csdn.net/guolin_blog/article/details/38461239" target="_blank" rel="external">郭霖-数据库高手秘籍</a></p>
+<h1 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h1><h2 id="Xml"><a href="#Xml" class="headerlink" title="Xml"></a>Xml</h2><p>参见<a href="http://www.jianshu.com/p/e636f4f8487b" target="_blank" rel="external">简书–@Carson_Ho:Android开发：XML简介及DOM、SAX、PULL解析对比</a></p>
+<h2 id="Json"><a href="#Json" class="headerlink" title="Json"></a>Json</h2><p>参见：
+<a href="http://www.jianshu.com/p/e740196225a4" target="_blank" rel="external">简书–@怪盗kidou：Gson使用指南-1</a>
+    <a href="http://www.jianshu.com/p/c88260adaf5e" target="_blank" rel="external">简书–@怪盗kidou：Gson使用指南-2</a>
+    <a href="http://www.jianshu.com/p/0e40a52c0063" target="_blank" rel="external">简书–@怪盗kidou：Gson使用指南-3</a>
+    <a href="http://www.jianshu.com/p/3108f1e44155" target="_blank" rel="external">简书–@怪盗kidou：Gson使用指南-4</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>支持我，就请赞赏我把！O(∩_∩)O哈哈~</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat_pay.png" alt="codempror WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/ali_pay.jpg" alt="codempror Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据存储方案/" rel="tag">#数据存储方案</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/31/android-handler/" rel="next" title="android-handler">
+                <i class="fa fa-chevron-left"></i> android-handler
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/12/关于android存储方案你所需要知道的一切/"
+           data-title="关于android存储方案你所需要知道的一切" data-url="http://yoursite.com/2016/09/12/关于android存储方案你所需要知道的一切/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="codempror" />
+          <p class="site-author-name" itemprop="name">codempror</p>
+          <p class="site-description motion-element" itemprop="description">Just do it.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SharedPreferences"><span class="nav-number">1.</span> <span class="nav-text">SharedPreferences</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内部存储与外部存储"><span class="nav-number">2.</span> <span class="nav-text">内部存储与外部存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内部存储"><span class="nav-number">2.1.</span> <span class="nav-text">内部存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外部存储"><span class="nav-number">2.2.</span> <span class="nav-text">外部存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#九大共有目录"><span class="nav-number">2.2.1.</span> <span class="nav-text">九大共有目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外部存储的私有文件"><span class="nav-number">2.2.2.</span> <span class="nav-text">外部存储的私有文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Raw"><span class="nav-number">3.</span> <span class="nav-text">Raw</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Assets"><span class="nav-number">4.</span> <span class="nav-text">Assets</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存文件"><span class="nav-number">5.</span> <span class="nav-text">缓存文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内部缓存区"><span class="nav-number">5.1.</span> <span class="nav-text">内部缓存区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外部缓存区"><span class="nav-number">5.2.</span> <span class="nav-text">外部缓存区</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQLite"><span class="nav-number">6.</span> <span class="nav-text">SQLite</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据格式"><span class="nav-number">7.</span> <span class="nav-text">数据格式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Xml"><span class="nav-number">7.1.</span> <span class="nav-text">Xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Json"><span class="nav-number">7.2.</span> <span class="nav-text">Json</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codempror</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp</span></a>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiho"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

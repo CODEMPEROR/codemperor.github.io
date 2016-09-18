@@ -258,6 +258,147 @@
             
               
                 
+                <a class="post-title-link" href="/2016/09/12/关于android存储方案你所需要知道的一切/" itemprop="url">
+                  关于android存储方案你所需要知道的一切
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-12T15:58:40+08:00" content="2016-09-12">
+              2016-09-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/12/关于android存储方案你所需要知道的一切/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/12/关于android存储方案你所需要知道的一切/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          在日常的开发工作中，经常会保存文件、图片等操作，但是你可曾想过这些文件保存在什么位置才是最合适的？例如保存图片之后，根据是否可一在图库中查看保存在不同的位置。接下来我们就相信解释一下Android各式各样的存储方案。
+SharedPreferencesSharedPreference使用键值对的形式来保存数据，类似于Map，用法较简单，直接上代码：
+12345SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceName", MODE_PRIVATE); //获取SharedPerferences对象SharedPreferences.Editor edit = sharedPreferences.edit();//获取句柄edit.putInt("key", 2);//添加数据edit.commit();//在添加数据之后必须提交sharedPreferences.getInt("key", 0);//从SharedPreferences中获取数据
+SharedPreferences有4种创建模式：
+
+MODE_PRIVATE:仅在本应用下可以访问，且如果再次写入该文件，则直接覆盖原文件
+MODE_APPEND: 仅在本应用下可以访问，如果再次写入该文件，则追加
+MODE_WORLD_WRITABLE: 全局访问模式，已废弃
+MODE_WORLD_READABLE: 全局访问模式，已废弃
+
+SharedPreferences通常用来保存一些轻量级的数据，例如通过保存用户名和密码来实现自动登陆。
+内部存储与外部存储所有 Android 设备都有两个文件存储区域：“内部”和“外部”存储。这些名称在Android早期产生，当时大多数设备都提供内置的非易失性内存（内部存储），以及移动存储介质，比如微型SD卡（外部存储）。一些设备将永久性存储空间划分为“内部”和“外部”分区，即便没有移动存储介质，也始终有两个存储空间，并且无论外部存储设备是否可移动，API的行为均一致。以下列表汇总了关于各个存储空间的实际信息。
+|内部存储|外部存储|
+| :——–   | :—– |
+|始终可用|不一定可用|
+|默认情况只有本应用可以访问此处保存的文件|全局可读(除外部存储的私有目录)|
+|卸
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/12/关于android存储方案你所需要知道的一切/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/31/android-handler/" itemprop="url">
                   android-handler
                 </a>
@@ -1346,123 +1487,6 @@ scroller只是用来做平滑的滑动，也就是说如果你要让某个View�
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/17/android-Animation与Animator/" itemprop="url">
-                  android-Animation与Animator
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-17T10:56:30+08:00" content="2016-08-17">
-              2016-08-17
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/17/android-Animation与Animator/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/android-Animation与Animator/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ##8.1 帧动画
-####8.2 View 动画
-#####分类：TranslateAnimation, ScaleAnimation, RotateAnimation, AlphaAnimation
-#####案例
-
-TranslateAnimation
-ScaleAnimation
-RotateAnimation
-AlphaAnimation
-
-##8.3 属性动画 /res/animator/
-
-          
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/17/android-Animation与Animator/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1508,7 +1532,7 @@ AlphaAnimation
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1525,7 +1549,7 @@ AlphaAnimation
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
