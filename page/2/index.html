@@ -1192,12 +1192,7 @@ AlphaAnimation
 引用队列：当对象被gc回收之后，就会将该对象的引用加入引用队列。但是既然对象都已经被回收了，那为什么还要把该对象的引用保存起来呢？通常在对象被gc回收之后，都需要进行一些清理工作，比如如果你将对象的引用保存在WeakHashMap中，当对象被回收之后，就需要将引用从WeakHashMap中移除，防止map无休止的增长。
 1、 强引用StrongReference通常我们直接new出来的对象都是强引用的，例如StringBuffer buffer = new StringBuffer();我们知道在Jvm中对象都是通过引用来访问的，同一个对象可能有多个引用指向它。对于被强应用的对象，只要目前还有一个强应用指向它，那么该对象就无法被gc回收。
 2、 软引用SoftReference软引用是相对强应用来说相对较“软”的引用，只要内存足够，那么软引用指向的对象就不会被gc回收，但是如果内存不租了，就会被回收。
-3、 弱引用WeakReference弱引用是相对软应用更“弱”的引用，当gc在扫描jvm中的垃圾时，只要发现了某个对象是被软引用的，不管内存是否充足，该对象都会被回收。
-12WeakReference&lt;Activity&gt; activity = new WeakReference&lt;&gt;(widget);activity.get();
-
-通过get()方法就可以获取到所引用的对象，但是因为弱引用的特性，我们经常会遇到activity.get()返回null的情况，所以
-4、 虚引用PhantomReference虚引用没有任何“引用”的意思，换句话说就是持有虚引用的对象不持有任何引用，它可能随时被gc回收。，就目前来看虚引用好像形同虚设，没有任何作用，但凡事存在均有理由，之所以设计虚引用是想通过它来跟踪gc回收对象的过程。虚引用与软引用、弱引用的不同之处就是它必须配合引用队列来使用。当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会在回收对象的内存之前，把这个虚引用加入到与之关联的引用队列中。
-12ReferenceQueue queue = new ReferenceQueue ()
+3、 弱引用WeakRefe
           ...
 
           <div class="post-more-link text-center">
@@ -1324,15 +1319,7 @@ AlphaAnimation
           
           MultiDex相关问题dex file :dalvik executable file
 为什么需要MultiDex用Dalvik虚拟机的Android手机，在安装app的时候，会有一个优化dex的过程，使用dexopt将dex优化的更加高效于运行存储为odex，但是dexopt把每个类的方法id检索的链表长度使用了short，4字节，所以无论如何，就导致了如果一个dex中的方法数（包含Android framework methods, library methods, and methods in your own code）不能超过65535。因此当我们项目中的方法书超过65535时就会报错：
-12345678早期版本报错如下：Conversion to Dalvik format failed:Unable to execute dex: method ID not in [0, 0xffff]: 65536最近的版本报错如下：trouble writing output:Too many field references: 131000; max is 65536.You may try using --multi-dex option.
-
-这个限制通常被叫做：64k preference limit。在dexopt对dex优化时，会将dex中的方法存储在一个叫做LinearAlloc的缓冲区中，LinearAlloc缓冲区在不同版本的android手机上大小是不一样的，2.2、2.3仅有5M，android4.x提升到了8M或16M，所以当方法数过多时，dexopt就会奔溃导致程序异常终止。
-
-在android5.0之前，dalvik规定每一个apk只能包含一个dex文件，所以为了摆脱这个限制，你必须使用Google官方提供的MutiDex support library。当project编译完毕之后，MultiDex lib就会加载到primary dex中的文件，这样就可以管理其他dex的加载。
-
-注意：如果你的工程要支持api20及以下，那么必须禁用android studio的instant run。
-
-在android50及以后，开始使用了art环境取代Dalvik，而art架构本身支持多dex文件的加载。在安装apk时，art会在扫描clas
+12345678早期版本报错如下：Conversion to Dalvik format failed:Unable to execute dex: method ID not in [0, 0xffff]: 65536最近的版本报错如下：trouble writing output:Too many field references: 131000; max is 65536.You m
           ...
 
           <div class="post-more-link text-center">

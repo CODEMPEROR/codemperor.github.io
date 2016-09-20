@@ -329,13 +329,7 @@
         
           
           一、WebView基本用法123456789mWebView = (WebView) findViewById(R.id.webview);WebSettings webSettings = mWebView.getSettings();webSettings.setSavePassword(false);webSettings.setSaveFormData(false);webSettings.setJavaScriptEnabled(true);webSettings.setSupportZoom(false);mWebView.setWebChromeClient(new MyWebChromeClient());mWebView.addJavascriptInterface(new DemoJavaScriptInterface(), "demo");mWebView.loadUrl("file:///android_asset/demo.html");
-1. 支持Js12mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);mWebSettings.setJavaScriptEnabled(true);// 支持js
-2. 缩放设置12345// 设置是否构建缩放工具，如果该属性设置为false，则不论其他属性如何设置，均不支持缩放。mWebSettings.setBuiltInZoomControls(true);mWebSettings.setSupportZoom(true);// 不显示缩放控件mWebSettings.setDisplayZoomControls(false);
-3. WebView适应屏幕大小方法1：(推荐使用)
-12mWebSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小mWebSettings.setUseWideViewPort(true);  //将图片调整到适合webview的大小
-方法2：（deprecated）
-1mWebSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-LayoutAlgorithm是一个枚举用来控制页面的布
+1. 支持Js12mWebSettings.setJavaScriptCanOpenWindowsAutomaticall
           ...
 
           <div class="post-more-link text-center">
@@ -463,20 +457,7 @@ LayoutAlgorithm是一个枚举用来控制页面的布
           在日常的开发工作中，经常会保存文件、图片等操作，但是你可曾想过这些文件保存在什么位置才是最合适的？例如保存图片之后，根据是否可一在图库中查看保存在不同的位置。接下来我们就相信解释一下Android各式各样的存储方案。
 SharedPreferencesSharedPreference使用键值对的形式来保存数据，类似于Map，用法较简单，直接上代码：
 12345SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceName", MODE_PRIVATE); //获取SharedPerferences对象SharedPreferences.Editor edit = sharedPreferences.edit();//获取句柄edit.putInt("key", 2);//添加数据edit.commit();//在添加数据之后必须提交sharedPreferences.getInt("key", 0);//从SharedPreferences中获取数据
-SharedPreferences有4种创建模式：
-
-MODE_PRIVATE:仅在本应用下可以访问，且如果再次写入该文件，则直接覆盖原文件
-MODE_APPEND: 仅在本应用下可以访问，如果再次写入该文件，则追加
-MODE_WORLD_WRITABLE: 全局访问模式，已废弃
-MODE_WORLD_READABLE: 全局访问模式，已废弃
-
-SharedPreferences通常用来保存一些轻量级的数据，例如通过保存用户名和密码来实现自动登陆。
-内部存储与外部存储所有 Android 设备都有两个文件存储区域：“内部”和“外部”存储。这些名称在Android早期产生，当时大多数设备都提供内置的非易失性内存（内部存储），以及移动存储介质，比如微型SD卡（外部存储）。一些设备将永久性存储空间划分为“内部”和“外部”分区，即便没有移动存储介质，也始终有两个存储空间，并且无论外部存储设备是否可移动，API的行为均一致。以下列表汇总了关于各个存储空间的实际信息。
-|内部存储|外部存储|
-| :——–   | :—– |
-|始终可用|不一定可用|
-|默认情况只有本应用可以访问此处保存的文件|全局可读(除外部存储的私有目录)|
-|卸
+SharedPreferences有4
           ...
 
           <div class="post-more-link text-center">
@@ -609,10 +590,7 @@ MessageQueue简称MQ，直译为消息队列，虽然名为队列，但他使用
     android中使用了ViewRootImpl对UI操作做校验。至于为什么要限制，则是因为UI操作不是线程安全的。如果对UI操作加锁，一则效率低下，二则处理负责。
 
 
-Handler实现原理Handler只能在拥有Looper的线程中创建（因为在UI线程中，系统已经自动为我们创建好Looper了，所以我们可以直接新建Handler来实现线程切换；系统还提供了HandlerThread来创建带有Looper的线程，这样我们也可以在HandlerThread中直接创建Handler）。
-也就是说Handler中有Looper，Looper中又有MQ，那么三者的关系就很明确了。Handler先发送消息给MQ，然后Looper遍历MQ将查找到的Message发送给Handler。
-泛泛而谈太过空洞，我们结合实例来说说吧~之前我们提到过HandlerThread，它自带Looper，那么我们可以通过分析它的原来来弄懂Looper的具体使用过程及原理。HandlerThread的源码不长，我们一段一段来分析。
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586public class Handle
+Handler实现原理Handler只能在拥有Looper的线程中创建（因为在UI线程中，系统已经自动为我们
           ...
 
           <div class="post-more-link text-center">
@@ -746,9 +724,7 @@ Handler实现原理Handler只能在拥有Looper的线程中创建（因为在UI�
 发送方式
 1context.sendOrderedBroadcast(intent， receiverPermission);
 可以看到，发送有序广播时多了一个字段receiverPermission，该字段指出receiver要接受有序广播所需的权限。也就是说如果发送有序广播时指定了该字段，那么receiver必须拥有这个权限才可以接收到该广播。如果该字段为null，则不做权限校验。举例如下：
-12Intent intent  = new Intent("cn.codemperor.sample.ordered");activity.sendOrderedBroadcast(intent, "cn.codemperor.sample.orderedbroadcast_permission");
-然后我们在注册广播时需要指定”cn.codemperor.sample.orderedbroadcast_permission”权限，否则我们将无法收到消息。
-12345678&lt;receiver android:name="cn.codemperor.sample.OrderedBroadcastPermissionTest"    android:enabled="true"    android:exported="false"    android:permission="cn.codemperor.sample.orderedbroadcast_permission"&gt;    &lt;intent-filter android:priority="1000"&gt;            &lt;acti
+12Intent intent  = n
           ...
 
           <div class="post-more-link text-center">
@@ -887,9 +863,7 @@ Service是什么？在android中Service是只在后台执行操作且没有页�
 服务根据用途不同而分为两类：启动的服务和绑定的服务。
 
 Service的基本用法。要实现自己的Service去完成一些后台操作，必须继承自Service，并重写它的onCreate(), onStartCommand(), onDestroy()方法。
-1234567891011121314151617181920212223public class MyService extends Service&#123;    public static final String TAG = "MyService";        @Override    public void onCreate()&#123;        super.onCreate();    &#125;        @Override    public int onStartCommand(Intent intent, int flags, int startId)&#123;        return super.onStartCommand(intent, flags, startId);    &#125;        @Override    public void onDestroy()&#123;        super.onDestroy();    &#125;        @Override    public IBinder onBind(Intent intent)&#123;        return null;    &#125;&#125;
-然后在androidManifest.xml中进行注册
-1&l
+1234567891011121314151617181920212223public class MyService extends Service&#123;    public 
           ...
 
           <div class="post-more-link text-center">
@@ -1028,18 +1002,7 @@ singleTop
 
 singleTask
 
-栈内复用模式。如果即将启动的Activity在某个任务栈中存在，则直接复用该Activity实例。再次过程中，只会执行onNewIntnent。具体而言，当存在该Activity所需要的任务栈，那么在该任务栈中查找该Activity的实例，如果查找到则直接复用，否则新建该Activity的实例并入栈。如果不存在该Activity的任务栈，则新建一个任务栈，然后新建Activity实例，并入栈。
-
- 注意：当栈内复用时，那么将会把栈内该Activity之上的所有实例出栈。 
-
-singleInstance
-栈内单例模式。如果某个Activity为该模式，那么该Activity只能单独的存在于某一个任务栈中，其他特征与singleTask相同。
-
-
-
-注意： 上述任务栈是由taskAffinity属性来判定的，默认情况下所有的Activity的taskAffinity属性都是应用包名。如果想指定某个Activity所在的任务栈，修改该属性即可。该属性仅仅在于singleTask或allowTaskReparenting配合使用时才有意义。
-附：FLAF vs android:launchMode
-FLAG_ACTIVITY_NEW_TASK:sing
+栈内复用模式。如果即将启动的Activity在某个任务栈中存在
           ...
 
           <div class="post-more-link text-center">
