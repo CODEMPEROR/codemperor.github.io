@@ -95,7 +95,7 @@ SharedPreferencesSharedPreference使用键值对的形式来保存数据，类�
 SharedPreferencesSharedPreference使用键值对的形式来保存数据，类似于Map，用法较简单，直接上代码：
 12345SharedPreferences s">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95.png">
-<meta property="og:updated_time" content="2016-09-18T01:48:44.042Z">
+<meta property="og:updated_time" content="2016-09-19T01:48:10.282Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于android存储方案你所需要知道的一切">
 <meta name="twitter:description" content="在日常的开发工作中，经常会保存文件、图片等操作，但是你可曾想过这些文件保存在什么位置才是最合适的？例如保存图片之后，根据是否可一在图库中查看保存在不同的位置。接下来我们就相信解释一下Android各式各样的存储方案。
@@ -356,9 +356,9 @@ SharedPreferencesSharedPreference使用键值对的形式来保存数据，类�
 <blockquote>
 <p>./data/data/packageName/</p>
 </blockquote>
-<p><strong>主要用到两个方法</strong>
-<strong>getFilesDir()</strong>
-返回/data/data/packageName/</p>
+<p><strong>主要用到两个方法</strong></p>
+<p><strong>getFilesDir()</strong>
+返回/data/data/packageName/files</p>
 <p><strong>getCacheDir()</strong>
 返回应用临时缓存文件的内部目录的File。务必删除所有不再需要的文件并对在指定时间您使用的内存量实现合理大小限制，比如，1MB。如果在系统即将耗尽存储，它会在不进行警告的情况下删除您的缓存文件。</p>
 <p>或者，您可以调用 openFileOutput() 获取写入到内部目录中的文件的 FileOutputStream 。例如：</p>
@@ -466,6 +466,10 @@ SharedPreferencesSharedPreference使用键值对的形式来保存数据，类�
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2016/09/20/android-WebView/" rel="prev" title="关于WebView你所需要知道的一切">
+                关于WebView你所需要知道的一切 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -553,7 +557,7 @@ SharedPreferencesSharedPreference使用键值对的形式来保存数据，类�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
