@@ -1,0 +1,722 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android性能优化之内存," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一、Android内存管理模型Art(Android RunTime)虚拟机和Dalvik虚拟机都是以分页机制paging和内存映射机制(memory-mapping, mmapping)来管理内存。
+The Android Runtime (ART) and Dalvik virtual machine use paging and memory-mapping (mmapping) to ma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能优化之内存.md">
+<meta property="og:url" content="http://yoursite.com/2016/11/14/Android性能优化之内存/index.html">
+<meta property="og:site_name" content="相信不可能">
+<meta property="og:description" content="一、Android内存管理模型Art(Android RunTime)虚拟机和Dalvik虚拟机都是以分页机制paging和内存映射机制(memory-mapping, mmapping)来管理内存。
+The Android Runtime (ART) and Dalvik virtual machine use paging and memory-mapping (mmapping) to ma">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/android%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/OOM%E5%88%86%E7%B1%BB.png">
+<meta property="og:updated_time" content="2016-11-14T03:23:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android性能优化之内存.md">
+<meta name="twitter:description" content="一、Android内存管理模型Art(Android RunTime)虚拟机和Dalvik虚拟机都是以分页机制paging和内存映射机制(memory-mapping, mmapping)来管理内存。
+The Android Runtime (ART) and Dalvik virtual machine use paging and memory-mapping (mmapping) to ma">
+<meta name="twitter:image" content="http://oc1ju78pc.bkt.clouddn.com/android%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/14/Android性能优化之内存/"/>
+
+  <title> Android性能优化之内存.md | 相信不可能 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">相信不可能</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Just do it.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android性能优化之内存.md
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-14T11:22:05+08:00" content="2016-11-14">
+              2016-11-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/14/Android性能优化之内存/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/14/Android性能优化之内存/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、Android内存管理模型"><a href="#一、Android内存管理模型" class="headerlink" title="一、Android内存管理模型"></a>一、Android内存管理模型</h1><p>Art(Android RunTime)虚拟机和Dalvik虚拟机都是以分页机制paging和内存映射机制(memory-mapping, mmapping)来管理内存。
+The Android Runtime (ART) and Dalvik virtual machine use paging and memory-mapping (mmapping) to manage memory. This means that any memory an app modifies—whether by allocating new objects or touching mmapped pages—remains resident in RAM and cannot be paged out. The only way to release memory from an app is to release object references that the app holds, making the memory available to the garbage collector. That is with one exception: any files mmapped in without modification, such as code, can be paged out of RAM if the system wants to use that memory elsewhere.</p>
+<h1 id="二、如何查询App的内存占用情况"><a href="#二、如何查询App的内存占用情况" class="headerlink" title="二、如何查询App的内存占用情况"></a>二、如何查询App的内存占用情况</h1><ol>
+<li>使用dumpsys命令<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">dumpsys meminfo PackageName</div><div class="line"><span class="comment">//or dumpsys meminfo pid</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>查询结果如下所示：
+<figure class="highlight http"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">NOTE</span>: 下面的内存信息可能随着Android版本的不同而有不同的表示形式</div><div class="line"></div><div class="line"><span class="lsl"><span class="comment">/** MEMINFO in pid 18227 [com.google.android.apps.maps] **/</span></span></div><div class="line">                   Pss  Private  Private  Swapped     Heap     Heap     Heap</div><div class="line">                 Total    Dirty    Clean    Dirty     Size    Alloc     Free</div><div class="line">                ------   ------   ------   ------   ------   ------   ------</div><div class="line">  Native Heap    <span class="number">10468</span>    <span class="number">10408</span>        <span class="number">0</span>        <span class="number">0</span>    <span class="number">20480</span>    <span class="number">14462</span>     <span class="number">6017</span></div><div class="line">  Dalvik Heap    <span class="number">34340</span>    <span class="number">33816</span>        <span class="number">0</span>        <span class="number">0</span>    <span class="number">62436</span>    <span class="number">53883</span>     <span class="number">8553</span></div><div class="line"> Dalvik Other      <span class="number">972</span>      <span class="number">972</span>        <span class="number">0</span>        <span class="number">0</span></div><div class="line">        Stack     <span class="number">1144</span>     <span class="number">1144</span>        <span class="number">0</span>        <span class="number">0</span></div><div class="line">      Gfx dev    <span class="number">35300</span>    <span class="number">35300</span>        <span class="number">0</span>        <span class="number">0</span></div><div class="line">    Other dev        <span class="number">5</span>        <span class="number">0</span>        <span class="number">4</span>        <span class="number">0</span></div><div class="line">     .so mmap     <span class="number">1943</span>      <span class="number">504</span>      <span class="number">188</span>        <span class="number">0</span></div><div class="line">    .apk mmap      <span class="number">598</span>        <span class="number">0</span>      <span class="number">136</span>        <span class="number">0</span></div><div class="line">    .ttf mmap      <span class="number">134</span>        <span class="number">0</span>       <span class="number">68</span>        <span class="number">0</span></div><div class="line">    .dex mmap     <span class="number">3908</span>        <span class="number">0</span>     <span class="number">3904</span>        <span class="number">0</span></div><div class="line">    .oat mmap     <span class="number">1344</span>        <span class="number">0</span>       <span class="number">56</span>        <span class="number">0</span></div><div class="line">    .art mmap     <span class="number">2037</span>     <span class="number">1784</span>       <span class="number">28</span>        <span class="number">0</span></div><div class="line">   Other mmap       <span class="number">30</span>        <span class="number">4</span>        <span class="number">0</span>        <span class="number">0</span></div><div class="line">   EGL mtrack    <span class="number">73072</span>    <span class="number">73072</span>        <span class="number">0</span>        <span class="number">0</span></div><div class="line">    GL mtrack    <span class="number">51044</span>    <span class="number">51044</span>        <span class="number">0</span>        <span class="number">0</span></div><div class="line">      Unknown      <span class="number">185</span>      <span class="number">184</span>        <span class="number">0</span>        <span class="number">0</span></div><div class="line">        TOTAL   <span class="number">216524</span>   <span class="number">208232</span>     <span class="number">4384</span>        <span class="number">0</span>    <span class="number">82916</span>    <span class="number">68345</span>    <span class="number">14570</span></div></pre></td></tr></table></figure></p>
+<p>Here is an older dumpsys on Dalvik of the gmail app:
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">** MEMINFO in pid 9953 <span class="selector-attr">[com.google.android.gm]</span> **</div><div class="line">                 <span class="selector-tag">Pss</span>     <span class="selector-tag">Pss</span>  <span class="selector-tag">Shared</span> <span class="selector-tag">Private</span>  <span class="selector-tag">Shared</span> <span class="selector-tag">Private</span>    <span class="selector-tag">Heap</span>    <span class="selector-tag">Heap</span>    <span class="selector-tag">Heap</span></div><div class="line">               <span class="selector-tag">Total</span>   <span class="selector-tag">Clean</span>   <span class="selector-tag">Dirty</span>   <span class="selector-tag">Dirty</span>   <span class="selector-tag">Clean</span>   <span class="selector-tag">Clean</span>    <span class="selector-tag">Size</span>   <span class="selector-tag">Alloc</span>    <span class="selector-tag">Free</span></div><div class="line">              <span class="selector-tag">------</span>  <span class="selector-tag">------</span>  <span class="selector-tag">------</span>  <span class="selector-tag">------</span>  <span class="selector-tag">------</span>  <span class="selector-tag">------</span>  <span class="selector-tag">------</span>  <span class="selector-tag">------</span>  <span class="selector-tag">------</span></div><div class="line">  <span class="selector-tag">Native</span> <span class="selector-tag">Heap</span>      <span class="selector-tag">0</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>    <span class="selector-tag">7800</span>    <span class="selector-tag">7637</span>(<span class="number">6</span>)  <span class="selector-tag">126</span></div><div class="line">  <span class="selector-tag">Dalvik</span> <span class="selector-tag">Heap</span>   <span class="selector-tag">5110</span>(<span class="number">3</span>)    <span class="selector-tag">0</span>    <span class="selector-tag">4136</span>    <span class="selector-tag">4988</span>(<span class="number">3</span>)    <span class="selector-tag">0</span>       <span class="selector-tag">0</span>    <span class="selector-tag">9168</span>    <span class="selector-tag">8958</span>(<span class="number">6</span>)  <span class="selector-tag">210</span></div><div class="line"> <span class="selector-tag">Dalvik</span> <span class="selector-tag">Other</span>   <span class="selector-tag">2850</span>       <span class="selector-tag">0</span>    <span class="selector-tag">2684</span>    <span class="selector-tag">2772</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span></div><div class="line">        <span class="selector-tag">Stack</span>     <span class="selector-tag">36</span>       <span class="selector-tag">0</span>       <span class="selector-tag">8</span>      <span class="selector-tag">36</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span></div><div class="line">       <span class="selector-tag">Cursor</span>    <span class="selector-tag">136</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>     <span class="selector-tag">136</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span></div><div class="line">       <span class="selector-tag">Ashmem</span>     <span class="selector-tag">12</span>       <span class="selector-tag">0</span>      <span class="selector-tag">28</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span></div><div class="line">    <span class="selector-tag">Other</span> <span class="selector-tag">dev</span>    <span class="selector-tag">380</span>       <span class="selector-tag">0</span>      <span class="selector-tag">24</span>     <span class="selector-tag">376</span>       <span class="selector-tag">0</span>       <span class="selector-tag">4</span></div><div class="line">     <span class="selector-class">.so</span> <span class="selector-tag">mmap</span>   <span class="selector-tag">5443</span>(<span class="number">5</span>) <span class="selector-tag">1996</span>    <span class="selector-tag">2584</span>    <span class="selector-tag">2664</span>(<span class="number">5</span>) <span class="selector-tag">5788</span>    <span class="selector-tag">1996</span>(<span class="number">5</span>)</div><div class="line">    <span class="selector-class">.apk</span> <span class="selector-tag">mmap</span>    <span class="selector-tag">235</span>      <span class="selector-tag">32</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>    <span class="selector-tag">1252</span>      <span class="selector-tag">32</span></div><div class="line">    <span class="selector-class">.ttf</span> <span class="selector-tag">mmap</span>     <span class="selector-tag">36</span>      <span class="selector-tag">12</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>      <span class="selector-tag">88</span>      <span class="selector-tag">12</span></div><div class="line">    <span class="selector-class">.dex</span> <span class="selector-tag">mmap</span>   <span class="selector-tag">3019</span>(<span class="number">5</span>) <span class="selector-tag">2148</span>       <span class="selector-tag">0</span>       <span class="selector-tag">0</span>    <span class="selector-tag">8936</span>    <span class="selector-tag">2148</span>(<span class="number">5</span>)</div><div class="line">   <span class="selector-tag">Other</span> <span class="selector-tag">mmap</span>    <span class="selector-tag">107</span>       <span class="selector-tag">0</span>       <span class="selector-tag">8</span>       <span class="selector-tag">8</span>     <span class="selector-tag">324</span>      <span class="selector-tag">68</span></div><div class="line">      <span class="selector-tag">Unknown</span>   <span class="selector-tag">6994</span>(<span class="number">4</span>)    <span class="selector-tag">0</span>     <span class="selector-tag">252</span>    <span class="selector-tag">6992</span>(<span class="number">4</span>)    <span class="selector-tag">0</span>       <span class="selector-tag">0</span></div><div class="line">        <span class="selector-tag">TOTAL</span>  <span class="selector-tag">24358</span>(<span class="number">1</span>) <span class="selector-tag">4188</span>    <span class="selector-tag">9724</span>   <span class="selector-tag">17972</span>(<span class="number">2</span>)<span class="selector-tag">16388</span>    <span class="selector-tag">4260</span>(<span class="number">2</span>)<span class="selector-tag">16968</span>   <span class="selector-tag">16595</span>     <span class="selector-tag">336</span></div><div class="line"></div><div class="line"> <span class="selector-tag">Objects</span></div><div class="line">               <span class="selector-tag">Views</span>:    <span class="selector-tag">426</span>         <span class="selector-tag">ViewRootImpl</span>:        <span class="selector-tag">3</span>(<span class="number">8</span>)</div><div class="line">         <span class="selector-tag">AppContexts</span>:      <span class="selector-tag">6</span>(<span class="number">7</span>)        <span class="selector-tag">Activities</span>:        <span class="selector-tag">2</span>(<span class="number">7</span>)</div><div class="line">              <span class="selector-tag">Assets</span>:      <span class="selector-tag">2</span>        <span class="selector-tag">AssetManagers</span>:        <span class="selector-tag">2</span></div><div class="line">       <span class="selector-tag">Local</span> <span class="selector-tag">Binders</span>:     <span class="selector-tag">64</span>        <span class="selector-tag">Proxy</span> <span class="selector-tag">Binders</span>:       <span class="selector-tag">34</span></div><div class="line">    <span class="selector-tag">Death</span> <span class="selector-tag">Recipients</span>:      <span class="selector-tag">0</span></div><div class="line">     <span class="selector-tag">OpenSSL</span> <span class="selector-tag">Sockets</span>:      <span class="selector-tag">1</span></div><div class="line"></div><div class="line"> <span class="selector-tag">SQL</span></div><div class="line">         <span class="selector-tag">MEMORY_USED</span>:   <span class="selector-tag">1739</span></div><div class="line">  <span class="selector-tag">PAGECACHE_OVERFLOW</span>:   <span class="selector-tag">1164</span>          <span class="selector-tag">MALLOC_SIZE</span>:       <span class="selector-tag">62</span></div></pre></td></tr></table></figure></p>
+<h2 id="1-各列字段的含义"><a href="#1-各列字段的含义" class="headerlink" title="1. 各列字段的含义"></a>1. 各列字段的含义</h2><h3 id="1-1-Private-clean-and-dirty-RAM"><a href="#1-1-Private-clean-and-dirty-RAM" class="headerlink" title="1.1 Private (clean and dirty) RAM"></a>1.1 Private (clean and dirty) RAM</h3><p>该内存区域为App进程私有部分。App关闭之后，该部分的内存被释放。通常而言，Private Dirty RAM是最为重要的，因为该部分所有的内容都只处于RAM中，不会使用分页机制将其map到硬盘。Private Dirty RAM包含，所有在App内部（也就是说不包含系统创建的）所创建的Native Heap和Dalvik Heap。而与Zygote进程共享的内存区域为Shared/Swapped Dirty RAM。</p>
+<p>Dirty与clean的区别：clean即干净数据，指该区域的数据与硬盘数据一致，不需要回写即可回收该区域内存。而Dirty正好相反，指脏数据，要回收该区域，必须先回写到硬盘。</p>
+<h3 id="1-2-Proportional-Set-Size-PSS"><a href="#1-2-Proportional-Set-Size-PSS" class="headerlink" title="1.2 Proportional Set Size (PSS)"></a>1.2 Proportional Set Size (PSS)</h3><p>PSS指App实际占用的物理内存大小，除了Private RAM之外，还包括与其他进程共享的内存区域（在Android都是以page为单位来分配内存的，通常page size为4KB）。注意，在计量与其他进程共享的内存大小时，是平均分配的。$$PSS = Private RAM + Shared Dirty RAM ➗ 共享进程数$$
+当进程死亡之后，其他进程的PSS就会变大，所以我们可以通过创建新的进程来缓解内存压力。</p>
+<h3 id="1-3-Heap-Size"><a href="#1-3-Heap-Size" class="headerlink" title="1.3 Heap Size"></a>1.3 Heap Size</h3><h3 id="1-4-Heap-Alloc"><a href="#1-4-Heap-Alloc" class="headerlink" title="1.4 Heap Alloc"></a>1.4 Heap Alloc</h3><h3 id="1-5-Heap-Free"><a href="#1-5-Heap-Free" class="headerlink" title="1.5 Heap Free"></a>1.5 Heap Free</h3><h2 id="2-各行字段的含义"><a href="#2-各行字段的含义" class="headerlink" title="2. 各行字段的含义"></a>2. 各行字段的含义</h2><h3 id="2-1-Native-Heap"><a href="#2-1-Native-Heap" class="headerlink" title="2.1 Native Heap"></a>2.1 Native Heap</h3><p>本地堆</p>
+<h3 id="2-2-Dalvik-Heap"><a href="#2-2-Dalvik-Heap" class="headerlink" title="2.2 Dalvik Heap"></a>2.2 Dalvik Heap</h3><p>Java 虚拟机堆</p>
+<h3 id="2-3-Dalvik-Other-包括LinearAlloc-Accounting-Code-cache"><a href="#2-3-Dalvik-Other-包括LinearAlloc-Accounting-Code-cache" class="headerlink" title="2.3 Dalvik Other: 包括LinearAlloc, Accounting, Code_cache"></a>2.3 Dalvik Other: 包括LinearAlloc, Accounting, Code_cache</h3><p><strong>LinearAlloc</strong>: JVM存储载入类的方法信息的区域。
+<strong>Accounting</strong>: 包括dalvik-aux-structure, dalvik-bitmap, dalvik-card-table。主要用作标记和指针表。
+<strong>Code_Cache</strong>: 包括dalvik-jit-code-cache。jit编译代码后的缓存</p>
+<h3 id="2-4-Stack"><a href="#2-4-Stack" class="headerlink" title="2.4 Stack"></a>2.4 Stack</h3><p>栈区域</p>
+<h3 id="2-5-Ashmen-Anonymous-Shared-Memory-匿名共享内存"><a href="#2-5-Ashmen-Anonymous-Shared-Memory-匿名共享内存" class="headerlink" title="2.5 Ashmen: Anonymous Shared Memory, 匿名共享内存"></a>2.5 Ashmen: Anonymous Shared Memory, 匿名共享内存</h3><p>以驱动的形式，存储于内核中。有两个功能，一是辅助内存管理系统来管理不再使用的内存块。二是利用Binder通讯机制来实现进程间内存共享。</p>
+<h3 id="2-6-mmap-memory-Map"><a href="#2-6-mmap-memory-Map" class="headerlink" title="2.6 mmap: memory Map"></a>2.6 mmap: memory Map</h3><p>mmap是一种内存映射文件的方法，即将一个文件或者其它对象映射到进程的地址空间，实现文件磁盘地址和进程虚拟地址空间中一段虚拟地址的一一对映关系</p>
+<h1 id="Cow-Copy-On-Write"><a href="#Cow-Copy-On-Write" class="headerlink" title="Cow: Copy-On-Write"></a>Cow: Copy-On-Write</h1><p>fork（）会产生一个和父进程完全相同的子进程。
+<a href="http://www.cnblogs.com/biyeymyhjob/archive/2012/07/20/2601655.html" target="_blank" rel="external">Linux写时拷贝技术(copy-on-write)</a></p>
+<p>基于Ashmen和Cow，android最明显的特征就是与Zygote进程共享内存。为了加快启动速度及节约内存，Android应用的进程都是由Zygote进程fork出来的。由于Zygote进程已经载入了完整的Dalvik虚拟机和Android应用框架代码，fork出来的进程与Zygote进程共享同一块内存，这样就节约了每个进程单独载入的时间和内存。应用进程只需要载入自己的Dalvik字节码和资源即可开始工作。</p>
+<p>所以，Android应用进程包含以下几部分
+<img src="http://oc1ju78pc.bkt.clouddn.com/android%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png" alt="android应用进程内存模型"></p>
+<h1 id="OOM的分类"><a href="#OOM的分类" class="headerlink" title="OOM的分类"></a>OOM的分类</h1><p><img src="http://oc1ju78pc.bkt.clouddn.com/OOM%E5%88%86%E7%B1%BB.png" alt="OOM分类"></p>
+<h1 id="Tools-for-analyzing-RAM-usage"><a href="#Tools-for-analyzing-RAM-usage" class="headerlink" title="Tools for analyzing RAM usage"></a>Tools for analyzing RAM usage</h1><h2 id="DDMS"><a href="#DDMS" class="headerlink" title="DDMS"></a>DDMS</h2><p><a href="https://developer.android.com/studio/profile/ddms.html" target="_blank" rel="external">DDMS用法</a></p>
+<h1 id="Android性能优化典范"><a href="#Android性能优化典范" class="headerlink" title="Android性能优化典范"></a>Android性能优化典范</h1><p><a href="https://developer.android.com/studio/profile/investigate-ram.html" target="_blank" rel="external">Investigating Your RAM Usage</a>
+Investigating Your RAM Usage总结：</p>
+<ol>
+<li>学会查看Log中关于GC的信息，注意Art和Dalvik打印出的GC类别的不同。</li>
+<li>学会使用Android-Monitor之DDMS，学会生成、转换及分析hprof</li>
+<li>adb shell dumpsys meminfo <package_name|pid> [-d]
+<a href="https://developer.android.com/topic/performance/memory.html#remove" target="_blank" rel="external">Manage Your App’s Memory</a></package_name|pid></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果我的文章对您有用，请给我动力吧！O(∩_∩)O哈哈~</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat_pay.png" alt="codempror WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/ali_pay.jpg" alt="codempror Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android性能优化之内存/" rel="tag">#Android性能优化之内存</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/10/Android性能优化之电量/" rel="next" title="Android性能优化之电量">
+                <i class="fa fa-chevron-left"></i> Android性能优化之电量
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/14/Android性能优化之内存/"
+           data-title="Android性能优化之内存.md" data-url="http://yoursite.com/2016/11/14/Android性能优化之内存/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="codempror" />
+          <p class="site-author-name" itemprop="name">codempror</p>
+          <p class="site-description motion-element" itemprop="description">Just do it.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、Android内存管理模型"><span class="nav-number">1.</span> <span class="nav-text">一、Android内存管理模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、如何查询App的内存占用情况"><span class="nav-number">2.</span> <span class="nav-text">二、如何查询App的内存占用情况</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-各列字段的含义"><span class="nav-number">2.1.</span> <span class="nav-text">1. 各列字段的含义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Private-clean-and-dirty-RAM"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.1 Private (clean and dirty) RAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Proportional-Set-Size-PSS"><span class="nav-number">2.1.2.</span> <span class="nav-text">1.2 Proportional Set Size (PSS)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Heap-Size"><span class="nav-number">2.1.3.</span> <span class="nav-text">1.3 Heap Size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Heap-Alloc"><span class="nav-number">2.1.4.</span> <span class="nav-text">1.4 Heap Alloc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Heap-Free"><span class="nav-number">2.1.5.</span> <span class="nav-text">1.5 Heap Free</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-各行字段的含义"><span class="nav-number">2.2.</span> <span class="nav-text">2. 各行字段的含义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Native-Heap"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.1 Native Heap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Dalvik-Heap"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2 Dalvik Heap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Dalvik-Other-包括LinearAlloc-Accounting-Code-cache"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.3 Dalvik Other: 包括LinearAlloc, Accounting, Code_cache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-Stack"><span class="nav-number">2.2.4.</span> <span class="nav-text">2.4 Stack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-Ashmen-Anonymous-Shared-Memory-匿名共享内存"><span class="nav-number">2.2.5.</span> <span class="nav-text">2.5 Ashmen: Anonymous Shared Memory, 匿名共享内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-mmap-memory-Map"><span class="nav-number">2.2.6.</span> <span class="nav-text">2.6 mmap: memory Map</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cow-Copy-On-Write"><span class="nav-number">3.</span> <span class="nav-text">Cow: Copy-On-Write</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OOM的分类"><span class="nav-number">4.</span> <span class="nav-text">OOM的分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tools-for-analyzing-RAM-usage"><span class="nav-number">5.</span> <span class="nav-text">Tools for analyzing RAM usage</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DDMS"><span class="nav-number">5.1.</span> <span class="nav-text">DDMS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android性能优化典范"><span class="nav-number">6.</span> <span class="nav-text">Android性能优化典范</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codempror</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp</span></a>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiho"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

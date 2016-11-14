@@ -1,0 +1,712 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android性能优化之电量," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Tools for Battery Optimization1. Get Barrery History By System File12345//if Your platform is 4.1-4.3, using under commandadb shell dumpsys batteryinfo//othersadb shell dumpsys batterystats &amp;gt; packa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能优化之电量">
+<meta property="og:url" content="http://yoursite.com/2016/11/10/Android性能优化之电量/index.html">
+<meta property="og:site_name" content="相信不可能">
+<meta property="og:description" content="Tools for Battery Optimization1. Get Barrery History By System File12345//if Your platform is 4.1-4.3, using under commandadb shell dumpsys batteryinfo//othersadb shell dumpsys batterystats &amp;gt; packa">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/battery_chart.png">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/battery_analyse.png">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/profile_gpu_rendering.png">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/mobile_radio_state_machine.png">
+<meta property="og:updated_time" content="2016-11-14T03:25:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android性能优化之电量">
+<meta name="twitter:description" content="Tools for Battery Optimization1. Get Barrery History By System File12345//if Your platform is 4.1-4.3, using under commandadb shell dumpsys batteryinfo//othersadb shell dumpsys batterystats &amp;gt; packa">
+<meta name="twitter:image" content="http://oc1ju78pc.bkt.clouddn.com/battery_chart.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/10/Android性能优化之电量/"/>
+
+  <title> Android性能优化之电量 | 相信不可能 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">相信不可能</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Just do it.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android性能优化之电量
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-10T11:23:48+08:00" content="2016-11-10">
+              2016-11-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/10/Android性能优化之电量/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/10/Android性能优化之电量/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Tools-for-Battery-Optimization"><a href="#Tools-for-Battery-Optimization" class="headerlink" title="Tools for Battery Optimization"></a>Tools for Battery Optimization</h1><h2 id="1-Get-Barrery-History-By-System-File"><a href="#1-Get-Barrery-History-By-System-File" class="headerlink" title="1. Get Barrery History By System File"></a>1. Get Barrery History By System File</h2><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//<span class="keyword">if</span> Your <span class="built_in">platform</span> is <span class="number">4.1</span><span class="number">-4.3</span>, <span class="keyword">using</span> under <span class="keyword">command</span></div><div class="line">adb <span class="built_in">shell</span> dumpsys batteryinfo<span class="comment"></span></div><div class="line">//others</div><div class="line">adb <span class="built_in">shell</span> dumpsys batterystats &gt; packageName &gt; batterystats.txt</div><div class="line">adb <span class="built_in">shell</span> dumpsys batterystats &gt; batterystats.txt</div></pre></td></tr></table></figure>
+<h2 id="2-Battery-Historian"><a href="#2-Battery-Historian" class="headerlink" title="2. Battery Historian"></a>2. Battery Historian</h2><p>关于Battery Historian，详见<a href="https://github.com/google/battery-historian" target="_blank" rel="external">Google-Battery Historian</a></p>
+<p>默认地址：localhost:9999
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//重置Battery history</span></div><div class="line">adb shell dumpsys batterystats --reset</div><div class="line"><span class="comment">//启用weaklock</span></div><div class="line">adb shell dumpsys batterystats --enable full-wake-history</div><div class="line"><span class="comment">//导出bugreport</span></div><div class="line">adb bugreprot &gt; desktop/bugreport<span class="selector-class">.txt</span></div><div class="line"></div><div class="line"><span class="comment">//And then, You should enable The Batttery Historian by under commands</span></div><div class="line">cd <span class="variable">$GOPATH</span>/src/github.com/google/battery-historian</div><div class="line">go run setup<span class="selector-class">.go</span></div><div class="line">go run cmd/battery-historian/battery-historian<span class="selector-class">.go</span> </div><div class="line"></div><div class="line"><span class="comment">//At last, upload this bugreport.txt to Battery Historian</span></div></pre></td></tr></table></figure></p>
+<p><img src="http://oc1ju78pc.bkt.clouddn.com/battery_chart.png" alt="battery Historian chart"></p>
+<p><img src="http://oc1ju78pc.bkt.clouddn.com/battery_analyse.png" alt="battery Historian analyse"></p>
+<h2 id="3-Profile-GPU-Rendering【显示GPU渲染】"><a href="#3-Profile-GPU-Rendering【显示GPU渲染】" class="headerlink" title="3. Profile GPU Rendering【显示GPU渲染】"></a>3. Profile GPU Rendering【显示GPU渲染】</h2><p><img src="http://oc1ju78pc.bkt.clouddn.com/profile_gpu_rendering.png" alt="Profile GPU Rendering"></p>
+<p><strong>View</strong>–&gt;<strong>DisplayList</strong>–&gt; <strong>OpenGl ES</strong></p>
+<p><strong>绿色</strong>：代表16ms。在Android中，如果帧率为60fps，则页面不会卡顿。但是在绘制时，如果丢帧，则帧率小于60fps，则会出现卡顿。
+<strong>蓝色</strong>：View要绘制在屏幕上，则需要将View#onDraw方法中的规定转为GPU可识别的格式DisplayList并将其缓存起来，蓝色即代表了该段时长。
+<strong>紫色</strong>：代表将DisplayList转到绘制线程所需要的时间
+<strong>红色</strong>：代表系统使用OpenGL ES将DisplayList绘制在屏幕上所需要的时间。
+<strong>橙色</strong>：所有GPU的命令均来自于CPU，CPU把命令发送给GPU之后，会在GPU的队列中进行排队，如果此时队列已满，则CPU必须阻塞直至队列中有位并将命令放在队列中。橙色即代表了CPU的等待时长，也就是说黄色越长，GPU做的事情越多。黄色过长，则表示GPU做了太多的事。</p>
+<h2 id="4-Tencent-GT"><a href="#4-Tencent-GT" class="headerlink" title="4. Tencent GT"></a>4. Tencent GT</h2><p><a href="http://gt.qq.com/" target="_blank" rel="external">关于GT</a></p>
+<h1 id="Some-Principles-of-Battery-Optimization"><a href="#Some-Principles-of-Battery-Optimization" class="headerlink" title="Some Principles of Battery Optimization"></a>Some Principles of Battery Optimization</h1><ol>
+<li>蜂窝比WIFI更耗电</li>
+<li>尽量在充电时去做一些非常耗时的操作</li>
+<li>在蜂窝移动网络下，最好做到批量执行网络请求，尽量避免频繁的网络请求</li>
+<li>JosScheduler，使用JobScheduler来将一些不紧急的任务缓存起来，选择合适的时间，合适的网络，再一起执行。<a href="http://blog.csdn.net/bboyfeiyu/article/details/44809395" target="_blank" rel="external">JobScheduler的用法</a></li>
+<li>WakeLock，App在前台运行时，不要注册WakeLock，因为此时注册时没有意义的，却会被计算到应用耗电消耗中。还有注意尽量使用partial wake lock替代full wake lock。<a href="https://developer.android.com/reference/android/os/PowerManager.html" target="_blank" rel="external">WakeLock用法</a></li>
+<li>优化AlarmManager的提醒方式。<a href="https://developer.android.com/training/scheduling/alarms.html#set" target="_blank" rel="external">AlarmManager用法</a></li>
+<li>注意GPS，传感器的使用</li>
+<li>对于资讯类App来说，最愚蠢的数据读取方式莫过于只读取顶层缩略信息，因为这样可能会导致radioc持续保持运行态，从而导致高电耗。正确的做法应该是读取一组咨询及咨询的详细内容并预读取下一组的内容。<a href="https://www.youtube.com/watch?v=cSIB2pDvH3E&amp;list=PLWz5rJ2EKKc-VJS9WQlj9xM_ygPopZ-Qd&amp;index=1" target="_blank" rel="external">电量优化系列视频</a>、<a href="https://www.oschina.net/translate/if-youre-programming-a-cell-phone-like-a-server?cmp" target="_blank" rel="external">参考文章</a><img src="http://oc1ju78pc.bkt.clouddn.com/mobile_radio_state_machine.png" alt="预读取原理图"></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果我的文章对您有用，请给我动力吧！O(∩_∩)O哈哈~</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat_pay.png" alt="codempror WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/ali_pay.jpg" alt="codempror Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android性能优化之电量/" rel="tag">#Android性能优化之电量</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/20/android-WebView/" rel="next" title="关于WebView你所需要知道的一切">
+                <i class="fa fa-chevron-left"></i> 关于WebView你所需要知道的一切
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/14/Android性能优化之内存/" rel="prev" title="Android性能优化之内存.md">
+                Android性能优化之内存.md <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/10/Android性能优化之电量/"
+           data-title="Android性能优化之电量" data-url="http://yoursite.com/2016/11/10/Android性能优化之电量/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="codempror" />
+          <p class="site-author-name" itemprop="name">codempror</p>
+          <p class="site-description motion-element" itemprop="description">Just do it.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tools-for-Battery-Optimization"><span class="nav-number">1.</span> <span class="nav-text">Tools for Battery Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Get-Barrery-History-By-System-File"><span class="nav-number">1.1.</span> <span class="nav-text">1. Get Barrery History By System File</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Battery-Historian"><span class="nav-number">1.2.</span> <span class="nav-text">2. Battery Historian</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Profile-GPU-Rendering【显示GPU渲染】"><span class="nav-number">1.3.</span> <span class="nav-text">3. Profile GPU Rendering【显示GPU渲染】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Tencent-GT"><span class="nav-number">1.4.</span> <span class="nav-text">4. Tencent GT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Some-Principles-of-Battery-Optimization"><span class="nav-number">2.</span> <span class="nav-text">Some Principles of Battery Optimization</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codempror</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp</span></a>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiho"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

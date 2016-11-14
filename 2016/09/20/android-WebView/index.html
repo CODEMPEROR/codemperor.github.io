@@ -92,7 +92,7 @@
 <meta property="og:description" content="一、WebView基本用法123456789mWebView = (WebView) findViewById(R.id.webview);WebSettings webSettings = mWebView.getSettings();webSettings.setSavePassword(false);webSettings.setSaveFormData(false);webSettings">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/webview%E7%BC%93%E5%AD%98%E8%AF%B4%E6%98%8E-1.png">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/webView%E7%BC%93%E5%AD%98-app_webView.jpg">
-<meta property="og:updated_time" content="2016-10-26T02:23:33.000Z">
+<meta property="og:updated_time" content="2016-10-26T02:25:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于WebView你所需要知道的一切">
 <meta name="twitter:description" content="一、WebView基本用法123456789mWebView = (WebView) findViewById(R.id.webview);WebSettings webSettings = mWebView.getSettings();webSettings.setSavePassword(false);webSettings.setSaveFormData(false);webSettings">
@@ -395,7 +395,7 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">     <span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">"javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">        <span class="comment">/* This function is invoked by the activity */</span></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">callByJava</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">document</span>.getElementById(<span class="string">"droid"</span>).src=<span class="string">"android_waving.png"</span>;</div><div class="line">        &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- Calls into the javascript interface for the activity --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">onClick</span>=<span class="string">"window.reload.callByJs()"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"width:80px;</span></span></div><div class="line">                margin:0px auto;</div><div class="line">                padding:10px;</div><div class="line">                text-align:center;</div><div class="line">                border:2px solid #202020;" &gt;</div><div class="line">                <span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>=<span class="string">"droid"</span> <span class="attr">src</span>=<span class="string">"android_normal.png"</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">                    Click me!</div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>再点击超链接标签之后就会将img的图片更换为android_waving.png。</p>
 <blockquote>
-<p>注意：通过<a href="https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String" target="_blank" rel="external">官方文档</a>)可知，当TargetApi大于等于17时，js仅能调用添加了JavaScriptInterface注解的public methods)，当targetApi小于17时，即便没有JavaScriptInterface注解，所有的public method也可以被js调用（包括继承而来的public method）。因此当TargetApi小于17时，js就可以使用反射来访问注入到js中的public域，所以当访问某些不信任的网页时，宿主App就可能被攻击。
+<p>注意：通过<a href="https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String" target="_blank" rel="external">官方文档</a>可知，当TargetApi大于等于17时，js仅能调用添加了JavaScriptInterface注解的public methods，当targetApi小于17时，即便没有JavaScriptInterface注解，所有的public method也可以被js调用（包括继承而来的public method）。因此当TargetApi小于17时，js就可以使用反射来访问注入到js中的public域，所以当访问某些不信任的网页时，宿主App就可能被攻击。
 还有，一定要记住，即便TargetApi &gt;= 17，但如果你的App运行在android17以下，那么App还是有可能会被攻击。
 所以，使用js注入最安全的方式就是仅允许TargetApi&gt;=17且android4.2及以后才允许js访问Java对象。</p>
 </blockquote>
@@ -461,6 +461,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/10/Android性能优化之电量/" rel="prev" title="Android性能优化之电量">
+                Android性能优化之电量 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -532,7 +536,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -540,7 +544,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -549,7 +553,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -258,6 +258,260 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/14/Android性能优化之内存/" itemprop="url">
+                  Android性能优化之内存.md
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-14T11:22:05+08:00" content="2016-11-14">
+              2016-11-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/14/Android性能优化之内存/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/14/Android性能优化之内存/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          一、Android内存管理模型Art(Android RunTime)虚拟机和Dalvik虚拟机都是以分页机制paging和内存映射机制(memory-mapping, mmapping)来管理内存。
+The Android Runtime (ART) and Dalvik virtual machine use paging and memory-mapping (mmapping) to manage memory. This means that any memory an app modifies—whether by allocating new objects or touching mmapped pages—remains resident in RAM and cannot be paged out. The only way to release memory from an app is to release object references that the app holds, making the memory available to the garba
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/14/Android性能优化之内存/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/10/Android性能优化之电量/" itemprop="url">
+                  Android性能优化之电量
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-10T11:23:48+08:00" content="2016-11-10">
+              2016-11-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/10/Android性能优化之电量/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/10/Android性能优化之电量/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Tools for Battery Optimization1. Get Barrery History By System File12345//if Your platform is 4.1-4.3, using under commandadb shell dumpsys batteryinfo//othersadb shell dumpsys batterystats &gt; packageName &gt; batterystats.txtadb shell dumpsys batterystats &gt; batterystats.txt
+2. Battery Historian关于Battery Historian，详见Google-Battery Historian
+默认地址：localhost:9999
+12345678910111213//重置Battery historyadb shell dumpsys batterystats --reset//启用weaklockadb shell dumpsys batterystats --enable full-w
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/10/Android性能优化之电量/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/09/20/android-WebView/" itemprop="url">
                   关于WebView你所需要知道的一切
                 </a>
@@ -1253,229 +1507,6 @@ singleTask
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/17/android-Scroller/" itemprop="url">
-                  android-Scroller
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-17T11:02:50+08:00" content="2016-08-17">
-              2016-08-17
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/17/android-Scroller/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/android-Scroller/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-View中的mScrollX, mScrollY这两个变量描述的是现在View的内容的位置（x2， y2）相对于View所在位置(x1, y1)的值, 即 mScrollX = x1 - x2, mScrollY = y1 - y2。 
-通过Scroller, 滑动的是View的内容，而不是view本身
-scrollTo(x, y),x 是相对于View左边而言的，y是相对于view上边而言的。
-scrollTo没有累加效果，scrollBy有累加效果
-scroller只是用来做平滑的滑动，也就是说如果你要让某个View随着手机的滑动而滑动则必须使用scrollTo或scrllBy。只要使用了startScroll,就开始自动滑动了。
-#####原理解析
-
-
-
-
-
-          
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/17/android-Scroller/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/17/android-SurfaceView/" itemprop="url">
-                  android-SurfaceView
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-17T10:58:29+08:00" content="2016-08-17">
-              2016-08-17
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/17/android-SurfaceView/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/android-SurfaceView/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-          
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/17/android-SurfaceView/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1521,7 +1552,7 @@ scroller只是用来做平滑的滑动，也就是说如果你要让某个View�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1529,7 +1560,7 @@ scroller只是用来做平滑的滑动，也就是说如果你要让某个View�
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1538,7 +1569,7 @@ scroller只是用来做平滑的滑动，也就是说如果你要让某个View�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
