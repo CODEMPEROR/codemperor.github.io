@@ -1,0 +1,756 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android性能优化之流畅度," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？在V-Sync中，显示器较为主动，显卡较为被动。显示器被设置为每隔1/60秒想显卡索要一次信息。如果显卡能每次都能在1/60秒内将信息准备完毕，那么桌面就不会出现卡顿，但是显卡不能将信息准备好，那么就会出现卡顿。在V-Sync的过程中，显卡一直处于比较被动的过程，必须等待显示器发出的同步信号之后才会绘制下一帧的内容。
+G-S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能优化之流畅度">
+<meta property="og:url" content="http://yoursite.com/2016/11/16/Android性能优化之流畅度/index.html">
+<meta property="og:site_name" content="相信不可能">
+<meta property="og:description" content="V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？在V-Sync中，显示器较为主动，显卡较为被动。显示器被设置为每隔1/60秒想显卡索要一次信息。如果显卡能每次都能在1/60秒内将信息准备完毕，那么桌面就不会出现卡顿，但是显卡不能将信息准备好，那么就会出现卡顿。在V-Sync的过程中，显卡一直处于比较被动的过程，必须等待显示器发出的同步信号之后才会绘制下一帧的内容。
+G-S">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/hierachy_view_sample.png">
+<meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/Lint_Sample.png">
+<meta property="og:updated_time" content="2016-11-16T14:37:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android性能优化之流畅度">
+<meta name="twitter:description" content="V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？在V-Sync中，显示器较为主动，显卡较为被动。显示器被设置为每隔1/60秒想显卡索要一次信息。如果显卡能每次都能在1/60秒内将信息准备完毕，那么桌面就不会出现卡顿，但是显卡不能将信息准备好，那么就会出现卡顿。在V-Sync的过程中，显卡一直处于比较被动的过程，必须等待显示器发出的同步信号之后才会绘制下一帧的内容。
+G-S">
+<meta name="twitter:image" content="http://oc1ju78pc.bkt.clouddn.com/hierachy_view_sample.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/16/Android性能优化之流畅度/"/>
+
+  <title> Android性能优化之流畅度 | 相信不可能 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">相信不可能</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Just do it.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android性能优化之流畅度
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-16T22:36:21+08:00" content="2016-11-16">
+              2016-11-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/16/Android性能优化之流畅度/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/16/Android性能优化之流畅度/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？"><a href="#V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？" class="headerlink" title="V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？"></a>V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？</h1><p>在V-Sync中，显示器较为主动，显卡较为被动。显示器被设置为每隔1/60秒想显卡索要一次信息。如果显卡能每次都能在1/60秒内将信息准备完毕，那么桌面就不会出现卡顿，但是显卡不能将信息准备好，那么就会出现卡顿。在V-Sync的过程中，显卡一直处于比较被动的过程，必须等待显示器发出的同步信号之后才会绘制下一帧的内容。</p>
+<p>G-Sync是为了在出现卡顿时，让显示器稍微等一下，比如下一帧是1/50秒后才画出来，那显示器就等上1/50秒再刷新画面。</p>
+<p>举了粒子吧（<a href="https://www.zhihu.com/question/41274376/answer/131044799" target="_blank" rel="external">Copy From Zhihu</a>）：</p>
+<p>有俩穷逼双胞胎兄弟分别在外面租房子住，拿画抵房租，假设他们绘图进度完全一致（即上图的红色竖线）。</p>
+<p>哥哥的房东V-Sync是个机器收租人，他雷打不动地每个月1号都去问你要房租，如果你画好了他就收租，没画完他就下个月1号再来。所以他家里挂着的是A画，（一个月后）B画，（一个月后）B画，（一个月后）C画。</p>
+<p>弟弟的房东G-Sync是个慈祥的老奶奶，她从来不主动找你收租，你画好画后，如果距离上次缴房租大于等于一个月你就马上给她。如果距离上次缴房租时间还不到一个月，老奶奶则坚持要过完一个月后才收你的画。多么可爱的老奶奶！所以老奶奶家里挂着的是A画，（一个月后）B画，（34天后）C画，（一个月后）D画。
+大家就说哇老奶奶你家的画好新鲜，好繁多喔！(/▽╲)</p>
+<p>可见，明明是同等的绘画情况下，慈祥老奶奶家里挂着的画切换更频繁！也更即时！
+这个故事告诉我们一个道理，好人会有好报，如若对待生活窘迫的人要多一点理解和宽容，也许会收获许多意想不到的喜悦……</p>
+<h1 id="FPS与流畅度的关系？24帧为什么不够？"><a href="#FPS与流畅度的关系？24帧为什么不够？" class="headerlink" title="FPS与流畅度的关系？24帧为什么不够？"></a>FPS与流畅度的关系？24帧为什么不够？</h1><p>FPS：Frame Per Second，即每秒所需要更新的帧数。在系统更新每一帧时，首先会将系统内现在正在运行的所有运行的进程需要展示的信息合成一帧，然后将其展示在屏幕上。综上，FPS就是指系统每秒提交到屏幕的帧数。因此系统的绘制需求低时，FPS就会低；当系统绘制需求高时，FPS就得高。如果系统绘制需求高但FPS低就会出现卡顿现象。</p>
+<p>可见，FPS不是由单一进程来决定的，它取决于当前系统的所有进程。因此我们不操作屏幕时，FPS也不会为0，这是因为可能会有其他进程正在绘制屏幕，例如状态栏。</p>
+<p>当FPS接近60时，不管系统的绘制需要如何，用户都不会感到卡顿；FPS较低时，用户能否感觉到卡顿，取决于当前系统的绘制需求。</p>
+<p>如果以24FSP播放电影，我们并不会觉得卡顿，这是因为什么呢？原因很简单，这是因为影片的每一帧都是连续的，而App的每一帧并不是连续的。</p>
+<h1 id="影响流畅度的几个指标"><a href="#影响流畅度的几个指标" class="headerlink" title="影响流畅度的几个指标"></a>影响流畅度的几个指标</h1><ol>
+<li>过度绘制</li>
+<li>布局层级过深 </li>
+</ol>
+<h1 id="如何改善App流畅度"><a href="#如何改善App流畅度" class="headerlink" title="如何改善App流畅度"></a>如何改善App流畅度</h1><h2 id="解决过度绘制"><a href="#解决过度绘制" class="headerlink" title="解决过度绘制"></a>解决过度绘制</h2><h3 id="什么是过度绘制？过度绘制有什么缺点？会造成什么样的影响？"><a href="#什么是过度绘制？过度绘制有什么缺点？会造成什么样的影响？" class="headerlink" title="什么是过度绘制？过度绘制有什么缺点？会造成什么样的影响？"></a>什么是过度绘制？过度绘制有什么缺点？会造成什么样的影响？</h3><p>过度绘制是指在屏幕的同一处进行了多次绘制，但是上一次绘制总会被下一次绘制覆盖，因此上一次绘制是冗余的，我们将这种冗余绘制叫做过度绘制。</p>
+<p>屏幕绘制最终是GPU来完成的，因此过度绘制会造成GPU绘制压力增大，整体表现为App性能低下，绘制速度慢，用户体验差。 </p>
+<h3 id="如何识别过度绘制？"><a href="#如何识别过度绘制？" class="headerlink" title="如何识别过度绘制？"></a>如何识别过度绘制？</h3><p>我们可以很轻易的识别出是否存在过度绘制，只需要在开发者选项中打开“显示GPU过度绘制”选项即可。</p>
+<blockquote>
+<p><strong>颜色标识: GPU过渡绘制从好到差:蓝-绿-淡红-红</strong></p>
+<ul>
+<li>蓝色1x过度绘制</li>
+<li>绿色2x过度绘制</li>
+<li>淡红色3x过度绘制</li>
+<li>红色超过4x过度绘制</li>
+</ul>
+<p><strong>验收标准:</strong></p>
+<ul>
+<li>控制过度绘制为2x</li>
+<li>不允许存在4x过度绘制</li>
+<li>不允许存在面积超过屏幕1/4区域的3x过度绘制（淡红色区域）</li>
+</ul>
+</blockquote>
+<h3 id="什么会造成过度绘制呢？如何解决过度绘制？"><a href="#什么会造成过度绘制呢？如何解决过度绘制？" class="headerlink" title="什么会造成过度绘制呢？如何解决过度绘制？"></a>什么会造成过度绘制呢？如何解决过度绘制？</h3><ol>
+<li>View本身多次绘制，可能是绘制背景和和绘制文字的重叠</li>
+<li>多个View之间存在重叠。</li>
+</ol>
+<h2 id="优化布局层级"><a href="#优化布局层级" class="headerlink" title="优化布局层级"></a>优化布局层级</h2><h3 id="如何识别View层级过深？有什么工具？"><a href="#如何识别View层级过深？有什么工具？" class="headerlink" title="如何识别View层级过深？有什么工具？"></a>如何识别View层级过深？有什么工具？</h3><h4 id="1-View-Hierarchy"><a href="#1-View-Hierarchy" class="headerlink" title="1. View Hierarchy"></a>1. View Hierarchy</h4><p><img src="http://oc1ju78pc.bkt.clouddn.com/hierachy_view_sample.png" alt="Hierachy_View_Sample"> </p>
+<blockquote>
+<p>通过View Hierarchy不仅可以查看每个View的层次，也可以看到每个View的measure，Layout，draw三个过程所需要的时间。如果测量、布局、绘制View较慢，则标记为红色，表明需要优化。</p>
+</blockquote>
+<h4 id="2-Trace-for-OpenGl-ES"><a href="#2-Trace-for-OpenGl-ES" class="headerlink" title="2. Trace for OpenGl ES"></a>2. Trace for OpenGl ES</h4><p>Trace for OpenGl Es可以逐帧分析GPU的绘制时间。</p>
+<h4 id="3-Lint（静态代码扫描分析器）"><a href="#3-Lint（静态代码扫描分析器）" class="headerlink" title="3. Lint（静态代码扫描分析器）"></a>3. Lint（静态代码扫描分析器）</h4><p>在android studio中的工具栏中选择<strong>Analyse–&gt;Inspect Code</strong>，即可进行静态代码扫描。
+<img src="http://oc1ju78pc.bkt.clouddn.com/Lint_Sample.png" alt="Lint Sample"></p>
+<p>Lint会分析上图中各个方面存在的问题，我们着重关注Performance这部分。在Performance中可能会存在以下16中问题：</p>
+<ol>
+<li>DrawAllocation：尽量避免在view绘制过程中分配对象（new）</li>
+<li>WakeLock：WakeLock会导致高耗电</li>
+<li>Recycle：释放资源，TypedArrays、VelocityTrackers等用完之后一定要回收；</li>
+<li>ObsoleteLayoutParam：Layout中无用的参数；</li>
+<li>UserCompoundDrawables：尽量利用TextView的drawable属性来减少TextView与ImageView处于同一层级。</li>
+<li>HandlerLeak：Handler导致的内存泄露</li>
+<li>UseSparseArrays：尽量使用SparseArray代替HashMap</li>
+<li>UseValueOf：使用常量对象时，尽量避免new，应该使用valueOf，这样可以节省内存。例如使用Integer.valueOf(10)而不是new Integer(10)；</li>
+<li>DisableBaselineAlignment：如果LinearLayout被用作嵌套的Layout控件计算，它的android:baselineAligned属性应该置为false，以加快layout计算。</li>
+<li>InefficientWeight：当使用Weight属性时，应该讲layout_widht/layout_height设置为0dp，从而省略measure过程。</li>
+<li>FloatMath：使用FloatMath代替Math。</li>
+<li>NestedWeights：避免嵌套weight，否则会拖累执行效率；</li>
+<li>UnusedResources/UnusedIds：未使用的资源会使得App变大，且编译缓慢</li>
+<li>OverDraw：过度绘制</li>
+<li>UselessLeaf/UselessParent：view或view的parent无用；</li>
+<li>UnusedNamespace：无用命令空间，影响执行效率</li>
+</ol>
+<p>此外，<a href="http://www.carrotsight.com/2016/01/29/%E6%B5%85%E8%B0%88Android%E8%87%AA%E5%AE%9A%E4%B9%89Lint%E8%A7%84%E5%88%99%E7%9A%84%E5%AE%9E%E7%8E%B0%20%EF%BC%88%E4%B8%80%EF%BC%89.html" target="_blank" rel="external">Lint还可自定义规则。</a></p>
+<h3 id="布局的三原则？"><a href="#布局的三原则？" class="headerlink" title="布局的三原则？"></a>布局的三原则？</h3><ol>
+<li>使用<merge>合并无用的父布局</merge></li>
+<li>使用<viewstub>实现按需加载，例如进度条、显示错误信息</viewstub></li>
+<li>尽量减少布局的层次深度</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果我的文章对您有用，请给我动力吧！O(∩_∩)O哈哈~</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat_pay.png" alt="codempror WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/ali_pay.jpg" alt="codempror Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android性能优化之流畅度/" rel="tag">#Android性能优化之流畅度</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/14/实践中的一些小技巧/" rel="next" title="实践中的一些小技巧">
+                <i class="fa fa-chevron-left"></i> 实践中的一些小技巧
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/16/Android性能优化之流畅度/"
+           data-title="Android性能优化之流畅度" data-url="http://yoursite.com/2016/11/16/Android性能优化之流畅度/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="codempror" />
+          <p class="site-author-name" itemprop="name">codempror</p>
+          <p class="site-description motion-element" itemprop="description">Just do it.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？"><span class="nav-number">1.</span> <span class="nav-text">V-Sync和FreeSync、G-Sync有什么区别？各自有什么优缺点？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FPS与流畅度的关系？24帧为什么不够？"><span class="nav-number">2.</span> <span class="nav-text">FPS与流畅度的关系？24帧为什么不够？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#影响流畅度的几个指标"><span class="nav-number">3.</span> <span class="nav-text">影响流畅度的几个指标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何改善App流畅度"><span class="nav-number">4.</span> <span class="nav-text">如何改善App流畅度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决过度绘制"><span class="nav-number">4.1.</span> <span class="nav-text">解决过度绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是过度绘制？过度绘制有什么缺点？会造成什么样的影响？"><span class="nav-number">4.1.1.</span> <span class="nav-text">什么是过度绘制？过度绘制有什么缺点？会造成什么样的影响？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何识别过度绘制？"><span class="nav-number">4.1.2.</span> <span class="nav-text">如何识别过度绘制？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么会造成过度绘制呢？如何解决过度绘制？"><span class="nav-number">4.1.3.</span> <span class="nav-text">什么会造成过度绘制呢？如何解决过度绘制？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化布局层级"><span class="nav-number">4.2.</span> <span class="nav-text">优化布局层级</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何识别View层级过深？有什么工具？"><span class="nav-number">4.2.1.</span> <span class="nav-text">如何识别View层级过深？有什么工具？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-View-Hierarchy"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">1. View Hierarchy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Trace-for-OpenGl-ES"><span class="nav-number">4.2.1.2.</span> <span class="nav-text">2. Trace for OpenGl ES</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Lint（静态代码扫描分析器）"><span class="nav-number">4.2.1.3.</span> <span class="nav-text">3. Lint（静态代码扫描分析器）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局的三原则？"><span class="nav-number">4.2.2.</span> <span class="nav-text">布局的三原则？</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codempror</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp</span></a>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiho"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
