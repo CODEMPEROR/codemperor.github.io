@@ -258,6 +258,138 @@
             
               
                 
+                <a class="post-title-link" href="/2017/01/05/Java垃圾回收器/" itemprop="url">
+                  Java垃圾回收器
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-05T15:06:27+08:00" content="2017-01-05">
+              2017-01-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java-Gc/" itemprop="url" rel="index">
+                    <span itemprop="name">Java Gc</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/05/Java垃圾回收器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/05/Java垃圾回收器/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          JVM垃圾收集器（Garbage Collector）与内存分配策略内存回收算法Java的内存运行时区域的各个部分，其中PC、VM Stack、Native Method Stack这3个区域都是线程私有的，因此其中的对象岁线程而生，随线程而死。栈帧随着方法的进入和退出而有条不紊的进行进栈和出栈操作。每一个栈帧的内存大小在类结构确定之后就是一致的（忽略JIT优化），所以这几个区域就不需要过多的考虑内存回收。而堆和方法区就不一样了，一个接口中的多个实现类需要的内存可能不一样，一个方法中的多个分支需要的内存也可能不一样，因此只有在程序运行期间我们才知道会创建那些对象，这部分创建和回收的内存都是动态的，需要垃圾回收器时刻关注。但是我们如何判断对象是否还有用呢？换句话说，如何判断Java对象是否已死？一般而言，有两种方法：引用计数和可达性分析。
+引用计数算法描述
+
+给对象添加一个引用计数器，每当在一个地方引用该对象一次，该对象引用次数+1，当引用失效时，引用次数-1，当引用次数为0时，表明该对象可以被回收。
+
+可达性分析（GC Roots）算法描述
+
+通过一系列被称为GC Roots的对象作为
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/01/05/Java垃圾回收器/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/16/Android性能优化之流畅度/" itemprop="url">
                   Android性能优化之流畅度
                 </a>
@@ -1412,145 +1544,6 @@ Service的基本用法。要实现自己的Service去完成一些后台操作，
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/18/android-Activity与Fragment/" itemprop="url">
-                  android-Activity与Fragment
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-18T10:54:04+08:00" content="2016-08-18">
-              2016-08-18
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/18/android-Activity与Fragment/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/18/android-Activity与Fragment/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Activity的启动模式（android:launchMode）
-standard 标准模式
-
-系统默认模式，每次启动ACtivity，不管该Activity的实例是否存在，都会创建一个新的实例。该Activity与启动它的Activity属于同一个任务栈。
-注意：applicationContext不可启动standard模式的Activity。因为非Activity的context类型没有任务栈，那么如果要启动该模式的Activity，那该Activity无法进入任务栈，那么该Activity就不属于任何任务栈。
-
-
-singleTop
-
-栈顶复用模式。如果将要启动的Activity处于任务栈的顶部，那么该Activity会直接复用栈顶的实例。因为该Activity的实例已经存在，那么便不会执行onCreate和onStart，但会调用onNewIntent方法。在onNewIntent中可以取出这次请求的信息。但是如果该Activity不在任务栈的顶部，则会新建该Activity的实例。
-
-
-singleTask
-
-栈内复用模式。如果即将启动的Activity在某个任务栈中存在
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/18/android-Activity与Fragment/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1596,7 +1589,7 @@ singleTask
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1604,7 +1597,7 @@ singleTask
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1613,7 +1606,7 @@ singleTask
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1650,7 +1643,7 @@ singleTask
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
