@@ -92,7 +92,7 @@
 <meta property="og:description" content="一、内存回收算法Java的内存运行时区域的各个部分，其中PC、VM Stack、Native Method Stack这3个区域都是线程私有的，因此其中的对象岁线程而生，随线程而死。栈帧随着方法的进入和退出而有条不紊的进行进栈和出栈操作。每一个栈帧的内存大小在类结构确定之后就是一致的（忽略JIT优化），所以这几个区域就不需要过多的考虑内存回收。而堆和方法区就不一样了，一个接口中的多个实现类需要的内">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png">
 <meta property="og:image" content="http://oc1ju78pc.bkt.clouddn.com/Java%20Gc%20Summary.png">
-<meta property="og:updated_time" content="2017-01-05T07:13:24.000Z">
+<meta property="og:updated_time" content="2017-01-05T07:15:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java垃圾回收器">
 <meta name="twitter:description" content="一、内存回收算法Java的内存运行时区域的各个部分，其中PC、VM Stack、Native Method Stack这3个区域都是线程私有的，因此其中的对象岁线程而生，随线程而死。栈帧随着方法的进入和退出而有条不紊的进行进栈和出栈操作。每一个栈帧的内存大小在类结构确定之后就是一致的（忽略JIT优化），所以这几个区域就不需要过多的考虑内存回收。而堆和方法区就不一样了，一个接口中的多个实现类需要的内">
@@ -446,14 +446,16 @@
 <li>CMS对CPU资源十分敏感；换句话说，CMS的执行会抢占用户程序资源，从而导致用户程序响应缓慢。</li>
 <li>因为CMS使用“Mark-Sweep”算法，因此会产生大量的内存碎片。因此CMS提供了-XX:+UseCMSCompactAtFullCollection参数来解决大对象引起的Full GC。</li>
 </ol>
-<h2 id="7-G1-Garbage-First"><a href="#7-G1-Garbage-First" class="headerlink" title="7. G1(Garbage-First)"></a>7. G1(Garbage-First)</h2><p>&emsp;&emsp;G1是一款面向服务端应用、面向整个GC堆的垃圾回收器。</p>
-<p>&emsp;&emsp;1使用G1时，Java的内存模型不再像之前按照对象年龄来分区，而是将所有的堆内存划分为对等的<strong>独立区域Region</strong>，但是每一个对象仍然有新生代和老年代的划分，新生代和老年底啊可以处于同一个Region。G1会跟踪每个region的回收价值，并维护一个优先队列，进行GC时，优先回收价值最大的Region，以保证在有限时间内获取最大的回收效率。但是Region之间不是相互独立的，Region之间的对象可能存在相互引用，G1使用Remembered Set记录避免对整个堆控件的搜索。Remembered Set用来保存对应Region的向外引用列表，所谓向外引用指其他Region对本Region内的对象的引用。当进行GC时，将Remembered Set添加到GC ROOT中即可。</p>
-<p>&emsp;&emsp;G1的执行过程可以描述如下：
-&emsp;&emsp;&emsp;1. 初始标记（Initial Marking）
-&emsp;&emsp;&emsp;2. 并发标记 (Concurrent Marking)
-&emsp;&emsp;&emsp;3. 最终标记 (Final Marking)
-&emsp;&emsp;&emsp;4. 筛选回收 (Live Data Counint and Evacuation)
-&emsp;&emsp;初始阶段只标记与GC ROOT直接引用的对象，需要STOP THE WORLD。并发标记与用户程序同步运行，从GC Root出发进行可达性分析，标记出所有的存活的对象，与此同时，在用户程序执行期间，又会导致某些对象不可达（很明显不会出现之前不可达的对象再次可达的情况）、或产生新的对象或对象引用，将这些变化记录在Remembered Set Logs中。在最终标记阶段，根据Remembered Set Logs更新Remembered Set，该阶段需要STOP THE WORLD。在筛选回收阶段则根据各个Region的回收价值来进行回收。</p>
+<h2 id="7-G1-Garbage-First"><a href="#7-G1-Garbage-First" class="headerlink" title="7. G1(Garbage-First)"></a>7. G1(Garbage-First)</h2><p>G1是一款面向服务端应用、面向整个GC堆的垃圾回收器。</p>
+<p>使用G1时，Java的内存模型不再像之前按照对象年龄来分区，而是将所有的堆内存划分为对等的<strong>独立区域Region</strong>，但是每一个对象仍然有新生代和老年代的划分，新生代和老年底啊可以处于同一个Region。G1会跟踪每个region的回收价值，并维护一个优先队列，进行GC时，优先回收价值最大的Region，以保证在有限时间内获取最大的回收效率。但是Region之间不是相互独立的，Region之间的对象可能存在相互引用，G1使用Remembered Set记录避免对整个堆控件的搜索。Remembered Set用来保存对应Region的向外引用列表，所谓向外引用指其他Region对本Region内的对象的引用。当进行GC时，将Remembered Set添加到GC ROOT中即可。</p>
+<p>G1的执行过程可以描述如下：</p>
+<ol>
+<li>初始标记（Initial Marking）</li>
+<li>并发标记 (Concurrent Marking)</li>
+<li>最终标记 (Final Marking)</li>
+<li>筛选回收 (Live Data Counint and Evacuation)</li>
+</ol>
+<p>初始阶段只标记与GC ROOT直接引用的对象，需要STOP THE WORLD。并发标记与用户程序同步运行，从GC Root出发进行可达性分析，标记出所有的存活的对象，与此同时，在用户程序执行期间，又会导致某些对象不可达（很明显不会出现之前不可达的对象再次可达的情况）、或产生新的对象或对象引用，将这些变化记录在Remembered Set Logs中。在最终标记阶段，根据Remembered Set Logs更新Remembered Set，该阶段需要STOP THE WORLD。在筛选回收阶段则根据各个Region的回收价值来进行回收。</p>
 <p>因此，从全局而言，G1采用了Copy算法；从布局而言，两个Region之间则采用了Mark-Compact算法，因此不会产生内存碎片。</p>
 <h2 id="GC总结"><a href="#GC总结" class="headerlink" title="GC总结"></a>GC总结</h2><p><img src="http://oc1ju78pc.bkt.clouddn.com/Java%20Gc%20Summary.png" alt=""></p>
 
